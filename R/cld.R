@@ -74,7 +74,7 @@
 #' @references
 #' Piepho HP (2004). An algorithm for a letter-based representation of
 #' all-pairwise comparisons. Journal of Computational and Graphical Statistics,
-#' 13(2), 456-466. \doi{10.1198/1061860043515}, available at 
+#' 13(2), 456-466. \doi{10.1198/1061860043515}, available at
 #' https://www.tandfonline.com/doi/abs/10.1198/1061860043515
 #'
 #' @export
@@ -169,6 +169,7 @@ make_cld.pairwise.htest <- function(obj, ..., alpha = 0.05) {
     remove.space = TRUE,
     ...
   )
+  attr(res, "method") <- obj$method
   res
 }
 
@@ -201,6 +202,7 @@ make_cld.posthoc_anova <- function(obj, ..., alpha = 1 - obj$input$conf_level) {
     swap_compared_names = TRUE,
     ...
   )
+  attr(res, "method") <- obj$input$method
   res
 }
 
@@ -229,6 +231,7 @@ make_cld.PostHocTest <- function(obj, ..., alpha = 0.05) {
     remove.space = TRUE,
     ...
   )
+  attr(res, "method") <- class(obj)[1]
   res
 }
 
@@ -253,6 +256,7 @@ make_cld.formula <- function(obj, ..., data = NULL, alpha = 0.05) {
     threshold = alpha,
     ...
   )
+  attr(res, "method") <- "formula"
   res
 }
 
@@ -273,7 +277,9 @@ make_cld.matrix <- function(obj, ..., alpha = 0.05) {
 
   obj[upper.tri(obj, diag = TRUE)] <- NA
   df <- pval_matrix_to_df(obj)
-  make_cld.pairwise_pval_df(df, ..., alpha = alpha)
+  res <- make_cld.pairwise_pval_df(df, ..., alpha = alpha)
+  attr(res, "method") <- "matrix"
+  res
 }
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname make_cld
@@ -318,6 +324,7 @@ make_cld.data.frame <- function(
     remove.space = remove.space,
     ...
   )
+  attr(res, "method") <- "data.frame"
   res
 }
 
@@ -333,6 +340,7 @@ make_cld.pairwise_pval_df <- function(obj, ..., alpha = 0.05) {
     threshold  = alpha,
     ...
   )
+  attr(res, "method") <- "pairwise_pval_df"
   res
 }
 
