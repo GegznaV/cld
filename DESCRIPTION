@@ -23,9 +23,13 @@ Imports:
     rlang
 Suggests:
     DescTools,
+    dplyr,
+    ggplot2,
+    knitr,
     PMCMR,
     PMCMRplus,
     rcompanion,
+    rmarkdown,
     rstatix,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
@@ -36,3 +40,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Depends: 
     R (>= 2.10)
+VignetteBuilder: knitr
