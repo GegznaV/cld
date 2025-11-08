@@ -290,13 +290,25 @@ make_cld.data.frame <- function(
 
   # Check that required columns exist
   if (!gr1_col %in% names(obj)) {
-    stop("Column '", gr1_col, "' not found in data frame.", call. = FALSE)
+    stop(
+      "Column '", gr1_col, "' not found in data frame.\n",
+      "Available columns: ", paste(names(obj), collapse = ", "),
+      call. = FALSE
+    )
   }
   if (!gr2_col %in% names(obj)) {
-    stop("Column '", gr2_col, "' not found in data frame.", call. = FALSE)
+    stop(
+      "Column '", gr2_col, "' not found in data frame.\n",
+      "Available columns: ", paste(names(obj), collapse = ", "),
+      call. = FALSE
+    )
   }
   if (!p_val_col %in% names(obj)) {
-    stop("Column '", p_val_col, "' not found in data frame.", call. = FALSE)
+    stop(
+      "Column '", p_val_col, "' not found in data frame.\n",
+      "Available columns: ", paste(names(obj), collapse = ", "),
+      call. = FALSE
+    )
   }
 
   res <- make_cld_df(
