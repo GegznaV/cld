@@ -42,10 +42,10 @@ test_result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALS
 make_cld(test_result)
 ```
 
-**Interpretation**: 
+**Interpretation**:
 
-- Groups with the same letter (e.g., casein and sunflower both have "a") are not significantly different. 
-- Groups without shared letters (e.g., horsebean "b" and soybean "c") are significantly different.
+- Groups sharing at least one letter are **not** significantly different (e.g., casein and sunflower both have "a");
+- Groups with no shared letters **are** significantly different (e.g., horsebean "b" and soybean "c").
 
 ## Basic Usage with Base R Tests
 
