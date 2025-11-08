@@ -78,6 +78,26 @@ sunflower both have “a”) are not significantly different. Groups without
 shared letters (e.g., horsebean “b” and soybean “c”) are significantly
 different.
 
+### Interpretation Rules
+
+❌ At least one **shared letter** → Groups are **NOT** significantly
+different  
+✅ **No shared letters** → Groups **ARE** significantly different
+
+**Example:**
+
+- ❌ Groups with “c” and “c” share letter “c” → difference is not
+  significant
+- ❌ Groups with “a” and “ab” share letter “a” → difference is not
+  significant
+- ❌ Groups “ab” and “bc” share letter “b” → difference is not
+  significant
+- ❌ Groups “abc” and “bcd” share letters “b”, and “c” → difference is
+  not significant
+- ✅ Groups with “a” and “c” share no letters → significantly different
+- ✅ Groups with “abd” and “ce” share no letters → significantly
+  different
+
 ## Supported Input Formats
 
 The `make_cld()` function works seamlessly with:
@@ -102,24 +122,36 @@ library(cld)
 # Pairwise Wilcoxon rank sum test
 result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
 make_cld(result)
-#>       group cld spaced_cld
-#> 1    casein   a        a__
-#> 2 horsebean   b        _b_
-#> 3   linseed  bc        _bc
-#> 4  meatmeal  ac        a_c
-#> 5   soybean   c        __c
-#> 6 sunflower   a        a__
+#> Compact Letter Display (CLD)
+#> Significance level (alpha):  0.05 
+#> Method:  Wilcoxon rank sum test with continuity correction 
+#> 
+#> Groups sharing letters are not significantly different:
+#> 
+#>      group cld spaced_cld
+#>     casein   a        a__
+#>  horsebean   b        _b_
+#>    linseed  bc        _bc
+#>   meatmeal  ac        a_c
+#>    soybean   c        __c
+#>  sunflower   a        a__
 
 # Pairwise t-test
 result2 <- pairwise.t.test(chickwts$weight, chickwts$feed)
 make_cld(result2, alpha = 0.01)  # More stringent threshold
-#>       group cld spaced_cld
-#> 1    casein   a        a__
-#> 2 horsebean   b        _b_
-#> 3   linseed  bc        _bc
-#> 4  meatmeal  ac        a_c
-#> 5   soybean   c        __c
-#> 6 sunflower   a        a__
+#> Compact Letter Display (CLD)
+#> Significance level (alpha):  0.01 
+#> Method:  t tests with pooled SD 
+#> 
+#> Groups sharing letters are not significantly different:
+#> 
+#>      group cld spaced_cld
+#>     casein   a        a__
+#>  horsebean   b        _b_
+#>    linseed  bc        _bc
+#>   meatmeal  ac        a_c
+#>    soybean   c        __c
+#>  sunflower   a        a__
 ```
 
 ### Example 2: P-value Matrices
@@ -136,11 +168,17 @@ rownames(m) <- colnames(m) <- c("GroupA", "GroupB", "GroupC", "GroupD")
 
 # Generate CLD
 make_cld(m, alpha = 0.05)
-#>    group cld spaced_cld
-#> 1 GroupA   a         a_
-#> 2 GroupB   a         a_
-#> 3 GroupC  ab         ab
-#> 4 GroupD   b         _b
+#> Compact Letter Display (CLD)
+#> Significance level (alpha):  0.05 
+#> Method:  matrix 
+#> 
+#> Groups sharing letters are not significantly different:
+#> 
+#>   group cld spaced_cld
+#>  GroupA   a         a_
+#>  GroupB   a         a_
+#>  GroupC  ab         ab
+#>  GroupD   b         _b
 ```
 
 ### Example 3: PMCMRplus (Non-parametric Tests)
@@ -178,10 +216,16 @@ comparisons <- data.frame(
 )
 
 make_cld(comparisons, alpha = 0.05)
-#>         group cld spaced_cld
-#> 1 Treatment_B   a         a_
-#> 2 Treatment_C   b         _b
-#> 3 Treatment_A   a         a_
+#> Compact Letter Display (CLD)
+#> Significance level (alpha):  0.05 
+#> Method:  data.frame 
+#> 
+#> Groups sharing letters are not significantly different:
+#> 
+#>        group cld spaced_cld
+#>  Treatment_B   a         a_
+#>  Treatment_C   b         _b
+#>  Treatment_A   a         a_
 ```
 
 ### Example 6: Formula Interface
@@ -195,10 +239,16 @@ my_data <- data.frame(
 )
 
 make_cld(p_adjusted ~ Comparison, data = my_data)
-#>   group cld spaced_cld
-#> 1     A   a         a_
-#> 2     B  ab         ab
-#> 3     C   b         _b
+#> Compact Letter Display (CLD)
+#> Significance level (alpha):  0.05 
+#> Method:  formula 
+#> 
+#> Groups sharing letters are not significantly different:
+#> 
+#>  group cld spaced_cld
+#>      A   a         a_
+#>      B  ab         ab
+#>      C   b         _b
 ```
 
 ## Understanding the Output
@@ -208,14 +258,19 @@ make_cld(p_adjusted ~ Comparison, data = my_data)
 The `make_cld()` function returns a `cld_object` (enhanced data frame)
 with:
 
-**Columns:** - **group** - Names of the groups being compared -
-**cld** - Compact letter display (letters only) - **spaced_cld** -
-Monospaced version for alignment (underscores replace spaces)
+**Columns:**
 
-**Attributes (metadata):** - **alpha** - Significance level used -
-**method** - Statistical test/method name - **n_comparisons** - Total
-number of pairwise comparisons - **n_significant** - Number of
-significant differences found
+- **group** - Names of the groups being compared
+- **cld** - Compact letter display (letters only)
+- **spaced_cld** - Monospaced version for alignment (underscores replace
+  spaces)
+
+**Attributes (metadata):**
+
+- **alpha** - Significance level used
+- **method** - Statistical test/method name
+- **n_comparisons** - Total number of pairwise comparisons
+- **n_significant** - Number of significant differences found
 
 ``` r
 result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
@@ -223,42 +278,34 @@ cld_result <- make_cld(result)
 
 # View result
 cld_result
-#>       group cld spaced_cld
-#> 1    casein   a        a__
-#> 2 horsebean   b        _b_
-#> 3   linseed  bc        _bc
-#> 4  meatmeal  ac        a_c
-#> 5   soybean   c        __c
-#> 6 sunflower   a        a__
+#> Compact Letter Display (CLD)
+#> Significance level (alpha):  0.05 
+#> Method:  Wilcoxon rank sum test with continuity correction 
+#> 
+#> Groups sharing letters are not significantly different:
+#> 
+#>      group cld spaced_cld
+#>     casein   a        a__
+#>  horsebean   b        _b_
+#>    linseed  bc        _bc
+#>   meatmeal  ac        a_c
+#>    soybean   c        __c
+#>  sunflower   a        a__
 
 # Access metadata
 attributes(cld_result)[c("alpha", "method", "n_comparisons", "n_significant")]
-#> $<NA>
-#> NULL
+#> $alpha
+#> [1] 0.05
 #> 
-#> $<NA>
-#> NULL
+#> $method
+#> [1] "Wilcoxon rank sum test with continuity correction"
 #> 
-#> $<NA>
-#> NULL
+#> $n_comparisons
+#> [1] 15
 #> 
-#> $<NA>
-#> NULL
+#> $n_significant
+#> [1] 8
 ```
-
-### Interpretation Rules
-
-❌ At least one **shared letter** → Groups are **NOT** significantly
-different  
-✅ **No shared letters** → Groups **ARE** significantly different
-
-**Example:** - ❌ Groups with “c” and “c” share letter “c” → difference
-is not significant - ❌ Groups with “a” and “ab” share letter “a” →
-difference is not significant - ❌ Groups “ab” and “bc” share letter “b”
-→ difference is not significant - ❌ Groups “abc” and “bcd” share
-letters “b”, and “c” → difference is not significant - ✅ Groups with
-“a” and “c” share no letters → significantly different - ✅ Groups with
-“abd” and “ce” share no letters → significantly different
 
 ## Working with the Output
 
@@ -268,9 +315,8 @@ letters “b”, and “c” → difference is not significant - ✅ Groups with
 # Extract as named character vector
 letters_only <- as.character(cld_result)
 letters_only
-#> [1] "c(\"casein\", \"horsebean\", \"linseed\", \"meatmeal\", \"soybean\", \"sunflower\")"
-#> [2] "c(\"a\", \"b\", \"bc\", \"ac\", \"c\", \"a\")"                                      
-#> [3] "c(\"a__\", \"_b_\", \"_bc\", \"a_c\", \"__c\", \"a__\")"
+#>    casein horsebean   linseed  meatmeal   soybean sunflower 
+#>       "a"       "b"      "bc"      "ac"       "c"       "a"
 
 # Convert back to plain data frame (removes metadata)
 plain_df <- as.data.frame(cld_result)
@@ -285,23 +331,35 @@ result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
 
 # Standard (alpha = 0.05)
 make_cld(result, alpha = 0.05)
-#>       group cld spaced_cld
-#> 1    casein   a        a__
-#> 2 horsebean   b        _b_
-#> 3   linseed  bc        _bc
-#> 4  meatmeal  ac        a_c
-#> 5   soybean   c        __c
-#> 6 sunflower   a        a__
+#> Compact Letter Display (CLD)
+#> Significance level (alpha):  0.05 
+#> Method:  Wilcoxon rank sum test with continuity correction 
+#> 
+#> Groups sharing letters are not significantly different:
+#> 
+#>      group cld spaced_cld
+#>     casein   a        a__
+#>  horsebean   b        _b_
+#>    linseed  bc        _bc
+#>   meatmeal  ac        a_c
+#>    soybean   c        __c
+#>  sunflower   a        a__
 
 # More stringent (alpha = 0.01)
 make_cld(result, alpha = 0.01)
-#>       group cld spaced_cld
-#> 1    casein  ab        ab_
-#> 2 horsebean   c        __c
-#> 3   linseed  ac        a_c
-#> 4  meatmeal  ab        ab_
-#> 5   soybean  ab        ab_
-#> 6 sunflower   b        _b_
+#> Compact Letter Display (CLD)
+#> Significance level (alpha):  0.01 
+#> Method:  Wilcoxon rank sum test with continuity correction 
+#> 
+#> Groups sharing letters are not significantly different:
+#> 
+#>      group cld spaced_cld
+#>     casein  ab        ab_
+#>  horsebean   c        __c
+#>    linseed  ac        a_c
+#>   meatmeal  ab        ab_
+#>    soybean  ab        ab_
+#>  sunflower   b        _b_
 ```
 
 ## Common Use Cases
