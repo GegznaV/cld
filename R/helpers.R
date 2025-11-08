@@ -52,7 +52,7 @@ is_square_matrix <- function(x) {
 #'
 #' Internal helper function to check if a matrix is symmetric (equal to its transpose).
 #' The matrix must be square and numeric. A symmetric matrix satisfies the condition
-#' that x[i,j] == x[j,i] for all i and j.
+#' that `x[i,j] == x[j,i]` for all i and j.
 #'
 #' @param x A numeric matrix to be checked for symmetry.
 #'
