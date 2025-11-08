@@ -5,6 +5,7 @@
 \alias{print.cld_object}
 \alias{as.data.frame.cld_object}
 \alias{as.character.cld_object}
+\alias{as_tibble.cld_object}
 \title{Print and coercion methods for cld_object}
 \usage{
 \method{print}{cld_object}(x, ...)
@@ -12,6 +13,8 @@
 \method{as.data.frame}{cld_object}(x, ...)
 
 \method{as.character}{cld_object}(x, ...)
+
+\method{as_tibble}{cld_object}(x, ...)
 }
 \arguments{
 \item{x}{A \code{cld_object} to print or convert}
@@ -23,6 +26,7 @@
 \item \code{print.cld_object()}: Invisibly returns the input object
 \item \code{as.data.frame.cld_object()}: Returns a plain data frame
 \item \code{as.character.cld_object()}: Returns a named character vector of letters
+\item \code{as_tibble.cld_object()}: Returns a tibble
 }
 }
 \description{
@@ -40,4 +44,9 @@ as.data.frame(result)
 
 # Convert to named character vector
 as.character(result)
+
+# Convert to tibble
+if (requireNamespace("tibble", quietly = TRUE)) {
+  tibble::as_tibble(result)
+}
 }
