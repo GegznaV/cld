@@ -102,15 +102,15 @@ different
 
 The `make_cld()` function works seamlessly with:
 
-| Input Type | Example Packages | Function Examples |
-|----|----|----|
-| `pairwise.htest` | base R | `pairwise.t.test()`, `pairwise.wilcox.test()` |
-| `PMCMR` / `PMCMRplus` | PMCMR, PMCMRplus | `kwAllPairsConoverTest()`, `dunnTest()` |
-| `posthoc_anova` | rstatix | `games_howell_test()`, `tukey_hsd()` |
-| `PostHocTest` | DescTools | `ConoverTest()`, `DunnettTest()` |
-| `matrix` | Custom | Symmetric p-value matrices |
-| `data.frame` | Custom | Custom comparison data frames |
-| `formula` | Custom | Formula interface for data frames |
+| Input Type            | Example Packages | Function Examples                             |
+|-----------------------|------------------|-----------------------------------------------|
+| `pairwise.htest`      | base R           | `pairwise.t.test()`, `pairwise.wilcox.test()` |
+| `PMCMR` / `PMCMRplus` | PMCMR, PMCMRplus | `kwAllPairsConoverTest()`, `dunnTest()`       |
+| `posthoc_anova`       | rstatix          | `games_howell_test()`, `tukey_hsd()`          |
+| `PostHocTest`         | DescTools        | `ConoverTest()`, `DunnettTest()`              |
+| `matrix`              | Custom           | Symmetric p-value matrices                    |
+| `data.frame`          | Custom           | Custom comparison data frames                 |
+| `formula`             | Custom           | Formula interface for data frames             |
 
 ## Examples
 
@@ -442,14 +442,14 @@ ggplot(plot_data, aes(x = treatment, y = mean)) +
 
 ## Related Packages
 
-| Package | Purpose | Relationship to cld |
-|----|----|----|
-| [multcompView](https://cran.r-project.org/package=multcompView) | CLD algorithm | Used internally by **cld** |
-| [rcompanion](https://cran.r-project.org/package=rcompanion) | Statistical functions | Alternative CLD implementation |
-| [PMCMRplus](https://cran.r-project.org/package=PMCMRplus) | Post-hoc tests | Compatible input for **cld** |
-| [rstatix](https://cran.r-project.org/package=rstatix) | Tidy statistics | Compatible input for **cld** |
-| [DescTools](https://cran.r-project.org/package=DescTools) | Statistical tools | Compatible input for **cld** |
-| [emmeans](https://cran.r-project.org/package=emmeans) | Marginal means | Planned future support |
+| Package                                                         | Purpose               | Relationship to cld            |
+|-----------------------------------------------------------------|-----------------------|--------------------------------|
+| [multcompView](https://cran.r-project.org/package=multcompView) | CLD algorithm         | Used internally by **cld**     |
+| [rcompanion](https://cran.r-project.org/package=rcompanion)     | Statistical functions | Alternative CLD implementation |
+| [PMCMRplus](https://cran.r-project.org/package=PMCMRplus)       | Post-hoc tests        | Compatible input for **cld**   |
+| [rstatix](https://cran.r-project.org/package=rstatix)           | Tidy statistics       | Compatible input for **cld**   |
+| [DescTools](https://cran.r-project.org/package=DescTools)       | Statistical tools     | Compatible input for **cld**   |
+| [emmeans](https://cran.r-project.org/package=emmeans)           | Marginal means        | Planned future support         |
 
 ## Getting Help
 
