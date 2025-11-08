@@ -24,16 +24,16 @@ agricultural, biological, and statistical publications.
 
 ## Why Use cld?
 
-✅ **Universal compatibility** - Works with outputs from base R,
-PMCMRplus, rstatix, DescTools, and custom data frames  
-✅ **Consistent interface** - One function (`make_cld()`) handles all
-input types  
-✅ **Publication-ready** - Generate clean, professional statistical
-grouping labels  
-✅ **Well-tested** - 135+ tests ensuring reliability across all
-methods  
-✅ **Informative output** - Stores metadata (alpha, method, comparison
-counts) for transparency
+Key Features:
+
+- 🔄 **Universal compatibility** - Works with base R, PMCMRplus,
+  rstatix, DescTools, and custom formats
+- 🎯 **One function** - `make_cld()` handles all input types
+  automatically
+- 📊 **Publication-ready** - Clean, professional statistical grouping
+  labels
+- 📝 **Informative** - Stores metadata (alpha, method, comparison
+  counts)
 
 ## Installation
 
@@ -73,398 +73,56 @@ make_cld(test_result)
 #>  sunflower   a        a__
 ```
 
-**Interpretation**: Groups with the same letter (e.g., casein and
-sunflower both have “a”) are not significantly different. Groups without
-shared letters (e.g., horsebean “b” and soybean “c”) are significantly
-different.
+**Interpretation**:
 
-### Interpretation Rules
-
-❌ At least one **shared letter** → Groups are **NOT** significantly
-different  
-✅ **No shared letters** → Groups **ARE** significantly different
-
-**Example:**
-
-- ❌ Groups with “c” and “c” share letter “c” → difference is not
-  significant
-- ❌ Groups with “a” and “ab” share letter “a” → difference is not
-  significant
-- ❌ Groups “ab” and “bc” share letter “b” → difference is not
-  significant
-- ❌ Groups “abc” and “bcd” share letters “b”, and “c” → difference is
-  not significant
-- ✅ Groups with “a” and “c” share no letters → significantly different
-- ✅ Groups with “abd” and “ce” share no letters → significantly
-  different
+- Groups sharing at least one letter are **not** significantly
+  different;
+- Groups with no shared letters **are** significantly different.
 
 ## Supported Input Formats
 
 The `make_cld()` function works seamlessly with:
 
-| Input Type            | Example Packages | Function Examples                             |
-|-----------------------|------------------|-----------------------------------------------|
-| `pairwise.htest`      | base R           | `pairwise.t.test()`, `pairwise.wilcox.test()` |
-| `PMCMR` / `PMCMRplus` | PMCMR, PMCMRplus | `kwAllPairsConoverTest()`, `dunnTest()`       |
-| `posthoc_anova`       | rstatix          | `games_howell_test()`, `tukey_hsd()`          |
-| `PostHocTest`         | DescTools        | `ConoverTest()`, `DunnettTest()`              |
-| `matrix`              | Custom           | Symmetric p-value matrices                    |
-| `data.frame`          | Custom           | Custom comparison data frames                 |
-| `formula`             | Custom           | Formula interface for data frames             |
+| Input Type | Example Packages | Function Examples |
+|----|----|----|
+| `pairwise.htest` | base R | `pairwise.t.test()`, `pairwise.wilcox.test()` |
+| `PMCMR` / `PMCMRplus` | PMCMR, PMCMRplus | `kwAllPairsConoverTest()`, `dunnTest()` |
+| `posthoc_anova` | rstatix | `games_howell_test()`, `tukey_hsd()` |
+| `PostHocTest` | DescTools | `ConoverTest()`, `DunnettTest()` |
+| `matrix` | Custom | Symmetric p-value matrices |
+| `data.frame` | Custom | Custom comparison data frames |
+| `formula` | Custom | Formula interface for data frames |
 
-## Examples
+## Learn More
 
-### Example 1: Base R Pairwise Tests
+📚 **Comprehensive vignettes** (also available on [package
+website](https://gegznav.github.io/cld/)):
 
-``` r
-library(cld)
-
-# Pairwise Wilcoxon rank sum test
-result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
-make_cld(result)
-#> Compact Letter Display (CLD)
-#> Significance level (alpha):  0.05 
-#> Method:  Wilcoxon rank sum test with continuity correction 
-#> 
-#> Groups sharing letters are not significantly different:
-#> 
-#>      group cld spaced_cld
-#>     casein   a        a__
-#>  horsebean   b        _b_
-#>    linseed  bc        _bc
-#>   meatmeal  ac        a_c
-#>    soybean   c        __c
-#>  sunflower   a        a__
-
-# Pairwise t-test
-result2 <- pairwise.t.test(chickwts$weight, chickwts$feed)
-make_cld(result2, alpha = 0.01)  # More stringent threshold
-#> Compact Letter Display (CLD)
-#> Significance level (alpha):  0.01 
-#> Method:  t tests with pooled SD 
-#> 
-#> Groups sharing letters are not significantly different:
-#> 
-#>      group cld spaced_cld
-#>     casein   a        a__
-#>  horsebean   b        _b_
-#>    linseed  bc        _bc
-#>   meatmeal  ac        a_c
-#>    soybean   c        __c
-#>  sunflower   a        a__
-```
-
-### Example 2: P-value Matrices
-
-``` r
-# Create a symmetric matrix of p-values
-m <- matrix(c(
-  1.00, 0.22, 0.05, 0.00,
-  0.22, 1.00, 0.17, 0.01,
-  0.05, 0.17, 1.00, 0.22,
-  0.00, 0.01, 0.22, 1.00
-), nrow = 4)
-rownames(m) <- colnames(m) <- c("GroupA", "GroupB", "GroupC", "GroupD")
-
-# Generate CLD
-make_cld(m, alpha = 0.05)
-#> Compact Letter Display (CLD)
-#> Significance level (alpha):  0.05 
-#> Method:  matrix 
-#> 
-#> Groups sharing letters are not significantly different:
-#> 
-#>   group cld spaced_cld
-#>  GroupA   a         a_
-#>  GroupB   a         a_
-#>  GroupC  ab         ab
-#>  GroupD   b         _b
-```
-
-### Example 3: PMCMRplus (Non-parametric Tests)
-
-``` r
-library(PMCMRplus)
-
-# Kruskal-Wallis post-hoc test
-kw_result <- kwAllPairsConoverTest(count ~ spray, data = InsectSprays)
-make_cld(kw_result)
-```
-
-### Example 4: rstatix (Tidyverse-friendly)
-
-``` r
-library(rstatix)
-
-# Games-Howell test (for unequal variances)
-gh_result <- games_howell_test(PlantGrowth, weight ~ group)
-make_cld(gh_result)
-
-# Tukey HSD test
-tukey_result <- tukey_hsd(PlantGrowth, weight ~ group)
-make_cld(tukey_result)
-```
-
-### Example 5: Data Frames (Custom Results)
-
-``` r
-# Custom comparison results
-comparisons <- data.frame(
-  group1 = c("Treatment_A", "Treatment_A", "Treatment_B"),
-  group2 = c("Treatment_B", "Treatment_C", "Treatment_C"),
-  p.adj  = c(0.9, 0.02, 0.03)
-)
-
-make_cld(comparisons, alpha = 0.05)
-#> Compact Letter Display (CLD)
-#> Significance level (alpha):  0.05 
-#> Method:  data.frame 
-#> 
-#> Groups sharing letters are not significantly different:
-#> 
-#>        group cld spaced_cld
-#>  Treatment_B   a         a_
-#>  Treatment_C   b         _b
-#>  Treatment_A   a         a_
-```
-
-### Example 6: Formula Interface
-
-``` r
-# Using formula for data frames with custom column names
-my_data <- data.frame(
-  Comparison = c("A-B", "A-C", "B-C"),
-  p_value = c(0.12, 0.001, 0.045),
-  p_adjusted = c(0.18, 0.003, 0.068)
-)
-
-make_cld(p_adjusted ~ Comparison, data = my_data)
-#> Compact Letter Display (CLD)
-#> Significance level (alpha):  0.05 
-#> Method:  formula 
-#> 
-#> Groups sharing letters are not significantly different:
-#> 
-#>  group cld spaced_cld
-#>      A   a         a_
-#>      B  ab         ab
-#>      C   b         _b
-```
-
-## Understanding the Output
-
-### Structure
-
-The `make_cld()` function returns a `cld_object` (enhanced data frame)
-with:
-
-**Columns:**
-
-- **group** - Names of the groups being compared
-- **cld** - Compact letter display (letters only)
-- **spaced_cld** - Monospaced version for alignment (underscores replace
-  spaces)
-
-**Attributes (metadata):**
-
-- **alpha** - Significance level used
-- **method** - Statistical test/method name
-- **n_comparisons** - Total number of pairwise comparisons
-- **n_significant** - Number of significant differences found
-
-``` r
-result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
-cld_result <- make_cld(result)
-
-# View result
-cld_result
-#> Compact Letter Display (CLD)
-#> Significance level (alpha):  0.05 
-#> Method:  Wilcoxon rank sum test with continuity correction 
-#> 
-#> Groups sharing letters are not significantly different:
-#> 
-#>      group cld spaced_cld
-#>     casein   a        a__
-#>  horsebean   b        _b_
-#>    linseed  bc        _bc
-#>   meatmeal  ac        a_c
-#>    soybean   c        __c
-#>  sunflower   a        a__
-
-# Access metadata
-attributes(cld_result)[c("alpha", "method", "n_comparisons", "n_significant")]
-#> $alpha
-#> [1] 0.05
-#> 
-#> $method
-#> [1] "Wilcoxon rank sum test with continuity correction"
-#> 
-#> $n_comparisons
-#> [1] 15
-#> 
-#> $n_significant
-#> [1] 8
-```
-
-## Working with the Output
-
-### Convert to Other Formats
-
-``` r
-# Extract as named character vector
-letters_only <- as.character(cld_result)
-letters_only
-#>    casein horsebean   linseed  meatmeal   soybean sunflower 
-#>       "a"       "b"      "bc"      "ac"       "c"       "a"
-
-# Convert back to plain data frame (removes metadata)
-plain_df <- as.data.frame(cld_result)
-class(plain_df)
-#> [1] "data.frame"
-```
-
-### Adjust Significance Level
-
-``` r
-result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
-
-# Standard (alpha = 0.05)
-make_cld(result, alpha = 0.05)
-#> Compact Letter Display (CLD)
-#> Significance level (alpha):  0.05 
-#> Method:  Wilcoxon rank sum test with continuity correction 
-#> 
-#> Groups sharing letters are not significantly different:
-#> 
-#>      group cld spaced_cld
-#>     casein   a        a__
-#>  horsebean   b        _b_
-#>    linseed  bc        _bc
-#>   meatmeal  ac        a_c
-#>    soybean   c        __c
-#>  sunflower   a        a__
-
-# More stringent (alpha = 0.01)
-make_cld(result, alpha = 0.01)
-#> Compact Letter Display (CLD)
-#> Significance level (alpha):  0.01 
-#> Method:  Wilcoxon rank sum test with continuity correction 
-#> 
-#> Groups sharing letters are not significantly different:
-#> 
-#>      group cld spaced_cld
-#>     casein  ab        ab_
-#>  horsebean   c        __c
-#>    linseed  ac        a_c
-#>   meatmeal  ab        ab_
-#>    soybean  ab        ab_
-#>  sunflower   b        _b_
-```
-
-## Common Use Cases
-
-### 🌾 Agricultural Studies
-
-Comparing crop yields across different treatments or varieties
-
-``` r
-# Example: Fertilizer treatments
-fertilizer_test <- pairwise.t.test(yield, treatment, data = crop_data)
-make_cld(fertilizer_test)
-```
-
-### 🧪 Biological Research
-
-Post-hoc comparisons after ANOVA in experimental biology
-
-``` r
-# Example: Drug efficacy study
-anova_result <- aov(response ~ drug_type, data = trial_data)
-tukey_result <- TukeyHSD(anova_result)
-# Convert and create CLD...
-```
-
-### 📊 Quality Control
-
-Comparing multiple production methods or batches
-
-``` r
-# Example: Manufacturing process comparison
-kruskal_result <- kruskal.test(strength ~ method, data = qc_data)
-# Follow up with post-hoc test and CLD
-```
-
-### 📈 Survey Analysis
-
-Displaying pairwise differences between groups in survey data
-
-``` r
-# Example: Satisfaction scores across departments
-make_cld(comparison_results, alpha = 0.01)
-```
-
-## Advanced Features
-
-### Custom Parameters
-
-``` r
-# Reverse letter ordering
-make_cld(result, reversed = TRUE)
-
-# Swap comparison name order
-make_cld(result, swap_compared_names = TRUE)
-
-# Print comparison names during processing
-make_cld(result, print.comp = TRUE)
-
-# Control string cleaning
-make_cld(df, remove.space = TRUE, swap.colon = TRUE, remove.equal = TRUE)
-```
-
-### Integration with Plotting
-
-``` r
-library(ggplot2)
-
-# Get CLD results
-cld_result <- make_cld(test_result)
-
-# Merge with summary statistics
-plot_data <- merge(summary_stats, cld_result, by.x = "treatment", by.y = "group")
-
-# Create plot with letter annotations
-ggplot(plot_data, aes(x = treatment, y = mean)) +
-  geom_col() +
-  geom_text(aes(label = cld, y = mean + se), vjust = -0.5) +
-  theme_minimal()
-```
+- `vignette("cld")` - Complete introduction with examples
+- `vignette("cld-input-formats")` - Detailed examples for all input
+  types
+- `vignette("cld-interpretation-guide")` - How to correctly interpret
+  CLDs
+- `vignette("cld-advanced-features")` - Custom parameters and plotting
 
 ## Related Packages
 
-| Package                                                         | Purpose               | Relationship to cld            |
-|-----------------------------------------------------------------|-----------------------|--------------------------------|
-| [multcompView](https://cran.r-project.org/package=multcompView) | CLD algorithm         | Used internally by **cld**     |
-| [rcompanion](https://cran.r-project.org/package=rcompanion)     | Statistical functions | Alternative CLD implementation |
-| [PMCMRplus](https://cran.r-project.org/package=PMCMRplus)       | Post-hoc tests        | Compatible input for **cld**   |
-| [rstatix](https://cran.r-project.org/package=rstatix)           | Tidy statistics       | Compatible input for **cld**   |
-| [DescTools](https://cran.r-project.org/package=DescTools)       | Statistical tools     | Compatible input for **cld**   |
-| [emmeans](https://cran.r-project.org/package=emmeans)           | Marginal means        | Planned future support         |
+| Package | Purpose | Relationship to cld |
+|----|----|----|
+| [multcompView](https://cran.r-project.org/package=multcompView) | CLD algorithm | Used internally by **cld** |
+| [rcompanion](https://cran.r-project.org/package=rcompanion) | Statistical functions | Alternative CLD implementation |
+| [PMCMRplus](https://cran.r-project.org/package=PMCMRplus) | Post-hoc tests | Compatible input for **cld** |
+| [rstatix](https://cran.r-project.org/package=rstatix) | Tidy statistics | Compatible input for **cld** |
+| [DescTools](https://cran.r-project.org/package=DescTools) | Statistical tools | Compatible input for **cld** |
+| [emmeans](https://cran.r-project.org/package=emmeans) | Marginal means | Planned future support |
 
 ## Getting Help
 
-### Documentation
-
 - 📖 Function reference: `?cld::make_cld`
 - 📚 Package website: <https://gegznav.github.io/cld/>
-- 💡 Examples: See function documentation with `example(cld::make_cld)`
-
-### Issues & Contributions
-
 - 🐛 Report bugs: <https://github.com/GegznaV/cld/issues>
-- 💬 Ask questions: Open a [GitHub
-  Discussion](https://github.com/GegznaV/cld/discussions)
-- 🔧 Contribute: Pull requests welcome!
+- 💬 Ask questions: [GitHub
+  Discussions](https://github.com/GegznaV/cld/discussions)
 
 ## Citation
 
