@@ -1,0 +1,42 @@
+Package: cld
+Title: Create Compact Letter Display (CLD) for Statistical Comparisons
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Vilmantas",
+           family = "Gegzna",
+           role = c("aut", "cre"),
+           email = "GegznaV@gmail.com",
+           comment = c(ORCID = "0000-0002-9500-5167"))
+Description: Creates compact letter displays (CLDs) for visualizing results of 
+    pairwise statistical comparisons from post-hoc tests. Groups sharing the 
+    same letter are not significantly different from each other. Supports 
+    multiple input formats including 'pairwise.htest' objects from base R 
+    (e.g., pairwise.t.test(), pairwise.wilcox.test()), 'PMCMR' and 'PMCMRplus' 
+    objects, 'posthoc_anova' objects from 'rstatix' (e.g., games_howell_test(), 
+    tukey_hsd()), 'PostHocTest' and 'DunnTest' objects from 'DescTools', 
+    symmetric matrices of p-values, and data frames with comparison results. 
+    Provides a consistent, formula-based interface for generating statistical 
+    grouping letters across different testing frameworks, commonly used in 
+    agricultural, biological, and statistical reporting.
+License: GPL (>= 3)
+URL: https://github.com/GegznaV/cld
+BugReports: https://github.com/GegznaV/cld/issues
+Imports: 
+    checkmate,
+    multcompView,
+    rlang
+Suggests:
+    DescTools,
+    PMCMR,
+    PMCMRplus,
+    rcompanion,
+    rstatix,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 2.10)

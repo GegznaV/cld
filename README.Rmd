@@ -1,0 +1,151 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# cld: Compact Letter Display for Statistical Comparisons
+
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/cld)](https://CRAN.R-project.org/package=cld)
+[![R-CMD-check](https://github.com/GegznaV/cld/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GegznaV/cld/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+The **cld** package creates compact letter displays (CLDs) for visualizing results of pairwise statistical comparisons. Groups that share the same letter are not significantly different from each other.
+
+## Features
+
+- **Multiple input formats**: Works with `pairwise.htest` (base R), `PMCMR`/`PMCMRplus`, `rstatix`, matrices, and data frames
+- **Flexible**: Supports various post-hoc tests (Tukey HSD, Games-Howell, Kruskal-Wallis, etc.)
+- **Easy to use**: Consistent interface across different testing frameworks
+- **Well-documented**: Comprehensive documentation with examples
+
+## Installation
+
+You can install the development version of cld from [GitHub](https://github.com/) with:
+
+```r
+# install.packages("devtools")
+devtools::install_github("GegznaV/cld")
+```
+
+## Basic Usage
+
+### Example 1: Using base R pairwise tests
+
+```{r example-basic}
+library(cld)
+
+# Perform pairwise Wilcoxon test
+result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
+
+# Create compact letter display
+make_cld(result)
+```
+
+### Example 2: Using a matrix of p-values
+
+```{r example-matrix}
+# Create a symmetric matrix of p-values
+m <- matrix(c(
+  1.00, 0.22, 0.05, 0.00,
+  0.22, 1.00, 0.17, 0.01,
+  0.05, 0.17, 1.00, 0.22,
+  0.00, 0.01, 0.22, 1.00
+), nrow = 4)
+rownames(m) <- colnames(m) <- c("GroupA", "GroupB", "GroupC", "GroupD")
+
+# Generate CLD
+make_cld(m, alpha = 0.05)
+```
+
+### Example 3: Using PMCMRplus
+
+```{r example-pmcmr, eval=FALSE}
+library(PMCMRplus)
+
+# Perform Kruskal-Wallis post-hoc test
+kw_result <- kwAllPairsConoverTest(count ~ spray, data = InsectSprays)
+
+# Create compact letter display
+make_cld(kw_result)
+```
+
+### Example 4: Using data frames
+
+```{r example-dataframe}
+# Create a data frame with comparison results
+comparisons <- data.frame(
+  group1 = c("A", "A", "B"),
+  group2 = c("B", "C", "C"),
+  p.adj  = c(0.9, 0.02, 0.03)
+)
+
+# Generate CLD
+make_cld(comparisons, alpha = 0.05)
+```
+
+## Understanding the Output
+
+The `make_cld()` function returns a data frame with three columns:
+
+- **group**: Names of the groups being compared
+- **cld**: Compact letter display for each group
+- **spaced_cld**: Monospaced version (spaces replaced with underscores)
+
+Groups sharing the same letter are **not significantly different** from each other at the specified alpha level.
+
+## Adjusting Significance Level
+
+You can adjust the significance level (alpha) for all methods:
+
+```{r example-alpha}
+result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
+
+# More stringent significance level
+make_cld(result, alpha = 0.01)
+```
+
+## Use Cases
+
+The **cld** package is useful for:
+
+- **ANOVA post-hoc comparisons**: Visualizing which groups differ after finding significant ANOVA results
+- **Non-parametric tests**: Displaying results from Kruskal-Wallis or other rank-based tests
+- **Multiple comparisons**: Presenting complex pairwise comparison results in a compact format
+- **Publication-ready output**: Creating clear statistical grouping labels for tables and figures
+
+## Related Packages
+
+- **multcompView**: Underlying engine for generating compact letter displays
+- **rcompanion**: Alternative implementation with additional features
+- **PMCMRplus**: Comprehensive post-hoc tests for pairwise multiple comparisons
+- **rstatix**: Pipe-friendly framework for statistical tests
+
+## Getting Help
+
+If you encounter issues or have questions:
+
+- Check the [documentation](https://github.com/GegznaV/cld)
+- Report bugs at <https://github.com/GegznaV/cld/issues>
+
+## Citation
+
+To cite the **cld** package in publications:
+
+```{r citation, eval=FALSE}
+citation("cld")
+```
+
+## License
+
+GPL-3
