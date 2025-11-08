@@ -125,5 +125,10 @@ make_cld_df <- function(
     stringsAsFactors = FALSE
   )
 
+  # Store metadata as attributes
+  attr(res, "alpha") <- threshold
+  attr(res, "n_comparisons") <- length(comparison)
+  attr(res, "n_significant") <- sum(significant_difference, na.rm = TRUE)
+
   structure(res, class = c("cld_object", class(res)))
 }
