@@ -121,14 +121,14 @@ test_that("metadata attributes work with PMCMR objects", {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 test_that("metadata attributes work with rstatix objects", {
   skip_if_not_installed("rstatix")
-  
+
   obj <- rstatix::games_howell_test(PlantGrowth, weight ~ group)
   result <- make_cld(obj, alpha = 0.05)
-  
+
   expect_equal(attr(result, "alpha"), 0.05)
   expect_equal(attr(result, "n_comparisons"), 3)
   expect_true(!is.null(attr(result, "n_significant")))
-})# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+}) # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 test_that("metadata attributes work with DescTools objects", {
   skip_if_not_installed("DescTools")
 

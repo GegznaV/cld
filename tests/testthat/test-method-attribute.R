@@ -29,11 +29,11 @@ test_that("make_cld.pairwise.htest stores correct method for t-test", {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 test_that("make_cld with rstatix games_howell_test stores 'method' attribute", {
   skip_if_not_installed("rstatix")
-  
+
   obj <- rstatix::games_howell_test(PlantGrowth, weight ~ group)
-  
+
   result <- make_cld(obj)
-  
+
   # rstatix objects are handled by data.frame method
   expect_true(!is.null(attr(result, "method")))
   expect_equal(attr(result, "method"), "data.frame")
@@ -42,15 +42,15 @@ test_that("make_cld with rstatix games_howell_test stores 'method' attribute", {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 test_that("make_cld with rstatix tukey_hsd stores 'method' attribute", {
   skip_if_not_installed("rstatix")
-  
+
   obj <- rstatix::tukey_hsd(PlantGrowth, weight ~ group)
-  
+
   result <- make_cld(obj)
-  
+
   # rstatix objects are handled by data.frame method
   expect_true(!is.null(attr(result, "method")))
   expect_equal(attr(result, "method"), "data.frame")
-})# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+}) # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 test_that("make_cld.PMCMR stores 'method' attribute", {
   skip_if_not_installed("PMCMRplus")
 
