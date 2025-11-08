@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Create Compact Letter Display (CLD) for Statistical Comparisons">
-<meta property="og:description" content="Creates compact letter displays (CLDs) for visualizing results of pairwise statistical comparisons from post-hoc tests. Groups sharing the same letter are not significantly different from each other. Supports multiple input formats including pairwise.htest objects from base R (e.g., pairwise.t.test(), pairwise.wilcox.test()), PMCMR and PMCMRplus objects, posthoc_anova objects from rstatix (e.g., games_howell_test(), tukey_hsd()), PostHocTest and DunnTest objects from DescTools, symmetric matrices of p-values, and data frames with comparison results. Provides a consistent, formula-based interface for generating statistical grouping letters across different testing frameworks, commonly used in agricultural, biological, and statistical reporting.">
+<meta property="og:description" content="Creates compact letter displays (CLDs) for pairwise comparisons from statistical post-hoc tests. Groups sharing the same letter are not significantly different from each other. Supports multiple input formats including results from stats pairwise tests, DescTools, PMCMRplus, rstatix, symmetric matrices of p-values, and data frames. Provides a consistent interface for visualizing statistical groupings across different testing frameworks.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -39,6 +39,9 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li>
+  <a href="articles/cld.html">Get started</a>
+</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -74,11 +77,13 @@
 <div class="section level2">
 <h2 id="why-use-cld">Why Use cld?<a class="anchor" aria-label="anchor" href="#why-use-cld"></a>
 </h2>
-<p>✅ <strong>Universal compatibility</strong> - Works with outputs from base R, PMCMRplus, rstatix, DescTools, and custom data frames<br>
-✅ <strong>Consistent interface</strong> - One function (<code><a href="reference/make_cld.html">make_cld()</a></code>) handles all input types<br>
-✅ <strong>Publication-ready</strong> - Generate clean, professional statistical grouping labels<br>
-✅ <strong>Well-tested</strong> - 135+ tests ensuring reliability across all methods<br>
-✅ <strong>Informative output</strong> - Stores metadata (alpha, method, comparison counts) for transparency</p>
+<p>Key Features:</p>
+<ul>
+<li>🔄 <strong>Universal compatibility</strong> - Works with base R, PMCMRplus, rstatix, DescTools, and custom formats</li>
+<li>🎯 <strong>One function</strong> - <code><a href="reference/make_cld.html">make_cld()</a></code> handles all input types automatically</li>
+<li>📊 <strong>Publication-ready</strong> - Clean, professional statistical grouping labels</li>
+<li>📝 <strong>Informative</strong> - Stores metadata (alpha, method, comparison counts)</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -110,7 +115,11 @@
 <span><span class="co">#&gt;   meatmeal  ac        a_c</span></span>
 <span><span class="co">#&gt;    soybean   c        __c</span></span>
 <span><span class="co">#&gt;  sunflower   a        a__</span></span></code></pre></div>
-<p><strong>Interpretation</strong>: Groups with the same letter (e.g., casein and sunflower both have “a”) are not significantly different. Groups without shared letters (e.g., horsebean “b” and soybean “c”) are significantly different.</p>
+<p><strong>Interpretation</strong>:</p>
+<ul>
+<li>Groups sharing at least one letter are <strong>not</strong> significantly different (e.g., casein and sunflower both have “a”);</li>
+<li>Groups with no shared letters <strong>are</strong> significantly different (e.g., horsebean “b” and soybean “c”).</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="supported-input-formats">Supported Input Formats<a class="anchor" aria-label="anchor" href="#supported-input-formats"></a>
@@ -141,14 +150,14 @@
 </td>
 <td>PMCMR, PMCMRplus</td>
 <td>
-<code><a href="https://rdrr.io/pkg/PMCMRplus/man/kwAllPairsConoverTest.html" class="external-link">kwAllPairsConoverTest()</a></code>, <code>dunnTest()</code>
+<code>kwAllPairsConoverTest()</code>, <code>dunnTest()</code>
 </td>
 </tr>
 <tr class="odd">
 <td><code>posthoc_anova</code></td>
 <td>rstatix</td>
 <td>
-<code><a href="https://rpkgs.datanovia.com/rstatix/reference/games_howell_test.html" class="external-link">games_howell_test()</a></code>, <code><a href="https://rpkgs.datanovia.com/rstatix/reference/tukey_hsd.html" class="external-link">tukey_hsd()</a></code>
+<code>games_howell_test()</code>, <code>tukey_hsd()</code>
 </td>
 </tr>
 <tr class="even">
@@ -177,284 +186,13 @@
 </table>
 </div>
 <div class="section level2">
-<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+<h2 id="learn-more">Learn More<a class="anchor" aria-label="anchor" href="#learn-more"></a>
 </h2>
-<div class="section level3">
-<h3 id="example-1-base-r-pairwise-tests">Example 1: Base R Pairwise Tests<a class="anchor" aria-label="anchor" href="#example-1-base-r-pairwise-tests"></a>
-</h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/GegznaV/cld" class="external-link">cld</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Pairwise Wilcoxon rank sum test</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/pairwise.wilcox.test.html" class="external-link">pairwise.wilcox.test</a></span><span class="op">(</span><span class="va">chickwts</span><span class="op">$</span><span class="va">weight</span>, <span class="va">chickwts</span><span class="op">$</span><span class="va">feed</span>, exact <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1    casein   a        a__</span></span>
-<span><span class="co">#&gt; 2 horsebean   b        _b_</span></span>
-<span><span class="co">#&gt; 3   linseed  bc        _bc</span></span>
-<span><span class="co">#&gt; 4  meatmeal  ac        a_c</span></span>
-<span><span class="co">#&gt; 5   soybean   c        __c</span></span>
-<span><span class="co">#&gt; 6 sunflower   a        a__</span></span>
-<span></span>
-<span><span class="co"># Pairwise t-test</span></span>
-<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/pairwise.t.test.html" class="external-link">pairwise.t.test</a></span><span class="op">(</span><span class="va">chickwts</span><span class="op">$</span><span class="va">weight</span>, <span class="va">chickwts</span><span class="op">$</span><span class="va">feed</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">result2</span>, alpha <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>  <span class="co"># More stringent threshold</span></span>
-<span><span class="co">#&gt;       group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1    casein   a        a__</span></span>
-<span><span class="co">#&gt; 2 horsebean   b        _b_</span></span>
-<span><span class="co">#&gt; 3   linseed  bc        _bc</span></span>
-<span><span class="co">#&gt; 4  meatmeal  ac        a_c</span></span>
-<span><span class="co">#&gt; 5   soybean   c        __c</span></span>
-<span><span class="co">#&gt; 6 sunflower   a        a__</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="example-2-p-value-matrices">Example 2: P-value Matrices<a class="anchor" aria-label="anchor" href="#example-2-p-value-matrices"></a>
-</h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Create a symmetric matrix of p-values</span></span>
-<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="fl">1.00</span>, <span class="fl">0.22</span>, <span class="fl">0.05</span>, <span class="fl">0.00</span>,</span>
-<span>  <span class="fl">0.22</span>, <span class="fl">1.00</span>, <span class="fl">0.17</span>, <span class="fl">0.01</span>,</span>
-<span>  <span class="fl">0.05</span>, <span class="fl">0.17</span>, <span class="fl">1.00</span>, <span class="fl">0.22</span>,</span>
-<span>  <span class="fl">0.00</span>, <span class="fl">0.01</span>, <span class="fl">0.22</span>, <span class="fl">1.00</span></span>
-<span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GroupA"</span>, <span class="st">"GroupB"</span>, <span class="st">"GroupC"</span>, <span class="st">"GroupD"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Generate CLD</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">m</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1 GroupA   a         a_</span></span>
-<span><span class="co">#&gt; 2 GroupB   a         a_</span></span>
-<span><span class="co">#&gt; 3 GroupC  ab         ab</span></span>
-<span><span class="co">#&gt; 4 GroupD   b         _b</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="example-3-pmcmrplus-non-parametric-tests">Example 3: PMCMRplus (Non-parametric Tests)<a class="anchor" aria-label="anchor" href="#example-3-pmcmrplus-non-parametric-tests"></a>
-</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">PMCMRplus</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Kruskal-Wallis post-hoc test</span></span>
-<span><span class="va">kw_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/PMCMRplus/man/kwAllPairsConoverTest.html" class="external-link">kwAllPairsConoverTest</a></span><span class="op">(</span><span class="va">count</span> <span class="op">~</span> <span class="va">spray</span>, data <span class="op">=</span> <span class="va">InsectSprays</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">kw_result</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="example-4-rstatix-tidyverse-friendly">Example 4: rstatix (Tidyverse-friendly)<a class="anchor" aria-label="anchor" href="#example-4-rstatix-tidyverse-friendly"></a>
-</h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/rstatix/" class="external-link">rstatix</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Games-Howell test (for unequal variances)</span></span>
-<span><span class="va">gh_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rpkgs.datanovia.com/rstatix/reference/games_howell_test.html" class="external-link">games_howell_test</a></span><span class="op">(</span><span class="va">PlantGrowth</span>, <span class="va">weight</span> <span class="op">~</span> <span class="va">group</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">gh_result</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Tukey HSD test</span></span>
-<span><span class="va">tukey_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rpkgs.datanovia.com/rstatix/reference/tukey_hsd.html" class="external-link">tukey_hsd</a></span><span class="op">(</span><span class="va">PlantGrowth</span>, <span class="va">weight</span> <span class="op">~</span> <span class="va">group</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">tukey_result</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="example-5-data-frames-custom-results">Example 5: Data Frames (Custom Results)<a class="anchor" aria-label="anchor" href="#example-5-data-frames-custom-results"></a>
-</h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Custom comparison results</span></span>
-<span><span class="va">comparisons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  group1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment_A"</span>, <span class="st">"Treatment_A"</span>, <span class="st">"Treatment_B"</span><span class="op">)</span>,</span>
-<span>  group2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment_B"</span>, <span class="st">"Treatment_C"</span>, <span class="st">"Treatment_C"</span><span class="op">)</span>,</span>
-<span>  p.adj  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.02</span>, <span class="fl">0.03</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">comparisons</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
-<span><span class="co">#&gt;         group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1 Treatment_B   a         a_</span></span>
-<span><span class="co">#&gt; 2 Treatment_C   b         _b</span></span>
-<span><span class="co">#&gt; 3 Treatment_A   a         a_</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="example-6-formula-interface">Example 6: Formula Interface<a class="anchor" aria-label="anchor" href="#example-6-formula-interface"></a>
-</h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Using formula for data frames with custom column names</span></span>
-<span><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  Comparison <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A-B"</span>, <span class="st">"A-C"</span>, <span class="st">"B-C"</span><span class="op">)</span>,</span>
-<span>  p_value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.12</span>, <span class="fl">0.001</span>, <span class="fl">0.045</span><span class="op">)</span>,</span>
-<span>  p_adjusted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.18</span>, <span class="fl">0.003</span>, <span class="fl">0.068</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">p_adjusted</span> <span class="op">~</span> <span class="va">Comparison</span>, data <span class="op">=</span> <span class="va">my_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1     A   a         a_</span></span>
-<span><span class="co">#&gt; 2     B  ab         ab</span></span>
-<span><span class="co">#&gt; 3     C   b         _b</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="understanding-the-output">Understanding the Output<a class="anchor" aria-label="anchor" href="#understanding-the-output"></a>
-</h2>
-<div class="section level3">
-<h3 id="structure">Structure<a class="anchor" aria-label="anchor" href="#structure"></a>
-</h3>
-<p>The <code><a href="reference/make_cld.html">make_cld()</a></code> function returns a <code>cld_object</code> (enhanced data frame) with:</p>
-<p><strong>Columns:</strong> - <strong>group</strong> - Names of the groups being compared - <strong>cld</strong> - Compact letter display (letters only) - <strong>spaced_cld</strong> - Monospaced version for alignment (underscores replace spaces)</p>
-<p><strong>Attributes (metadata):</strong> - <strong>alpha</strong> - Significance level used - <strong>method</strong> - Statistical test/method name - <strong>n_comparisons</strong> - Total number of pairwise comparisons - <strong>n_significant</strong> - Number of significant differences found</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/pairwise.wilcox.test.html" class="external-link">pairwise.wilcox.test</a></span><span class="op">(</span><span class="va">chickwts</span><span class="op">$</span><span class="va">weight</span>, <span class="va">chickwts</span><span class="op">$</span><span class="va">feed</span>, exact <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">cld_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># View result</span></span>
-<span><span class="va">cld_result</span></span>
-<span><span class="co">#&gt;       group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1    casein   a        a__</span></span>
-<span><span class="co">#&gt; 2 horsebean   b        _b_</span></span>
-<span><span class="co">#&gt; 3   linseed  bc        _bc</span></span>
-<span><span class="co">#&gt; 4  meatmeal  ac        a_c</span></span>
-<span><span class="co">#&gt; 5   soybean   c        __c</span></span>
-<span><span class="co">#&gt; 6 sunflower   a        a__</span></span>
-<span></span>
-<span><span class="co"># Access metadata</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">cld_result</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"alpha"</span>, <span class="st">"method"</span>, <span class="st">"n_comparisons"</span>, <span class="st">"n_significant"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt; $&lt;NA&gt;</span></span>
-<span><span class="co">#&gt; NULL</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $&lt;NA&gt;</span></span>
-<span><span class="co">#&gt; NULL</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $&lt;NA&gt;</span></span>
-<span><span class="co">#&gt; NULL</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $&lt;NA&gt;</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="interpretation-rules">Interpretation Rules<a class="anchor" aria-label="anchor" href="#interpretation-rules"></a>
-</h3>
-<p>❌ At least one <strong>shared letter</strong> → Groups are <strong>NOT</strong> significantly different<br>
-✅ <strong>No shared letters</strong> → Groups <strong>ARE</strong> significantly different</p>
-<p><strong>Example:</strong> - ❌ Groups with “c” and “c” share letter “c” → difference is not significant - ❌ Groups with “a” and “ab” share letter “a” → difference is not significant - ❌ Groups “ab” and “bc” share letter “b” → difference is not significant - ❌ Groups “abc” and “bcd” share letters “b”, and “c” → difference is not significant - ✅ Groups with “a” and “c” share no letters → significantly different - ✅ Groups with “abd” and “ce” share no letters → significantly different</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="working-with-the-output">Working with the Output<a class="anchor" aria-label="anchor" href="#working-with-the-output"></a>
-</h2>
-<div class="section level3">
-<h3 id="convert-to-other-formats">Convert to Other Formats<a class="anchor" aria-label="anchor" href="#convert-to-other-formats"></a>
-</h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Extract as named character vector</span></span>
-<span><span class="va">letters_only</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">cld_result</span><span class="op">)</span></span>
-<span><span class="va">letters_only</span></span>
-<span><span class="co">#&gt; [1] "c(\"casein\", \"horsebean\", \"linseed\", \"meatmeal\", \"soybean\", \"sunflower\")"</span></span>
-<span><span class="co">#&gt; [2] "c(\"a\", \"b\", \"bc\", \"ac\", \"c\", \"a\")"                                      </span></span>
-<span><span class="co">#&gt; [3] "c(\"a__\", \"_b_\", \"_bc\", \"a_c\", \"__c\", \"a__\")"</span></span>
-<span></span>
-<span><span class="co"># Convert back to plain data frame (removes metadata)</span></span>
-<span><span class="va">plain_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">cld_result</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">plain_df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "data.frame"</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="adjust-significance-level">Adjust Significance Level<a class="anchor" aria-label="anchor" href="#adjust-significance-level"></a>
-</h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/pairwise.wilcox.test.html" class="external-link">pairwise.wilcox.test</a></span><span class="op">(</span><span class="va">chickwts</span><span class="op">$</span><span class="va">weight</span>, <span class="va">chickwts</span><span class="op">$</span><span class="va">feed</span>, exact <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Standard (alpha = 0.05)</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">result</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1    casein   a        a__</span></span>
-<span><span class="co">#&gt; 2 horsebean   b        _b_</span></span>
-<span><span class="co">#&gt; 3   linseed  bc        _bc</span></span>
-<span><span class="co">#&gt; 4  meatmeal  ac        a_c</span></span>
-<span><span class="co">#&gt; 5   soybean   c        __c</span></span>
-<span><span class="co">#&gt; 6 sunflower   a        a__</span></span>
-<span></span>
-<span><span class="co"># More stringent (alpha = 0.01)</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">result</span>, alpha <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1    casein  ab        ab_</span></span>
-<span><span class="co">#&gt; 2 horsebean   c        __c</span></span>
-<span><span class="co">#&gt; 3   linseed  ac        a_c</span></span>
-<span><span class="co">#&gt; 4  meatmeal  ab        ab_</span></span>
-<span><span class="co">#&gt; 5   soybean  ab        ab_</span></span>
-<span><span class="co">#&gt; 6 sunflower   b        _b_</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="common-use-cases">Common Use Cases<a class="anchor" aria-label="anchor" href="#common-use-cases"></a>
-</h2>
-<div class="section level3">
-<h3 id="id_-agricultural-studies">🌾 Agricultural Studies<a class="anchor" aria-label="anchor" href="#id_-agricultural-studies"></a>
-</h3>
-<p>Comparing crop yields across different treatments or varieties</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Example: Fertilizer treatments</span></span>
-<span><span class="va">fertilizer_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/pairwise.t.test.html" class="external-link">pairwise.t.test</a></span><span class="op">(</span><span class="va">yield</span>, <span class="va">treatment</span>, data <span class="op">=</span> <span class="va">crop_data</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">fertilizer_test</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="id_-biological-research">🧪 Biological Research<a class="anchor" aria-label="anchor" href="#id_-biological-research"></a>
-</h3>
-<p>Post-hoc comparisons after ANOVA in experimental biology</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Example: Drug efficacy study</span></span>
-<span><span class="va">anova_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html" class="external-link">aov</a></span><span class="op">(</span><span class="va">response</span> <span class="op">~</span> <span class="va">drug_type</span>, data <span class="op">=</span> <span class="va">trial_data</span><span class="op">)</span></span>
-<span><span class="va">tukey_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TukeyHSD.html" class="external-link">TukeyHSD</a></span><span class="op">(</span><span class="va">anova_result</span><span class="op">)</span></span>
-<span><span class="co"># Convert and create CLD...</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="id_-quality-control">📊 Quality Control<a class="anchor" aria-label="anchor" href="#id_-quality-control"></a>
-</h3>
-<p>Comparing multiple production methods or batches</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Example: Manufacturing process comparison</span></span>
-<span><span class="va">kruskal_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kruskal.test.html" class="external-link">kruskal.test</a></span><span class="op">(</span><span class="va">strength</span> <span class="op">~</span> <span class="va">method</span>, data <span class="op">=</span> <span class="va">qc_data</span><span class="op">)</span></span>
-<span><span class="co"># Follow up with post-hoc test and CLD</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="id_-survey-analysis">📈 Survey Analysis<a class="anchor" aria-label="anchor" href="#id_-survey-analysis"></a>
-</h3>
-<p>Displaying pairwise differences between groups in survey data</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Example: Satisfaction scores across departments</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">comparison_results</span>, alpha <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="advanced-features">Advanced Features<a class="anchor" aria-label="anchor" href="#advanced-features"></a>
-</h2>
-<div class="section level3">
-<h3 id="custom-parameters">Custom Parameters<a class="anchor" aria-label="anchor" href="#custom-parameters"></a>
-</h3>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Reverse letter ordering</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">result</span>, reversed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Swap comparison name order</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">result</span>, swap_compared_names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Print comparison names during processing</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">result</span>, print.comp <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Control string cleaning</span></span>
-<span><span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">df</span>, remove.space <span class="op">=</span> <span class="cn">TRUE</span>, swap.colon <span class="op">=</span> <span class="cn">TRUE</span>, remove.equal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="integration-with-plotting">Integration with Plotting<a class="anchor" aria-label="anchor" href="#integration-with-plotting"></a>
-</h3>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Get CLD results</span></span>
-<span><span class="va">cld_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">test_result</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Merge with summary statistics</span></span>
-<span><span class="va">plot_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">summary_stats</span>, <span class="va">cld_result</span>, by.x <span class="op">=</span> <span class="st">"treatment"</span>, by.y <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Create plot with letter annotations</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">plot_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">treatment</span>, y <span class="op">=</span> <span class="va">mean</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">cld</span>, y <span class="op">=</span> <span class="va">mean</span> <span class="op">+</span> <span class="va">se</span><span class="op">)</span>, vjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-</div>
+<p>📚 <strong>Comprehensive vignettes</strong> (also available on <a href="https://gegznav.github.io/cld/" class="external-link">package website</a>):</p>
+<ul>
+<li>
+<code><a href="articles/cld.html">vignette("cld")</a></code> - Complete introduction with examples</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="related-packages">Related Packages<a class="anchor" aria-label="anchor" href="#related-packages"></a>
@@ -511,35 +249,22 @@
 <div class="section level2">
 <h2 id="getting-help">Getting Help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
 </h2>
-<div class="section level3">
-<h3 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
-</h3>
 <ul>
 <li>📖 Function reference: <code><a href="reference/make_cld.html">?cld::make_cld</a></code>
 </li>
 <li>📚 Package website: <a href="https://gegznav.github.io/cld/" class="external-link uri">https://gegznav.github.io/cld/</a>
 </li>
-<li>💡 Examples: See function documentation with <code>example(cld::make_cld)</code>
-</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="issues--contributions">Issues &amp; Contributions<a class="anchor" aria-label="anchor" href="#issues--contributions"></a>
-</h3>
-<ul>
 <li>🐛 Report bugs: <a href="https://github.com/GegznaV/cld/issues" class="external-link uri">https://github.com/GegznaV/cld/issues</a>
 </li>
-<li>💬 Ask questions: Open a <a href="https://github.com/GegznaV/cld/discussions" class="external-link">GitHub Discussion</a>
+<li>💬 Ask questions: <a href="https://github.com/GegznaV/cld/discussions" class="external-link">GitHub Discussions</a>
 </li>
-<li>🔧 Contribute: Pull requests welcome!</li>
 </ul>
-</div>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <p>To cite the <strong>cld</strong> package in publications:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"cld"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
