@@ -1,0 +1,137 @@
+---
+title: "Getting Started with cld"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with cld}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(cld)
+```
+
+## Introduction
+
+The **cld** package provides an easy and consistent way to create compact letter displays (CLDs) for visualizing results of pairwise statistical comparisons. Groups sharing the same letter are not significantly different from each other — a convention widely used in agricultural, biological, and statistical publications.
+
+## Why Use cld?
+
+✅ **Universal compatibility** - Works with outputs from base R, PMCMRplus, rstatix, DescTools, and custom data frames  
+✅ **Consistent interface** - One function (`make_cld()`) handles all input types  
+✅ **Publication-ready** - Generate clean, professional statistical grouping labels  
+✅ **Well-tested** - 250+ tests ensuring reliability across all methods   
+✅ **Informative output** - Stores metadata (alpha, method, comparison counts) for transparency
+
+## Quick Start
+
+The **cld** package works with various statistical test outputs. Here's a simple example:
+
+```{r quickstart}
+# Run a pairwise test
+test_result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
+
+# Generate compact letter display
+make_cld(test_result)
+```
+
+**Interpretation**: 
+
+- Groups with the same letter (e.g., casein and sunflower both have "a") are not significantly different. 
+- Groups without shared letters (e.g., horsebean "b" and soybean "c") are significantly different.
+
+## Basic Usage with Base R Tests
+
+### Pairwise Wilcoxon Test
+
+```{r example-wilcox}
+# Pairwise Wilcoxon rank sum test
+result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
+make_cld(result)
+```
+
+### Pairwise t-test
+
+```{r example-ttest}
+# Pairwise t-test
+result2 <- pairwise.t.test(chickwts$weight, chickwts$feed)
+make_cld(result2)
+```
+
+## Understanding the Output
+
+### Structure
+
+The `make_cld()` function returns a `cld_object` (enhanced data frame) with:
+
+**Columns:**
+
+- **group** - Names of the groups being compared
+- **cld** - Compact letter display (letters only)
+- **spaced_cld** - Monospaced version for alignment (underscores replace spaces)
+
+**Attributes (metadata):**
+
+- **alpha** - Significance level used
+- **method** - Statistical test/method name
+- **n_comparisons** - Total number of pairwise comparisons
+- **n_significant** - Number of significant differences found
+
+```{r output-demo}
+result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
+cld_result <- make_cld(result)
+
+# View result
+cld_result
+
+# Access metadata
+attributes(cld_result)[c("alpha", "method", "n_comparisons", "n_significant")]
+```
+
+## Working with the Output
+
+### Convert to Other Formats
+
+```{r convert}
+# Extract as named character vector
+letters_only <- as.character(cld_result)
+letters_only
+
+# Convert back to plain data frame (removes metadata)
+plain_df <- as.data.frame(cld_result)
+class(plain_df)
+```
+
+### Adjust Significance Level
+
+```{r example-alpha}
+result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
+
+# Standard (alpha = 0.05)
+make_cld(result, alpha = 0.05)
+
+# More stringent (alpha = 0.01)
+make_cld(result, alpha = 0.01)
+```
+
+## Interpretation Rules
+
+❌ At least one **shared letter** → Groups are **NOT** significantly different  
+✅ **No shared letters** → Groups **ARE** significantly different  
+
+**Examples:**
+
+- ❌ Groups with "c" and "c" share letter "c" → difference is not significant
+- ❌ Groups with "a" and "ab" share letter "a" → difference is not significant
+- ❌ Groups "ab" and "bc"  share letter "b" → difference is not significant
+- ❌ Groups "abc" and "bcd"  share letters "b", and "c" → difference is not significant
+- ✅ Groups with "a" and "c" share no letters → significantly different
+- ✅ Groups with "abd" and "ce" share no letters → significantly different
+
