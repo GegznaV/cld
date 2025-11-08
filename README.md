@@ -75,9 +75,10 @@ make_cld(test_result)
 
 **Interpretation**:
 
-- Groups sharing at least one letter are **not** significantly
-  different;
-- Groups with no shared letters **are** significantly different.
+- Groups sharing at least one letter are **not** significantly different
+  (e.g., casein and sunflower both have “a”);
+- Groups with no shared letters **are** significantly different (e.g.,
+  horsebean “b” and soybean “c”).
 
 ## Supported Input Formats
 
@@ -99,11 +100,6 @@ The `make_cld()` function works seamlessly with:
 website](https://gegznav.github.io/cld/)):
 
 - `vignette("cld")` - Complete introduction with examples
-- `vignette("cld-input-formats")` - Detailed examples for all input
-  types
-- `vignette("cld-interpretation-guide")` - How to correctly interpret
-  CLDs
-- `vignette("cld-advanced-features")` - Custom parameters and plotting
 
 ## Related Packages
 
