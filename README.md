@@ -11,7 +11,7 @@ status](https://www.r-pkg.org/badges/version/cld)](https://CRAN.R-project.org/pa
 version](https://img.shields.io/badge/GitHub-0.0.0.9000-brightgreen.svg)](https://github.com/GegznaV/cld)
 [![R-CMD-check](https://github.com/GegznaV/cld/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GegznaV/cld/actions/workflows/R-CMD-check.yaml)
 [![Codecov](https://codecov.io/gh/GegznaV/cld/branch/master/graph/badge.svg)](https://codecov.io/gh/GegznaV/cld)
-[![Updated-on](https://img.shields.io/badge/Updated%20on-2025--11--08-yellowgreen.svg)](/commits/master)
+[![Updated-on](https://img.shields.io/badge/Updated%20on-2025--11--09-yellowgreen.svg)](/commits/master)
 <!-- badges: end -->
 
 > **Simplify your statistical reporting with compact letter displays**
@@ -100,6 +100,11 @@ The `make_cld()` function works seamlessly with:
 website](https://gegznav.github.io/cld/)):
 
 - `vignette("cld")` - Complete introduction with examples
+- `vignette("cld-input-formats")` - Detailed examples for all input
+  types
+- `vignette("cld-interpretation-guide")` - How to correctly interpret
+  CLDs
+- `vignette("cld-advanced-features")` - Custom parameters and plotting
 
 ## Related Packages
 

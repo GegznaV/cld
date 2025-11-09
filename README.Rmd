@@ -97,7 +97,9 @@ The `make_cld()` function works seamlessly with:
 📚 **Comprehensive vignettes** (also available on [package website](https://gegznav.github.io/cld/)):
 
 - `vignette("cld")` - Complete introduction with examples
-
+- `vignette("cld-input-formats")` - Detailed examples for all input types
+- `vignette("cld-interpretation-guide")` - How to correctly interpret CLDs
+- `vignette("cld-advanced-features")` - Custom parameters and plotting
 
 ## Related Packages
 
