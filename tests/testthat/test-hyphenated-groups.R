@@ -56,11 +56,12 @@ test_that("make_cld.matrix handles hyphenated names with automatic replacement",
   expect_s3_class(result, "cld_object")
   expect_equal(nrow(result), 4)
 
-  # Original hyphens should be restored in output
+  # Original hyphens AND spaces should be preserved in output
+  # When using the gr1/gr2 approach (now used for hyphenated names),
+  # group names are preserved exactly as provided
   expect_true("Plant-based" %in% result$group)
-  # Spaces are removed by default
-  expect_true("Synthetic(K-6)" %in% result$group)
-  expect_true("Synthetic(A-9)" %in% result$group)
+  expect_true("Synthetic (K-6)" %in% result$group)  # WITH space - preserved from input
+  expect_true("Synthetic (A-9)" %in% result$group)  # WITH space - preserved from input
 })
 
 test_that("make_cld.matrix without hyphens in names produces no message", {
@@ -160,6 +161,33 @@ test_that("make_cld.data.frame preserves parentheses when no hyphens in names", 
 # make_cld.formula tests - LIMITATION DOCUMENTED
 # ============================================================================
 
+test_that("make_cld.formula warns about multiple hyphens in comparisons", {
+  # When formula method receives comparison strings with multiple hyphens,
+  # it should warn the user that results may be incorrect
+  my_data <- data.frame(
+    Comparison = c(
+      "A-B - C-D",  # Multiple hyphens indicate hyphens in group names
+      "E-F - G-H",
+      "C-D - E-F"
+    ),
+    p.adjust = c(0.001, 0.050, 0.850),
+    stringsAsFactors = FALSE
+  )
+
+  # Should produce a warning about multiple hyphens, then error
+  # The warning alerts users BEFORE the error occurs
+  expect_warning(
+    expect_error(
+      make_cld(p.adjust ~ Comparison, data = my_data),
+      "Names must contain exactly one"
+    ),
+    "multiple hyphens.*may produce incorrect results"
+  )
+  
+  # The warning is shown before the error, giving users actionable advice
+})
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 test_that("make_cld.formula with hyphenated names still has limitation", {
   # Formula method works with comparison strings, so it still has limitations
   # when parsing group names from comparison strings with multiple hyphens
