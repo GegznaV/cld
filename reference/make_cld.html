@@ -66,9 +66,6 @@ in agricultural, biological, and statistical reporting.</p>
 <span><span class="co"># S3 method for class 'pairwise.htest'</span></span>
 <span><span class="fu">make_cld</span><span class="op">(</span><span class="va">obj</span>, <span class="va">...</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S3 method for class 'posthoc_anova'</span></span>
-<span><span class="fu">make_cld</span><span class="op">(</span><span class="va">obj</span>, <span class="va">...</span>, alpha <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">obj</span><span class="op">$</span><span class="va">input</span><span class="op">$</span><span class="va">conf_level</span><span class="op">)</span></span>
-<span></span>
 <span><span class="co"># S3 method for class 'PMCMR'</span></span>
 <span><span class="fu">make_cld</span><span class="op">(</span><span class="va">obj</span>, <span class="va">...</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
@@ -92,7 +89,7 @@ in agricultural, biological, and statistical reporting.</p>
 <span>  gr1_col <span class="op">=</span> <span class="st">"group1"</span>,</span>
 <span>  gr2_col <span class="op">=</span> <span class="st">"group2"</span>,</span>
 <span>  p_val_col <span class="op">=</span> <span class="st">"p.adj"</span>,</span>
-<span>  remove.space <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  remove_space <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'pairwise_pval_df'</span></span>
@@ -120,12 +117,15 @@ Currently supported object classes:</p><ul><li><p><code>PMCMR</code> - from pack
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Further arguments passed to internal methods. These may include:</p><ul><li><p><code>reversed</code> - Logical. If <code>TRUE</code>, reverses the letter ordering (default: <code>FALSE</code>)</p></li>
 <li><p><code>swap_compared_names</code> - Logical. If <code>TRUE</code>, swaps group order in comparisons (default: <code>FALSE</code>)</p></li>
-<li><p><code>print.comp</code> - Logical. If <code>TRUE</code>, prints comparison names (default: <code>FALSE</code>)
+<li><p><code>print_comp</code> - Logical. If <code>TRUE</code>, prints comparison names (default: <code>FALSE</code>)</p></li>
+<li><p><code>sep</code> - Character. Custom separator for comparison strings (default: <code>"-"</code>). Use this
+when your group names contain hyphens. For example, use <code>sep = ":"</code> or <code>sep = ";"</code>.
+Only applies to single-variable formula method. Not needed for two-variable formula.
 Additional cleaning options (default: <code>TRUE</code> for most methods):</p></li>
-<li><p><code>remove.space</code> - Removes spaces from comparison strings</p></li>
-<li><p><code>remove.equal</code> - Removes equal signs from comparison strings</p></li>
-<li><p><code>swap.colon</code> - Replaces colons with hyphens</p></li>
-<li><p><code>swap.vs</code> - Replaces "vs" with hyphens (default: <code>FALSE</code>)</p></li>
+<li><p><code>remove_space</code> - Removes spaces from comparison strings</p></li>
+<li><p><code>remove_equal</code> - Removes equal signs from comparison strings</p></li>
+<li><p><code>swap_colon</code> - Replaces colons with hyphens (use <code>FALSE</code> if using <code>:</code> as separator)</p></li>
+<li><p><code>swap_vs</code> - Replaces "vs" with hyphens (default: <code>FALSE</code>)</p></li>
 </ul></dd>
 
 
@@ -162,18 +162,21 @@ Only used for the data.frame method. Can also be <code>"p.value"</code> or any o
 column name containing numeric p-values.</p></dd>
 
 
-<dt id="arg-remove-space">remove.space<a class="anchor" aria-label="anchor" href="#arg-remove-space"></a></dt>
+<dt id="arg-remove-space">remove_space<a class="anchor" aria-label="anchor" href="#arg-remove-space"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>, removes spaces from comparison strings.
 Default is <code>FALSE</code> for the data.frame method to preserve original formatting.
 Set to <code>TRUE</code> if your group names contain spaces and you want compact comparisons.</p></dd>
 
 
 <dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
-<dd><p>An R model <code><a href="https://rdrr.io/r/stats/formula.html" class="external-link">stats::formula()</a></code> where the left-hand side
-term indicates the variable with p-values and the right-hand side term defines
-the variable with comparisons, e.g., <code>p.adjust ~ Comparison</code>. This provides
-a flexible way to specify which columns in <code>data</code> contain the relevant information.
-Usually used in combination with <code>data</code>.</p></dd>
+<dd><p>An R model <code><a href="https://rdrr.io/r/stats/formula.html" class="external-link">stats::formula()</a></code> with two possible formats:</p><ul><li><p><strong>Two-variable formula</strong> (recommended): <code>p.value ~ group1 + group2</code> where
+<code>group1</code> and <code>group2</code> are separate columns containing group names. This format
+automatically handles hyphens in group names.</p></li>
+<li><p><strong>Single-variable formula</strong>: <code>p.value ~ Comparison</code> where <code>Comparison</code> is a
+column with pre-formatted comparison strings (e.g., "A-B", "A-C"). This format
+has limitations with hyphenated group names.
+Usually used in combination with <code>data</code>.</p></li>
+</ul></dd>
 
 </dl></div>
     <div id="value">
@@ -185,20 +188,6 @@ at least one letter are not significantly different from each other</p></li>
 replaced with underscores, useful for maintaining alignment in output</p></li>
 </ul><p>The rows are ordered according to the group names. Groups with the same letter(s)
 do not differ significantly at the specified alpha level.</p>
-    </div>
-    <div id="details">
-    <h2>Details</h2>
-
-<div class="section">
-<h3 id="method-for-rstatix-objects-posthoc-anova-">Method for rstatix objects (<code>posthoc_anova</code>)<a class="anchor" aria-label="anchor" href="#method-for-rstatix-objects-posthoc-anova-"></a></h3>
-
-
-<p>The <code>posthoc_anova</code> method supports objects from the <strong>rstatix</strong> package,
-specifically results from <code>games_howell_test()</code> and <code>tukey_hsd()</code>.
-The significance level is automatically derived from the confidence level
-used in the test (alpha = 1 - conf_level), but can be overridden.</p>
-</div>
-
     </div>
     <div id="handling-group-names-with-hyphens">
     <h2>Handling Group Names with Hyphens</h2>
@@ -219,11 +208,17 @@ automatically detect and handle hyphens in group names by:</p><ol><li><p>Tempora
 The formula method (e.g., <code>make_cld(p.value ~ comparison, data = df)</code>) has
 limited support for group names with hyphens because it receives pre-formatted
 comparison strings where the separator hyphens cannot be reliably distinguished
-from hyphens within group names. For data with hyphenated group names, use one
-of these alternatives:</p><ul><li><p>Use the data.frame method with <code>gr1_col</code> and <code>gr2_col</code> parameters</p></li>
-<li><p>Convert your data to matrix format</p></li>
-<li><p>Replace hyphens in group names with underscores before creating comparisons</p></li>
-<li><p>Use a different separator in comparison strings (e.g., " vs " with <code>swap.vs = TRUE</code>)</p></li>
+from hyphens within group names.</p>
+<p><strong>Best Practice for Hyphenated Group Names:</strong>
+Use the data.frame method with <code>gr1_col</code> and <code>gr2_col</code> parameters. This method
+handles hyphens automatically and seamlessly. For example:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Instead of: make_cld(p.value ~ comparison, data = df)</span></span>
+<span><span class="co"># Use: make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.value")</span></span></code></pre><p></p></div>
+<p><strong>Alternative Workarounds for Formula Method:</strong></p><ul><li><p>Convert your data to matrix format (also handles hyphens automatically)</p></li>
+<li><p>Replace hyphens in group names with underscores before creating comparisons
+#' * Compare groups with names that differ by case (e.g., using <code><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower()</a></code> first)</p></li>
+<li><p>Include group names without comparisons (using <code>include_all = TRUE</code> if available)</p></li>
+<li><p>Use a different separator in comparison strings (e.g., " vs " with <code>swap_vs = TRUE</code>)</p></li>
 </ul></div>
     <div id="references">
     <h2>References</h2>
