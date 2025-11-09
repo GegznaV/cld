@@ -3,7 +3,6 @@
 \name{make_cld}
 \alias{make_cld}
 \alias{make_cld.pairwise.htest}
-\alias{make_cld.posthoc_anova}
 \alias{make_cld.PMCMR}
 \alias{make_cld.PostHocTest}
 \alias{make_cld.DunnTest}
@@ -16,8 +15,6 @@
 make_cld(obj, ..., alpha = 0.05)
 
 \method{make_cld}{pairwise.htest}(obj, ..., alpha = 0.05)
-
-\method{make_cld}{posthoc_anova}(obj, ..., alpha = 1 - obj$input$conf_level)
 
 \method{make_cld}{PMCMR}(obj, ..., alpha = 0.05)
 
@@ -36,7 +33,7 @@ make_cld(obj, ..., alpha = 0.05)
   gr1_col = "group1",
   gr2_col = "group2",
   p_val_col = "p.adj",
-  remove.space = FALSE
+  remove_space = FALSE
 )
 
 \method{make_cld}{pairwise_pval_df}(obj, ..., alpha = 0.05)
@@ -60,12 +57,15 @@ Currently supported object classes:
 \itemize{
 \item \code{reversed} - Logical. If \code{TRUE}, reverses the letter ordering (default: \code{FALSE})
 \item \code{swap_compared_names} - Logical. If \code{TRUE}, swaps group order in comparisons (default: \code{FALSE})
-\item \code{print.comp} - Logical. If \code{TRUE}, prints comparison names (default: \code{FALSE})
+\item \code{print_comp} - Logical. If \code{TRUE}, prints comparison names (default: \code{FALSE})
+\item \code{sep} - Character. Custom separator for comparison strings (default: \code{"-"}). Use this
+when your group names contain hyphens. For example, use \code{sep = ":"} or \code{sep = ";"}.
+Only applies to single-variable formula method. Not needed for two-variable formula.
 Additional cleaning options (default: \code{TRUE} for most methods):
-\item \code{remove.space} - Removes spaces from comparison strings
-\item \code{remove.equal} - Removes equal signs from comparison strings
-\item \code{swap.colon} - Replaces colons with hyphens
-\item \code{swap.vs} - Replaces "vs" with hyphens (default: \code{FALSE})
+\item \code{remove_space} - Removes spaces from comparison strings
+\item \code{remove_equal} - Removes equal signs from comparison strings
+\item \code{swap_colon} - Replaces colons with hyphens (use \code{FALSE} if using \code{:} as separator)
+\item \code{swap_vs} - Replaces "vs" with hyphens (default: \code{FALSE})
 }}
 
 \item{alpha}{Numeric value between 0 and 1. The significance level (alpha) for determining
@@ -91,15 +91,20 @@ the p-values for each comparison. Default is \code{"p.adj"} (adjusted p-values).
 Only used for the data.frame method. Can also be \code{"p.value"} or any other
 column name containing numeric p-values.}
 
-\item{remove.space}{Logical. If \code{TRUE}, removes spaces from comparison strings.
+\item{remove_space}{Logical. If \code{TRUE}, removes spaces from comparison strings.
 Default is \code{FALSE} for the data.frame method to preserve original formatting.
 Set to \code{TRUE} if your group names contain spaces and you want compact comparisons.}
 
-\item{formula}{An R model \code{\link[stats:formula]{stats::formula()}} where the left-hand side
-term indicates the variable with p-values and the right-hand side term defines
-the variable with comparisons, e.g., \code{p.adjust ~ Comparison}. This provides
-a flexible way to specify which columns in \code{data} contain the relevant information.
-Usually used in combination with \code{data}.}
+\item{formula}{An R model \code{\link[stats:formula]{stats::formula()}} with two possible formats:
+\itemize{
+\item \strong{Two-variable formula} (recommended): \code{p.value ~ group1 + group2} where
+\code{group1} and \code{group2} are separate columns containing group names. This format
+automatically handles hyphens in group names.
+\item \strong{Single-variable formula}: \code{p.value ~ Comparison} where \code{Comparison} is a
+column with pre-formatted comparison strings (e.g., "A-B", "A-C"). This format
+has limitations with hyphenated group names.
+Usually used in combination with \code{data}.
+}}
 }
 \value{
 A data frame of class \code{c("cld_object", "data.frame")} with three columns:
@@ -121,15 +126,49 @@ Groups that share the same letter are not significantly different from each othe
 This provides a visual summary of which groups differ significantly, commonly used
 in agricultural, biological, and statistical reporting.
 }
-\details{
-\subsection{Method for rstatix objects (\code{posthoc_anova})}{
+\section{Handling Group Names with Hyphens}{
 
-The \code{posthoc_anova} method supports objects from the \strong{rstatix} package,
-specifically results from \code{games_howell_test()} and \code{tukey_hsd()}.
-The significance level is automatically derived from the confidence level
-used in the test (alpha = 1 - conf_level), but can be overridden.
+The underlying multcompView package uses hyphens (\code{-}) as the default separator
+between group names in comparison strings (e.g., "GroupA-GroupB"). This creates
+a conflict when group names themselves contain hyphens (e.g., "Plant-based",
+"Treatment-1").
+
+\strong{Automatic Handling:}
+Most methods (matrix, data.frame, pairwise.htest, pairwise_pval_df, and others)
+automatically detect and handle hyphens in group names by:
+\enumerate{
+\item Temporarily replacing hyphens with alternative characters (underscore, en-dash, etc.)
+\item Processing the comparisons
+\item Restoring the original hyphens in the output
+}
+
+An informational message is shown when this occurs. To suppress it, use
+\code{quiet_hyphen_warning = TRUE}.
+
+\strong{Formula Method Limitation:}
+The formula method (e.g., \code{make_cld(p.value ~ comparison, data = df)}) has
+limited support for group names with hyphens because it receives pre-formatted
+comparison strings where the separator hyphens cannot be reliably distinguished
+from hyphens within group names.
+
+\strong{Best Practice for Hyphenated Group Names:}
+Use the data.frame method with \code{gr1_col} and \code{gr2_col} parameters. This method
+handles hyphens automatically and seamlessly. For example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Instead of: make_cld(p.value ~ comparison, data = df)
+# Use: make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.value")
+}\if{html}{\out{</div>}}
+
+\strong{Alternative Workarounds for Formula Method:}
+\itemize{
+\item Convert your data to matrix format (also handles hyphens automatically)
+\item Replace hyphens in group names with underscores before creating comparisons
+#' * Compare groups with names that differ by case (e.g., using \code{tolower()} first)
+\item Include group names without comparisons (using \code{include_all = TRUE} if available)
+\item Use a different separator in comparison strings (e.g., " vs " with \code{swap_vs = TRUE})
 }
 }
+
 \examples{
 # Example 1: Using pairwise.htest (Wilcoxon test)
 obj1 <- stats::pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
