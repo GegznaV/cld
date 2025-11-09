@@ -244,12 +244,47 @@ make_cld.formula <- function(obj, ..., data = NULL, alpha = 0.05) {
   checkmate::assert_number(alpha, lower = 0, upper = 1)
 
   data <- extract_data(obj, data)
-  res <- make_cld_df(
-    obj,
-    data      = data,
-    threshold = alpha,
-    ...
-  )
+  
+  # Check if formula uses two group variables (p.value ~ gr1 + gr2)
+  # or comparison strings (p.value ~ comparison)
+  rhs_vars <- all.vars(obj[[3]])  # Right-hand side variables
+  
+  if (length(rhs_vars) == 2) {
+    # Two-variable formula: p.value ~ gr1 + gr2
+    # This approach handles hyphens automatically!
+    lhs_var <- all.vars(obj[[2]])[1]  # p-value column
+    
+    # Extract ... arguments
+    dots <- list(...)
+    
+    # Use threshold from ... if present, otherwise use alpha
+    if (!"threshold" %in% names(dots)) {
+      dots$threshold <- alpha
+    }
+    
+    # Call make_cld_df with gr1/gr2 approach
+    res <- do.call(
+      make_cld_df,
+      c(
+        list(
+          gr1     = data[[rhs_vars[1]]],
+          gr2     = data[[rhs_vars[2]]],
+          p.value = data[[lhs_var]]
+        ),
+        dots
+      )
+    )
+  } else {
+    # Single-variable formula: p.value ~ comparison
+    # Traditional approach with comparison strings
+    res <- make_cld_df(
+      obj,
+      data      = data,
+      threshold = alpha,
+      ...
+    )
+  }
+  
   attr(res, "method") <- "formula"
   res
 }
