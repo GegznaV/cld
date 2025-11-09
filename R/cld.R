@@ -163,7 +163,8 @@ make_cld.pairwise.htest <- function(obj, ..., alpha = 0.05) {
   m1 <- obj$p.value
   df <- pval_matrix_to_df(m1)
   res <- make_cld_df(
-    comparison   = paste0(df$gr1, "-", df$gr2),
+    gr1          = df$gr1,
+    gr2          = df$gr2,
     p.value      = df$p_values,
     threshold    = alpha,
     remove.space = TRUE,
@@ -318,7 +319,8 @@ make_cld.data.frame <- function(
   }
 
   res <- make_cld_df(
-    comparison   = paste0(obj[[gr2_col]], "-", obj[[gr1_col]]),
+    gr1          = obj[[gr2_col]],
+    gr2          = obj[[gr1_col]],
     p.value      = obj[[p_val_col]],
     threshold    = alpha,
     remove.space = remove.space,
@@ -335,9 +337,10 @@ make_cld.pairwise_pval_df <- function(obj, ..., alpha = 0.05) {
   checkmate::assert_number(alpha, lower = 0, upper = 1)
 
   res <- make_cld_df(
-    comparison = paste0(obj$gr1, " - ", obj$gr2),
-    p.value    = obj$p_values,
-    threshold  = alpha,
+    gr1       = obj$gr1,
+    gr2       = obj$gr2,
+    p.value   = obj$p_values,
+    threshold = alpha,
     ...
   )
   attr(res, "method") <- "pairwise_pval_df"
