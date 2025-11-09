@@ -158,7 +158,7 @@ Only used for the data.frame method.</p></dd>
 <dt id="arg-p-val-col">p_val_col<a class="anchor" aria-label="anchor" href="#arg-p-val-col"></a></dt>
 <dd><p>Character string. Name of the column in the data frame containing
 the p-values for each comparison. Default is <code>"p.adj"</code> (adjusted p-values).
-Only used for the data.frame method. Can also be <code>"p.value"</code> or any other
+Only used for the data.frame method. Can also be <code>"p_value"</code> or any other
 column name containing numeric p-values.</p></dd>
 
 
@@ -169,10 +169,10 @@ Set to <code>TRUE</code> if your group names contain spaces and you want compact
 
 
 <dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
-<dd><p>An R model <code><a href="https://rdrr.io/r/stats/formula.html" class="external-link">stats::formula()</a></code> with two possible formats:</p><ul><li><p><strong>Two-variable formula</strong> (recommended): <code>p.value ~ group1 + group2</code> where
+<dd><p>An R model <code><a href="https://rdrr.io/r/stats/formula.html" class="external-link">stats::formula()</a></code> with two possible formats:</p><ul><li><p><strong>Two-variable formula</strong> (recommended): <code>p_value ~ group1 + group2</code> where
 <code>group1</code> and <code>group2</code> are separate columns containing group names. This format
 automatically handles hyphens in group names.</p></li>
-<li><p><strong>Single-variable formula</strong>: <code>p.value ~ Comparison</code> where <code>Comparison</code> is a
+<li><p><strong>Single-variable formula</strong>: <code>p_value ~ Comparison</code> where <code>Comparison</code> is a
 column with pre-formatted comparison strings (e.g., "A-B", "A-C"). This format
 has limitations with hyphenated group names.
 Usually used in combination with <code>data</code>.</p></li>
@@ -205,15 +205,15 @@ automatically detect and handle hyphens in group names by:</p><ol><li><p>Tempora
 </ol><p>An informational message is shown when this occurs. To suppress it, use
 <code>quiet_hyphen_warning = TRUE</code>.</p>
 <p><strong>Formula Method Limitation:</strong>
-The formula method (e.g., <code>make_cld(p.value ~ comparison, data = df)</code>) has
+The formula method (e.g., <code>make_cld(p_value ~ comparison, data = df)</code>) has
 limited support for group names with hyphens because it receives pre-formatted
 comparison strings where the separator hyphens cannot be reliably distinguished
 from hyphens within group names.</p>
 <p><strong>Best Practice for Hyphenated Group Names:</strong>
 Use the data.frame method with <code>gr1_col</code> and <code>gr2_col</code> parameters. This method
 handles hyphens automatically and seamlessly. For example:</p>
-<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Instead of: make_cld(p.value ~ comparison, data = df)</span></span>
-<span><span class="co"># Use: make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.value")</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Instead of: make_cld(p_value ~ comparison, data = df)</span></span>
+<span><span class="co"># Use: make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p_value")</span></span></code></pre><p></p></div>
 <p><strong>Alternative Workarounds for Formula Method:</strong></p><ul><li><p>Convert your data to matrix format (also handles hyphens automatically)</p></li>
 <li><p>Replace hyphens in group names with underscores before creating comparisons
 #' * Compare groups with names that differ by case (e.g., using <code><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower()</a></code> first)</p></li>
@@ -339,7 +339,7 @@ https://www.tandfonline.com/doi/abs/10.1198/1061860043515</p>
 <span class="r-in"><span><span class="co"># Example 7: Using formula interface</span></span></span>
 <span class="r-in"><span><span class="va">my_dataframe</span> <span class="op">&lt;-</span> <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="st">'Comparison     p.value p.adjust</span></span></span>
+<span class="r-in"><span>    <span class="st">'Comparison     p_value p.adjust</span></span></span>
 <span class="r-in"><span><span class="st">    "EE - GB = 0"        1 1.000000</span></span></span>
 <span class="r-in"><span><span class="st">    "EE - CY = 0" 0.001093 0.003279</span></span></span>
 <span class="r-in"><span><span class="st">    "GB - CY = 0" 0.005477 0.008216'</span></span></span>
