@@ -1,0 +1,153 @@
+url: https://gegznav.github.io/cld/
+destination: docs
+development:
+  mode: auto
+
+# Reference organization uses @concept tags and pattern matching for automatic
+# population. This ensures new functions are automatically included without 
+# manual updates to this file.
+#
+# Concepts used:
+#   - main_functions: Primary user-facing functions
+#   - helper_functions: Utility and conversion functions
+#   - output_methods: Print and display methods
+#   - cld_object_methods: Methods specific to cld_object class
+#
+# Pattern matching:
+#   - starts_with("make_cld."): All S3 methods for make_cld
+#   - starts_with("as_cld"): All converter functions
+#   - matches("^(print|as\\.).*cld"): All print and coercion methods
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  bslib:
+    primary: "#0054AD"
+    border-radius: 0.5rem
+    btn-border-radius: 0.25rem
+  # opengraph:
+  #   image:
+  #     src: man/figures/logo.png
+  #     alt: "cld package logo"
+
+
+code:
+  width: 80
+  
+toc:
+  depth: 3
+
+search:
+  exclude: ['news/index.html']
+
+reference:
+  - title: "Main Functions"
+    desc: >
+      Core functions for creating compact letter displays from statistical test results.
+      These are the primary user-facing functions.
+    contents:
+      - has_concept("main_functions")
+      
+  - title: "S3 Methods for make_cld"
+    desc: >
+      Methods for different input object types. These methods are automatically 
+      dispatched based on the class of the input object.
+    contents:
+      - starts_with("make_cld.")
+      
+  - title: "Helper & Utility Functions"
+    desc: >
+      Functions for data conversion, preparation, and creating CLD objects from 
+      other formats.
+    contents:
+      - has_concept("helper_functions")
+      - starts_with("as_cld")
+      - -as_cld.cld_object
+      
+  - title: "Output Handling & Coercion Methods"
+    desc: >
+      Print methods and coercion functions for converting cld_object to other formats.
+    contents:
+      - has_concept("output_methods")
+      - has_concept("cld_object_methods")
+      - matches("^(print|as\\.).*cld")
+      
+  - title: "Internal Functions"
+    desc: >
+      Internal helper functions (not typically needed by end users).
+    contents:
+      - lacks_concepts(c("main_functions", "helper_functions", "output_methods", "cld_object_methods"))
+
+navbar:
+  structure:
+    left: [intro, reference, articles, tutorials, news]
+    right: [search, github]
+  components:
+    home: ~
+    intro:
+      text: Get Started
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    articles:
+      text: Articles
+      menu:
+      - text: "-------"
+      - text: "Getting Started"
+      - text: "Introduction to cld"
+        href: articles/cld.html
+      - text: "-------"
+      - text: "User Guides"
+      - text: "Supported Input Formats"
+        href: articles/cld-input-formats.html
+      - text: "Understanding and Interpreting CLDs"
+        href: articles/cld-interpretation-guide.html
+      - text: "Advanced Features and Customization"
+        href: articles/cld-advanced-features.html
+    tutorials:
+      text: Tutorials
+      href: articles/index.html
+    news:
+      text: News
+      href: news/index.html
+    github:
+      icon: fab fa-github
+      href: https://github.com/GegznaV/cld
+      aria-label: GitHub
+
+authors:
+  Vilmantas Gegzna:
+    href: https://github.com/GegznaV
+
+articles:
+  - title: Getting Started
+    navbar: ~
+    contents:
+    - cld
+  - title: User Guides
+    contents:
+    - cld-input-formats
+    - cld-interpretation-guide
+    - cld-advanced-features
+
+home:
+  title: "Compact Letter Display for Post-Hoc Comparisons"
+  description: >
+    Create compact letter displays (CLDs) for post-hoc comparisons in R. 
+    Works with outputs from various statistical packages including base R,
+    PMCMRplus, rstatix, and DescTools.
+  links:
+  - text: Report an issue
+    href: https://github.com/GegznaV/cld/issues
+  - text: Learn more
+    href: https://gegznav.github.io/cld/articles/cld.html
+  sidebar:
+    structure: [links, license, community, citation, authors, dev]
+
+footer:
+  structure:
+    left: [developed_by, built_with]
+    right: [package]
+  components:
+    package: "Powered by **cld** package"
