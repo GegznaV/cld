@@ -9,6 +9,16 @@
 #' * `as.character.cld_object()`: Returns a named character vector of letters
 #' * `as_tibble.cld_object()`: Returns a tibble
 #'
+#' @family output methods
+#' @family cld_object methods
+#' @concept output_methods
+#' @concept cld_object_methods
+#' @keywords print
+#'
+#' @seealso
+#' * [make_cld()] for creating compact letter displays
+#' * [as_cld()] for converting objects to cld_object
+#'
 #' @name cld_methods
 #' @export
 #'

@@ -21,6 +21,17 @@
 #' * Converting custom formats to use cld's print and coercion methods
 #' * Creating CLD objects programmatically
 #'
+#' @family helper functions
+#' @family data conversion functions
+#' @concept helper_functions
+#' @concept data_conversion
+#' @keywords manip
+#'
+#' @seealso
+#' * [make_cld()] for creating compact letter displays
+#' * [pval_matrix_to_df()] for converting p-value matrices
+#' * [cld_methods] for other cld_object methods
+#'
 #' @export
 #'
 #' @examples

@@ -15,7 +15,15 @@
 #' * `gr2` - names from the rows of the matrix
 #' * `p_values` - the corresponding p-values from the matrix (excluding `NA` values)
 #'
-#' @seealso [make_cld()] for creating compact letter displays from the resulting data frame.
+#' @family helper functions
+#' @family data conversion functions
+#' @concept helper_functions
+#' @concept data_conversion
+#' @keywords manip
+#'
+#' @seealso
+#' * [make_cld()] for creating compact letter displays from the resulting data frame
+#' * [as_cld()] for converting other formats to cld_object
 #'
 #' @export
 #'

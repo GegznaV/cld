@@ -1,3 +1,24 @@
+# Documentation Tagging System
+# =============================
+# This package uses a comprehensive tagging system for automatic organization:
+#
+# @concept tags (for pkgdown automatic grouping):
+#   - main_functions: Primary user-facing functions (make_cld)
+#   - helper_functions: Utility functions (pval_matrix_to_df, as_cld)
+#   - output_methods: Print and display methods
+#   - cld_object_methods: Methods for cld_object class
+#
+# @family tags (for "See Also" cross-references):
+#   - Provide automatic cross-referencing between related functions
+#   - Create "See Also" sections in documentation
+#
+# @keywords tags (for R CMD check and documentation categorization):
+#   - htest: Statistical hypothesis testing functions
+#   - manip: Data manipulation functions
+#   - print: Print methods
+#
+# =============================
+
 #' Make a compact letter display (CLD) for pair-wise comparisons
 #'
 #' Creates a compact letter display for results of pair-wise comparisons
@@ -72,9 +93,23 @@
 #' The rows are ordered according to the group names. Groups with the same letter(s)
 #' do not differ significantly at the specified alpha level.
 #'
+#' @family compact letter display functions
+#' @family main functions
+#' @concept main_functions
+#' @concept cld_creation
+#' @keywords htest
+#'
 #' @seealso
+#' **Helper Functions:**
 #' * [pval_matrix_to_df()] for converting p-value matrices to data frames
-#' * [multcompView::multcompLetters()] for the underlying letter generation algorithm
+#' * [as_cld()] for converting other formats to cld_object
+#'
+#' **Output Methods:**
+#' * [print.cld_object()] for displaying CLD results
+#' * [cld_methods] for coercion methods (as.data.frame, as.character, as_tibble)
+#'
+#' **Underlying Algorithm:**
+#' * [multcompView::multcompLetters()] for the letter generation algorithm
 #'
 #' @references
 #' Piepho HP (2004). An algorithm for a letter-based representation of
