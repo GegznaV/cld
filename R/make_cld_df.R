@@ -19,14 +19,14 @@
 #' @param threshold Numeric value between 0 and 1. The significance threshold
 #'   (alpha level) for determining significant differences. Comparisons with
 #'   p-values below this threshold are marked as significant. Default is 0.05.
-#' @param print.comp Logical. If `TRUE`, prints the comparison names. Default is `FALSE`.
-#' @param remove.space Logical. If `TRUE`, removes spaces from comparison strings.
+#' @param print_comp Logical. If `TRUE`, prints the comparison names. Default is `FALSE`.
+#' @param remove_space Logical. If `TRUE`, removes spaces from comparison strings.
 #'   Default is `TRUE`.
-#' @param remove.equal Logical. If `TRUE`, removes equal signs from comparison strings.
+#' @param remove_equal Logical. If `TRUE`, removes equal signs from comparison strings.
 #'   Default is `TRUE`.
-#' @param swap.colon Logical. If `TRUE`, replaces colons with hyphens in comparison strings.
+#' @param swap_colon Logical. If `TRUE`, replaces colons with hyphens in comparison strings.
 #'   Default is `TRUE`.
-#' @param swap.vs Logical. If `TRUE`, replaces "vs" with hyphens in comparison strings.
+#' @param swap_vs Logical. If `TRUE`, replaces "vs" with hyphens in comparison strings.
 #'   Default is `FALSE`.
 #' @param reversed Logical. Passed to [multcompView::multcompLetters()]. If `TRUE`,
 #'   reverses the letter ordering. Default is `FALSE`.

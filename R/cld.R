@@ -21,21 +21,27 @@
 #' @param ... Further arguments passed to internal methods. These may include:
 #'   * `reversed` - Logical. If `TRUE`, reverses the letter ordering (default: `FALSE`)
 #'   * `swap_compared_names` - Logical. If `TRUE`, swaps group order in comparisons (default: `FALSE`)
-#'   * `print.comp` - Logical. If `TRUE`, prints comparison names (default: `FALSE`)
+#'   * `print_comp` - Logical. If `TRUE`, prints comparison names (default: `FALSE`)
+#'   * `sep` - Character. Custom separator for comparison strings (default: `"-"`). Use this
+#'     when your group names contain hyphens. For example, use `sep = ":"` or `sep = ";"`.
+#'     Only applies to single-variable formula method. Not needed for two-variable formula.
 #'   Additional cleaning options (default: `TRUE` for most methods):
-#'   * `remove.space` - Removes spaces from comparison strings
-#'   * `remove.equal` - Removes equal signs from comparison strings
-#'   * `swap.colon` - Replaces colons with hyphens
-#'   * `swap.vs` - Replaces "vs" with hyphens (default: `FALSE`)
+#'   * `remove_space` - Removes spaces from comparison strings
+#'   * `remove_equal` - Removes equal signs from comparison strings
+#'   * `swap_colon` - Replaces colons with hyphens (use `FALSE` if using `:` as separator)
+#'   * `swap_vs` - Replaces "vs" with hyphens (default: `FALSE`)
 #'
 #' @param data A data frame with p-values and names of comparisons. This argument
 #'   is required when `obj` is a formula. The data frame should contain at least
 #'   two columns: one for p-values and one for comparison labels. See examples for details.
 #'
-#' @param formula An R model [stats::formula()] where the left-hand side
-#'   term indicates the variable with p-values and the right-hand side term defines
-#'   the variable with comparisons, e.g., `p.adjust ~ Comparison`. This provides
-#'   a flexible way to specify which columns in `data` contain the relevant information.
+#' @param formula An R model [stats::formula()] with two possible formats:
+#'   * **Two-variable formula** (recommended): `p.value ~ group1 + group2` where
+#'     `group1` and `group2` are separate columns containing group names. This format
+#'     automatically handles hyphens in group names.
+#'   * **Single-variable formula**: `p.value ~ Comparison` where `Comparison` is a
+#'     column with pre-formatted comparison strings (e.g., "A-B", "A-C"). This format
+#'     has limitations with hyphenated group names.
 #'   Usually used in combination with `data`.
 #'
 #' @param alpha Numeric value between 0 and 1. The significance level (alpha) for determining
@@ -53,7 +59,7 @@
 #'   the p-values for each comparison. Default is `"p.adj"` (adjusted p-values).
 #'   Only used for the data.frame method. Can also be `"p.value"` or any other
 #'   column name containing numeric p-values.
-#' @param remove.space Logical. If `TRUE`, removes spaces from comparison strings.
+#' @param remove_space Logical. If `TRUE`, removes spaces from comparison strings.
 #'   Default is `FALSE` for the data.frame method to preserve original formatting.
 #'   Set to `TRUE` if your group names contain spaces and you want compact comparisons.
 #'
@@ -97,12 +103,22 @@
 #' The formula method (e.g., `make_cld(p.value ~ comparison, data = df)`) has
 #' limited support for group names with hyphens because it receives pre-formatted
 #' comparison strings where the separator hyphens cannot be reliably distinguished
-#' from hyphens within group names. For data with hyphenated group names, use one
-#' of these alternatives:
-#' * Use the data.frame method with `gr1_col` and `gr2_col` parameters
-#' * Convert your data to matrix format
+#' from hyphens within group names.
+#'
+#' **Best Practice for Hyphenated Group Names:**
+#' Use the data.frame method with `gr1_col` and `gr2_col` parameters. This method
+#' handles hyphens automatically and seamlessly. For example:
+#' ```r
+#' # Instead of: make_cld(p.value ~ comparison, data = df)
+#' # Use: make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.value")
+#' ```
+#'
+#' **Alternative Workarounds for Formula Method:**
+#' * Convert your data to matrix format (also handles hyphens automatically)
 #' * Replace hyphens in group names with underscores before creating comparisons
-#' * Use a different separator in comparison strings (e.g., " vs " with `swap.vs = TRUE`)
+#' #' * Compare groups with names that differ by case (e.g., using `tolower()` first)
+#' * Include group names without comparisons (using `include_all = TRUE` if available)
+#' * Use a different separator in comparison strings (e.g., " vs " with `swap_vs = TRUE`)
 #'
 #' @export
 #'
