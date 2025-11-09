@@ -36,6 +36,7 @@ Key Features:
 - 🎯 **One function** - `make_cld()` handles all input types automatically
 - 📊 **Publication-ready** - Clean, professional statistical grouping labels
 - 📝 **Informative** - Stores metadata (alpha, method, comparison counts)
+- 🛠️ **Well-tested** - Comprehensive unit tests ensure reliability
 
 ## Installation
 
@@ -110,7 +111,7 @@ The `make_cld()` function works seamlessly with:
 | [PMCMRplus](https://cran.r-project.org/package=PMCMRplus) | Post-hoc tests | Compatible input for **cld** |
 | [rstatix](https://cran.r-project.org/package=rstatix) | Tidy statistics | Compatible input for **cld** |
 | [DescTools](https://cran.r-project.org/package=DescTools) | Statistical tools | Compatible input for **cld** |
-| [emmeans](https://cran.r-project.org/package=emmeans) | Marginal means | Planned future support |
+
 
 ## Getting Help
 
