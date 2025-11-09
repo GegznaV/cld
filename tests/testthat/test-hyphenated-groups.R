@@ -173,13 +173,27 @@ test_that("make_cld.formula with hyphenated names still has limitation", {
     stringsAsFactors = FALSE
   )
 
-  # Formula method doesn't have gr1/gr2, so it's harder to handle
-  # For now, this still has limitations with complex cases
-  skip("Formula method with complex hyphenated names needs special handling")
+  # Formula method limitation: When comparison strings are pre-formatted with
+  # hyphens as separators (e.g., "Plant-based - Synthetic (K-6)"), we cannot
+  # reliably distinguish separator hyphens from hyphens within group names.
+  # This is a fundamental limitation of the formula interface.
+  # 
+  # Recommended alternatives for hyphenated group names:
+  # 1. Use data.frame method with gr1_col/gr2_col (works automatically)
+  # 2. Use matrix method (works automatically)
+  # 3. Use different separator in formula (e.g., " vs " with swap.vs=TRUE)
+  # 4. Replace hyphens in group names before creating comparisons
+  
+  skip("Formula method has limited support for hyphenated group names - see documentation")
+  
+  # If we were to run this, it would fail with:
+  # Error: Names must contain exactly one '-' each
+  # This is expected because multcompView sees multiple hyphens and can't parse them
 })
 
-test_that("make_cld.formula workaround: use alternative separator", {
-  # WORKAROUND: Use a different separator like " vs " or " | "
+test_that("formula method workaround 1: use alternative separator", {
+  # WORKAROUND 1: Use a different separator like " vs " instead of "-"
+  # This works when you can control the comparison string format
   my_data <- data.frame(
     Comparison = c(
       "Plant_based vs Synthetic (K_6)",
@@ -196,6 +210,46 @@ test_that("make_cld.formula workaround: use alternative separator", {
   expect_s3_class(result, "cld_object")
   expect_equal(nrow(result), 3)
   expect_true("Plant_based" %in% result$group)
+})
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+test_that("formula method workaround 2: convert to data.frame method", {
+  # WORKAROUND 2: Parse comparison strings to create gr1/gr2 columns
+  # This is the RECOMMENDED approach for hyphenated names
+  my_data <- data.frame(
+    Comparison = c(
+      "Plant-based - Synthetic (K-6)",
+      "Plant-based - Synthetic (A-9)",
+      "Synthetic (K-6) - Synthetic (A-9)"
+    ),
+    p.adjust = c(0.001, 0.002, 0.850),
+    stringsAsFactors = FALSE
+  )
+  
+  # Split on " - " (note the spaces - important for parsing)
+  comparison_parts <- strsplit(my_data$Comparison, " - ", fixed = TRUE)
+  df_structured <- data.frame(
+    group1 = sapply(comparison_parts, `[`, 1),
+    group2 = sapply(comparison_parts, `[`, 2),
+    p.adj = my_data$p.adjust,
+    stringsAsFactors = FALSE
+  )
+  
+  # Now use data.frame method - this works with hyphens!
+  expect_message(
+    result <- make_cld(df_structured, gr1_col = "group1", gr2_col = "group2",
+      p_val_col = "p.adj", alpha = 0.05),
+    "Group names contain hyphens"
+  )
+
+  expect_s3_class(result, "cld_object")
+  expect_equal(nrow(result), 3)
+  
+  # Original hyphens are preserved
+  expect_true("Plant-based" %in% result$group)
+  expect_true(any(grepl("K-6", result$group)))
+  expect_true(any(grepl("A-9", result$group))
+)
 })
 
 # ============================================================================
