@@ -104,11 +104,11 @@ in agricultural, biological, and statistical reporting.</p>
 <dd><p>Object with pair-wise comparisons (e.g., post-hoc test results).
 Currently supported object classes:</p><ul><li><p><code>PMCMR</code> - from packages <strong>PMCMR</strong> and <strong>PMCMRplus</strong></p></li>
 <li><p><code>pairwise.htest</code> - from base R (e.g., <code>pairwise.t.test</code>, <code>pairwise.wilcox.test</code>)</p></li>
-<li><p><code>posthoc_anova</code> - from package <strong>rstatix</strong> (e.g., <code>games_howell_test</code>, <code>tukey_hsd</code>)</p></li>
+<li><p><code>data.frame</code> - with comparison results from packages like <strong>rstatix</strong> (e.g., <code>games_howell_test</code>, <code>tukey_hsd</code>).
+Requires <code>gr1_col</code>, <code>gr2_col</code>, <code>p_val_col</code> specification.</p></li>
 <li><p><code>PostHocTest</code> - from package <strong>DescTools</strong> (e.g., <code>ConoverTest</code>, <code>DunnettTest</code>)</p></li>
 <li><p><code>DunnTest</code> - from package <strong>DescTools</strong></p></li>
 <li><p><code>matrix</code> - symmetric matrices of p-values</p></li>
-<li><p><code>data.frame</code> - with comparison results (requires <code>gr1_col</code>, <code>gr2_col</code>, <code>p_val_col</code> specification)</p></li>
 <li><p><code>formula</code> - interface for data frames</p></li>
 <li><p><code>pairwise_pval_df</code> - output from <code><a href="pval_matrix_to_df.html">pval_matrix_to_df()</a></code></p></li>
 </ul></dd>
@@ -132,8 +132,7 @@ Additional cleaning options (default: <code>TRUE</code> for most methods):</p></
 <dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
 <dd><p>Numeric value between 0 and 1. The significance level (alpha) for determining
 which comparisons are significantly different. Comparisons with p-values below this
-threshold are considered significant. Default is 0.05.
-Note: For <code>posthoc_anova</code> objects, the default is calculated as <code>1 - conf_level</code>.</p></dd>
+threshold are considered significant. Default is 0.05.</p></dd>
 
 
 <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
@@ -215,9 +214,7 @@ handles hyphens automatically and seamlessly. For example:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="co"># Instead of: make_cld(p_value ~ comparison, data = df)</span></span>
 <span><span class="co"># Use: make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p_value")</span></span></code></pre><p></p></div>
 <p><strong>Alternative Workarounds for Formula Method:</strong></p><ul><li><p>Convert your data to matrix format (also handles hyphens automatically)</p></li>
-<li><p>Replace hyphens in group names with underscores before creating comparisons
-#' * Compare groups with names that differ by case (e.g., using <code><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower()</a></code> first)</p></li>
-<li><p>Include group names without comparisons (using <code>include_all = TRUE</code> if available)</p></li>
+<li><p>Replace hyphens in group names with underscores before creating comparisons</p></li>
 <li><p>Use a different separator in comparison strings (e.g., " vs " with <code>swap_vs = TRUE</code>)</p></li>
 </ul></div>
     <div id="references">
@@ -322,10 +319,10 @@ https://www.tandfonline.com/doi/abs/10.1198/1061860043515</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ctrl  ab         ab</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Example 6: Using rstatix objects</span></span></span>
+<span class="r-in"><span><span class="co"># Example 6: Using rstatix data frames (via data.frame method)</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">obj6</span> <span class="op">&lt;-</span> <span class="fu">rstatix</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/rstatix/reference/games_howell_test.html" class="external-link">games_howell_test</a></span><span class="op">(</span><span class="va">PlantGrowth</span>, <span class="va">weight</span> <span class="op">~</span> <span class="va">group</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">cld</span><span class="fu">::</span><span class="fu">make_cld</span><span class="op">(</span><span class="va">obj6</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">cld</span><span class="fu">::</span><span class="fu">make_cld</span><span class="op">(</span><span class="va">obj6</span>, gr1_col <span class="op">=</span> <span class="st">"group1"</span>, gr2_col <span class="op">=</span> <span class="st">"group2"</span>, p_val_col <span class="op">=</span> <span class="st">"p.adj"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Compact Letter Display (CLD)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. level (alpha):  0.05 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Method:  data.frame </span>

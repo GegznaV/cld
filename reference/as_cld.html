@@ -83,8 +83,12 @@ custom formats and want to use them with cld's methods.</p>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>cld_object</code> (data frame with class <code>c("cld_object", "data.frame")</code>)</p>
-    </div>
+    <p>A <code>cld_object</code> (data frame with class <code>c("cld_object", "data.frame")</code>)
+containing three columns:</p><ul><li><p><code>group</code> - Character. The names of the groups</p></li>
+<li><p><code>cld</code> - Character. The compact letter display for each group</p></li>
+<li><p><code>spaced_cld</code> - Character. A monospaced version of the CLD where spaces are
+replaced with underscores, useful for maintaining alignment in output</p></li>
+</ul></div>
     <div id="details">
     <h2>Details</h2>
     <p>The <code>as_cld()</code> function provides a way to convert various formats to
