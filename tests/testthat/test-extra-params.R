@@ -6,11 +6,11 @@ test_that("swap_compared_names normalizes reversed comparisons", {
 
   res1 <- cld:::make_cld_df(comparison = comps_rev, p.value = pvals,
     threshold = 0.05, swap_compared_names = TRUE,
-    print.comp = FALSE)
+    print_comp = FALSE)
 
   res2 <- cld:::make_cld_df(comparison = c("A-B", "A-C", "B-C"),
     p.value = pvals, threshold = 0.05,
-    print.comp = FALSE)
+    print_comp = FALSE)
 
   # Compare sorted by group to avoid ordering differences
   expect_equal(res1[order(res1$group), ], res2[order(res2$group), ])
@@ -22,11 +22,11 @@ test_that("reversed changes letter ordering", {
 
   res_norm <- cld:::make_cld_df(comparison = comps, p.value = pvals,
     threshold = 0.05, reversed = FALSE,
-    print.comp = FALSE)
+    print_comp = FALSE)
 
   res_rev <- cld:::make_cld_df(comparison = comps, p.value = pvals,
     threshold = 0.05, reversed = TRUE,
-    print.comp = FALSE)
+    print_comp = FALSE)
 
   # Letters should not be identical when reversed = TRUE
   expect_false(all(res_norm$cld == res_rev$cld))
@@ -34,41 +34,41 @@ test_that("reversed changes letter ordering", {
   expect_setequal(res_norm$group, res_rev$group)
 })
 
-test_that("print.comp and cleaning options (swap.vs, swap.colon, remove.equal, remove.space)", {
+test_that("print_comp and cleaning options (swap_vs, swap_colon, remove_equal, remove_space)", {
   pvals <- c(0.2, 0.01, 0.01)
 
-  # swap.vs: "vs" should be replaced with '-'
+  # swap_vs: "vs" should be replaced with '-'
   comps_vs <- c("A vs B", "A vs C", "B vs C")
   out_vs <- capture.output(
     cld:::make_cld_df(comparison = comps_vs, p.value = pvals,
-      threshold = 0.05, swap.vs = TRUE, print.comp = TRUE)
+      threshold = 0.05, swap_vs = TRUE, print_comp = TRUE)
   )
   expect_false(any(grepl("vs", out_vs)))
   expect_true(any(grepl("-", out_vs)))
 
-  # swap.colon: ':' should be replaced with '-' in comparisons
+  # swap_colon: ':' should be replaced with '-' in comparisons
   comps_colon <- c("A:B", "A:C", "B:C")
   out_colon <- capture.output(
     cld:::make_cld_df(comparison = comps_colon, p.value = pvals,
-      threshold = 0.05, swap.colon = TRUE, print.comp = TRUE)
+      threshold = 0.05, swap_colon = TRUE, print_comp = TRUE)
   )
   # Check that A:B pattern (comparison with colon) is not in output
   expect_false(any(grepl("A:B|A:C|B:C", out_colon)))
   expect_true(any(grepl("A-B|A-C|B-C", out_colon)))
 
-  # remove.equal: '=' should be removed from strings
+  # remove_equal: '=' should be removed from strings
   comps_eq <- c("A - B = 0", "A - C = 0", "B - C = 0")
   out_eq <- capture.output(
     cld:::make_cld_df(comparison = comps_eq, p.value = pvals,
-      threshold = 0.05, remove.equal = TRUE, print.comp = TRUE)
+      threshold = 0.05, remove_equal = TRUE, print_comp = TRUE)
   )
   expect_false(any(grepl("=", out_eq)))
 
-  # remove.space: spaces around '-' should be removed
+  # remove_space: spaces around '-' should be removed
   comps_space <- c("A - B", "A - C", "B - C")
   out_space <- capture.output(
     cld:::make_cld_df(comparison = comps_space, p.value = pvals,
-      threshold = 0.05, remove.space = TRUE, print.comp = TRUE)
+      threshold = 0.05, remove_space = TRUE, print_comp = TRUE)
   )
   # Expect to see the compact form A-B (no spaces) and not the spaced form
   expect_true(any(grepl("A-B", out_space)))
