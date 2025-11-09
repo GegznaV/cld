@@ -148,5 +148,5 @@ attr(cld_result, "n_significant")   # Significant comparisons
 
 - `vignette("cld")` -- Basic usage guide
 - `vignette("cld-input-formats")` -- Supported input types
-- `vignette("cld-advanced-features")` -- Customization and plotting
+- `vignette("cld-advanced-features")` -- Advanced features and customization
 - `?cld::make_cld` -- Function documentation
