@@ -44,11 +44,11 @@ Currently supported object classes:
 \itemize{
 \item \code{PMCMR} - from packages \strong{PMCMR} and \strong{PMCMRplus}
 \item \code{pairwise.htest} - from base R (e.g., \code{pairwise.t.test}, \code{pairwise.wilcox.test})
-\item \code{posthoc_anova} - from package \strong{rstatix} (e.g., \code{games_howell_test}, \code{tukey_hsd})
+\item \code{data.frame} - with comparison results from packages like \strong{rstatix} (e.g., \code{games_howell_test}, \code{tukey_hsd}).
+Requires \code{gr1_col}, \code{gr2_col}, \code{p_val_col} specification.
 \item \code{PostHocTest} - from package \strong{DescTools} (e.g., \code{ConoverTest}, \code{DunnettTest})
 \item \code{DunnTest} - from package \strong{DescTools}
 \item \code{matrix} - symmetric matrices of p-values
-\item \code{data.frame} - with comparison results (requires \code{gr1_col}, \code{gr2_col}, \code{p_val_col} specification)
 \item \code{formula} - interface for data frames
 \item \code{pairwise_pval_df} - output from \code{\link[=pval_matrix_to_df]{pval_matrix_to_df()}}
 }}
@@ -70,8 +70,7 @@ Additional cleaning options (default: \code{TRUE} for most methods):
 
 \item{alpha}{Numeric value between 0 and 1. The significance level (alpha) for determining
 which comparisons are significantly different. Comparisons with p-values below this
-threshold are considered significant. Default is 0.05.
-Note: For \code{posthoc_anova} objects, the default is calculated as \code{1 - conf_level}.}
+threshold are considered significant. Default is 0.05.}
 
 \item{data}{A data frame with p-values and names of comparisons. This argument
 is required when \code{obj} is a formula. The data frame should contain at least
@@ -163,8 +162,6 @@ handles hyphens automatically and seamlessly. For example:
 \itemize{
 \item Convert your data to matrix format (also handles hyphens automatically)
 \item Replace hyphens in group names with underscores before creating comparisons
-#' * Compare groups with names that differ by case (e.g., using \code{tolower()} first)
-\item Include group names without comparisons (using \code{include_all = TRUE} if available)
 \item Use a different separator in comparison strings (e.g., " vs " with \code{swap_vs = TRUE})
 }
 }
@@ -198,10 +195,10 @@ obj5 <- DescTools::ConoverTest(weight ~ group, data = PlantGrowth)
 cld::make_cld(obj5)
 }
 
-# Example 6: Using rstatix objects
+# Example 6: Using rstatix data frames (via data.frame method)
 \donttest{
 obj6 <- rstatix::games_howell_test(PlantGrowth, weight ~ group)
-cld::make_cld(obj6)
+cld::make_cld(obj6, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.adj")
 }
 
 # Example 7: Using formula interface

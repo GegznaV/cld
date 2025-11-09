@@ -22,6 +22,13 @@ as_cld(x, ...)
 }
 \value{
 A \code{cld_object} (data frame with class \code{c("cld_object", "data.frame")})
+containing three columns:
+\itemize{
+\item \code{group} - Character. The names of the groups
+\item \code{cld} - Character. The compact letter display for each group
+\item \code{spaced_cld} - Character. A monospaced version of the CLD where spaces are
+replaced with underscores, useful for maintaining alignment in output
+}
 }
 \description{
 Generic function to convert various objects to \code{cld_object} format.
