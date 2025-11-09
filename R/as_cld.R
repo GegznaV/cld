@@ -8,6 +8,11 @@
 #' @param ... Additional arguments passed to methods
 #'
 #' @return A `cld_object` (data frame with class `c("cld_object", "data.frame")`)
+#'   containing three columns:
+#' * `group` - Character. The names of the groups
+#' * `cld` - Character. The compact letter display for each group
+#' * `spaced_cld` - Character. A monospaced version of the CLD where spaces are
+#'   replaced with underscores, useful for maintaining alignment in output
 #'
 #' @details
 #' The `as_cld()` function provides a way to convert various formats to

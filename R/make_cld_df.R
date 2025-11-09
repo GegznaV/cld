@@ -40,6 +40,9 @@
 #'   group pairs (e.g., "GroupA-GroupB"). When group names contain hyphens (e.g.,
 #'   "Plant-based"), they are temporarily replaced with alternative characters
 #'   (underscore, en-dash, etc.) and restored after processing.
+#' @param sep Character. Custom separator for comparison strings. Default is `"-"`.
+#'   Use this when your group names contain hyphens. For example, use `sep = ":"` or
+#'   `sep = ";"`. Only applies when `comparison` is provided (not when using `gr1`/`gr2`).
 #' @param gr1 Character vector of first group names in each comparison. Used internally
 #'   as an alternative to the `comparison` parameter for better hyphen handling.
 #' @param gr2 Character vector of second group names in each comparison. Used internally

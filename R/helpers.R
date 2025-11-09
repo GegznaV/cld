@@ -62,7 +62,7 @@ is_square_matrix <- function(x) {
 #'
 #' @noRd
 #' @keywords internal
-is_symetric_matrix <- function(x) {
+is_symmetric_matrix <- function(x) {
   checkmate::assert_matrix(x, mode = "numeric")
   if (!is_square_matrix(x)) {
     stop("Matrix is not square", call. = FALSE)

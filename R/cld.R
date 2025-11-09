@@ -10,11 +10,11 @@
 #'   Currently supported object classes:
 #'   * `PMCMR` - from packages **PMCMR** and **PMCMRplus**
 #'   * `pairwise.htest` - from base R (e.g., `pairwise.t.test`, `pairwise.wilcox.test`)
-#'   * `posthoc_anova` - from package **rstatix** (e.g., `games_howell_test`, `tukey_hsd`)
+#'   * `data.frame` - with comparison results from packages like **rstatix** (e.g., `games_howell_test`, `tukey_hsd`).
+#'     Requires `gr1_col`, `gr2_col`, `p_val_col` specification.
 #'   * `PostHocTest` - from package **DescTools** (e.g., `ConoverTest`, `DunnettTest`)
 #'   * `DunnTest` - from package **DescTools**
 #'   * `matrix` - symmetric matrices of p-values
-#'   * `data.frame` - with comparison results (requires `gr1_col`, `gr2_col`, `p_val_col` specification)
 #'   * `formula` - interface for data frames
 #'   * `pairwise_pval_df` - output from [pval_matrix_to_df()]
 #'
@@ -47,7 +47,6 @@
 #' @param alpha Numeric value between 0 and 1. The significance level (alpha) for determining
 #'   which comparisons are significantly different. Comparisons with p-values below this
 #'   threshold are considered significant. Default is 0.05.
-#'   Note: For `posthoc_anova` objects, the default is calculated as `1 - conf_level`.
 #' @param gr1_col Character string. Name of the column in the data frame containing
 #'   the first group names in each pairwise comparison. Default is `"group1"`.
 #'   Only used for the data.frame method. The function will construct comparisons
@@ -116,8 +115,6 @@
 #' **Alternative Workarounds for Formula Method:**
 #' * Convert your data to matrix format (also handles hyphens automatically)
 #' * Replace hyphens in group names with underscores before creating comparisons
-#' #' * Compare groups with names that differ by case (e.g., using `tolower()` first)
-#' * Include group names without comparisons (using `include_all = TRUE` if available)
 #' * Use a different separator in comparison strings (e.g., " vs " with `swap_vs = TRUE`)
 #'
 #' @export
@@ -151,10 +148,10 @@
 #' cld::make_cld(obj5)
 #' }
 #'
-#' # Example 6: Using rstatix objects
+#' # Example 6: Using rstatix data frames (via data.frame method)
 #' \donttest{
 #' obj6 <- rstatix::games_howell_test(PlantGrowth, weight ~ group)
-#' cld::make_cld(obj6)
+#' cld::make_cld(obj6, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.adj")
 #' }
 #'
 #' # Example 7: Using formula interface
