@@ -130,6 +130,39 @@ The significance level is automatically derived from the confidence level
 used in the test (alpha = 1 - conf_level), but can be overridden.
 }
 }
+\section{Handling Group Names with Hyphens}{
+
+The underlying multcompView package uses hyphens (\code{-}) as the default separator
+between group names in comparison strings (e.g., "GroupA-GroupB"). This creates
+a conflict when group names themselves contain hyphens (e.g., "Plant-based",
+"Treatment-1").
+
+\strong{Automatic Handling:}
+Most methods (matrix, data.frame, pairwise.htest, pairwise_pval_df, and others)
+automatically detect and handle hyphens in group names by:
+\enumerate{
+\item Temporarily replacing hyphens with alternative characters (underscore, en-dash, etc.)
+\item Processing the comparisons
+\item Restoring the original hyphens in the output
+}
+
+An informational message is shown when this occurs. To suppress it, use
+\code{quiet_hyphen_warning = TRUE}.
+
+\strong{Formula Method Limitation:}
+The formula method (e.g., \code{make_cld(p.value ~ comparison, data = df)}) has
+limited support for group names with hyphens because it receives pre-formatted
+comparison strings where the separator hyphens cannot be reliably distinguished
+from hyphens within group names. For data with hyphenated group names, use one
+of these alternatives:
+\itemize{
+\item Use the data.frame method with \code{gr1_col} and \code{gr2_col} parameters
+\item Convert your data to matrix format
+\item Replace hyphens in group names with underscores before creating comparisons
+\item Use a different separator in comparison strings (e.g., " vs " with \code{swap.vs = TRUE})
+}
+}
+
 \examples{
 # Example 1: Using pairwise.htest (Wilcoxon test)
 obj1 <- stats::pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
