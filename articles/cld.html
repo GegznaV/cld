@@ -76,9 +76,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/GegznaV/cld" class="external-link">cld</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: S3 methods 'as.character.cld_object', 'as.data.frame.cld_object' were</span></span>
-<span><span class="co">#&gt; declared in NAMESPACE but not found</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/GegznaV/cld" class="external-link">cld</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -113,19 +111,23 @@ outputs. Here’s a simple example:</p>
 <span></span>
 <span><span class="co"># Generate compact letter display</span></span>
 <span><span class="fu"><a href="../reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">test_result</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1    casein   a        a__</span></span>
-<span><span class="co">#&gt; 2 horsebean   b        _b_</span></span>
-<span><span class="co">#&gt; 3   linseed  bc        _bc</span></span>
-<span><span class="co">#&gt; 4  meatmeal  ac        a_c</span></span>
-<span><span class="co">#&gt; 5   soybean   c        __c</span></span>
-<span><span class="co">#&gt; 6 sunflower   a        a__</span></span></code></pre></div>
+<span><span class="co">#&gt; Compact Letter Display (CLD)</span></span>
+<span><span class="co">#&gt; Signif. level (alpha):  0.05 </span></span>
+<span><span class="co">#&gt; Method:  Wilcoxon rank sum test with continuity correction </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;      group cld spaced_cld</span></span>
+<span><span class="co">#&gt;     casein   a        a__</span></span>
+<span><span class="co">#&gt;  horsebean   b        _b_</span></span>
+<span><span class="co">#&gt;    linseed  bc        _bc</span></span>
+<span><span class="co">#&gt;   meatmeal  ac        a_c</span></span>
+<span><span class="co">#&gt;    soybean   c        __c</span></span>
+<span><span class="co">#&gt;  sunflower   a        a__</span></span></code></pre></div>
 <p><strong>Interpretation</strong>:</p>
 <ul>
-<li>Groups with the same letter (e.g., casein and sunflower both have
-“a”) are not significantly different.</li>
-<li>Groups without shared letters (e.g., horsebean “b” and soybean “c”)
-are significantly different.</li>
+<li>Groups sharing at least one letter are <strong>not</strong>
+significantly different (e.g., casein and sunflower both have “a”);</li>
+<li>Groups with no shared letters <strong>are</strong> significantly
+different (e.g., horsebean “b” and soybean “c”).</li>
 </ul>
 </div>
 <div class="section level2">
@@ -138,13 +140,17 @@ are significantly different.</li>
 <code class="sourceCode R"><span><span class="co"># Pairwise Wilcoxon rank sum test</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/pairwise.wilcox.test.html" class="external-link">pairwise.wilcox.test</a></span><span class="op">(</span><span class="va">chickwts</span><span class="op">$</span><span class="va">weight</span>, <span class="va">chickwts</span><span class="op">$</span><span class="va">feed</span>, exact <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1    casein   a        a__</span></span>
-<span><span class="co">#&gt; 2 horsebean   b        _b_</span></span>
-<span><span class="co">#&gt; 3   linseed  bc        _bc</span></span>
-<span><span class="co">#&gt; 4  meatmeal  ac        a_c</span></span>
-<span><span class="co">#&gt; 5   soybean   c        __c</span></span>
-<span><span class="co">#&gt; 6 sunflower   a        a__</span></span></code></pre></div>
+<span><span class="co">#&gt; Compact Letter Display (CLD)</span></span>
+<span><span class="co">#&gt; Signif. level (alpha):  0.05 </span></span>
+<span><span class="co">#&gt; Method:  Wilcoxon rank sum test with continuity correction </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;      group cld spaced_cld</span></span>
+<span><span class="co">#&gt;     casein   a        a__</span></span>
+<span><span class="co">#&gt;  horsebean   b        _b_</span></span>
+<span><span class="co">#&gt;    linseed  bc        _bc</span></span>
+<span><span class="co">#&gt;   meatmeal  ac        a_c</span></span>
+<span><span class="co">#&gt;    soybean   c        __c</span></span>
+<span><span class="co">#&gt;  sunflower   a        a__</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="pairwise-t-test">Pairwise t-test<a class="anchor" aria-label="anchor" href="#pairwise-t-test"></a>
@@ -153,13 +159,17 @@ are significantly different.</li>
 <code class="sourceCode R"><span><span class="co"># Pairwise t-test</span></span>
 <span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/pairwise.t.test.html" class="external-link">pairwise.t.test</a></span><span class="op">(</span><span class="va">chickwts</span><span class="op">$</span><span class="va">weight</span>, <span class="va">chickwts</span><span class="op">$</span><span class="va">feed</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">result2</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1    casein   a        a__</span></span>
-<span><span class="co">#&gt; 2 horsebean   b        _b_</span></span>
-<span><span class="co">#&gt; 3   linseed  bc        _bc</span></span>
-<span><span class="co">#&gt; 4  meatmeal  ac        a_c</span></span>
-<span><span class="co">#&gt; 5   soybean   c        __c</span></span>
-<span><span class="co">#&gt; 6 sunflower   a        a__</span></span></code></pre></div>
+<span><span class="co">#&gt; Compact Letter Display (CLD)</span></span>
+<span><span class="co">#&gt; Signif. level (alpha):  0.05 </span></span>
+<span><span class="co">#&gt; Method:  t tests with pooled SD </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;      group cld spaced_cld</span></span>
+<span><span class="co">#&gt;     casein   a        a__</span></span>
+<span><span class="co">#&gt;  horsebean   b        _b_</span></span>
+<span><span class="co">#&gt;    linseed  bc        _bc</span></span>
+<span><span class="co">#&gt;   meatmeal  ac        a_c</span></span>
+<span><span class="co">#&gt;    soybean   c        __c</span></span>
+<span><span class="co">#&gt;  sunflower   a        a__</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -199,13 +209,17 @@ found</li>
 <span></span>
 <span><span class="co"># View result</span></span>
 <span><span class="va">cld_result</span></span>
-<span><span class="co">#&gt;       group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1    casein   a        a__</span></span>
-<span><span class="co">#&gt; 2 horsebean   b        _b_</span></span>
-<span><span class="co">#&gt; 3   linseed  bc        _bc</span></span>
-<span><span class="co">#&gt; 4  meatmeal  ac        a_c</span></span>
-<span><span class="co">#&gt; 5   soybean   c        __c</span></span>
-<span><span class="co">#&gt; 6 sunflower   a        a__</span></span>
+<span><span class="co">#&gt; Compact Letter Display (CLD)</span></span>
+<span><span class="co">#&gt; Signif. level (alpha):  0.05 </span></span>
+<span><span class="co">#&gt; Method:  Wilcoxon rank sum test with continuity correction </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;      group cld spaced_cld</span></span>
+<span><span class="co">#&gt;     casein   a        a__</span></span>
+<span><span class="co">#&gt;  horsebean   b        _b_</span></span>
+<span><span class="co">#&gt;    linseed  bc        _bc</span></span>
+<span><span class="co">#&gt;   meatmeal  ac        a_c</span></span>
+<span><span class="co">#&gt;    soybean   c        __c</span></span>
+<span><span class="co">#&gt;  sunflower   a        a__</span></span>
 <span></span>
 <span><span class="co"># Access metadata</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">cld_result</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"alpha"</span>, <span class="st">"method"</span>, <span class="st">"n_comparisons"</span>, <span class="st">"n_significant"</span><span class="op">)</span><span class="op">]</span></span>
@@ -232,9 +246,8 @@ found</li>
 <code class="sourceCode R"><span><span class="co"># Extract as named character vector</span></span>
 <span><span class="va">letters_only</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">cld_result</span><span class="op">)</span></span>
 <span><span class="va">letters_only</span></span>
-<span><span class="co">#&gt; [1] "c(\"casein\", \"horsebean\", \"linseed\", \"meatmeal\", \"soybean\", \"sunflower\")"</span></span>
-<span><span class="co">#&gt; [2] "c(\"a\", \"b\", \"bc\", \"ac\", \"c\", \"a\")"                                      </span></span>
-<span><span class="co">#&gt; [3] "c(\"a__\", \"_b_\", \"_bc\", \"a_c\", \"__c\", \"a__\")"</span></span>
+<span><span class="co">#&gt;    casein horsebean   linseed  meatmeal   soybean sunflower </span></span>
+<span><span class="co">#&gt;       "a"       "b"      "bc"      "ac"       "c"       "a"</span></span>
 <span></span>
 <span><span class="co"># Convert back to plain data frame (removes metadata)</span></span>
 <span><span class="va">plain_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">cld_result</span><span class="op">)</span></span>
@@ -249,23 +262,31 @@ found</li>
 <span></span>
 <span><span class="co"># Standard (alpha = 0.05)</span></span>
 <span><span class="fu"><a href="../reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">result</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1    casein   a        a__</span></span>
-<span><span class="co">#&gt; 2 horsebean   b        _b_</span></span>
-<span><span class="co">#&gt; 3   linseed  bc        _bc</span></span>
-<span><span class="co">#&gt; 4  meatmeal  ac        a_c</span></span>
-<span><span class="co">#&gt; 5   soybean   c        __c</span></span>
-<span><span class="co">#&gt; 6 sunflower   a        a__</span></span>
+<span><span class="co">#&gt; Compact Letter Display (CLD)</span></span>
+<span><span class="co">#&gt; Signif. level (alpha):  0.05 </span></span>
+<span><span class="co">#&gt; Method:  Wilcoxon rank sum test with continuity correction </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;      group cld spaced_cld</span></span>
+<span><span class="co">#&gt;     casein   a        a__</span></span>
+<span><span class="co">#&gt;  horsebean   b        _b_</span></span>
+<span><span class="co">#&gt;    linseed  bc        _bc</span></span>
+<span><span class="co">#&gt;   meatmeal  ac        a_c</span></span>
+<span><span class="co">#&gt;    soybean   c        __c</span></span>
+<span><span class="co">#&gt;  sunflower   a        a__</span></span>
 <span></span>
 <span><span class="co"># More stringent (alpha = 0.01)</span></span>
 <span><span class="fu"><a href="../reference/make_cld.html">make_cld</a></span><span class="op">(</span><span class="va">result</span>, alpha <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       group cld spaced_cld</span></span>
-<span><span class="co">#&gt; 1    casein  ab        ab_</span></span>
-<span><span class="co">#&gt; 2 horsebean   c        __c</span></span>
-<span><span class="co">#&gt; 3   linseed  ac        a_c</span></span>
-<span><span class="co">#&gt; 4  meatmeal  ab        ab_</span></span>
-<span><span class="co">#&gt; 5   soybean  ab        ab_</span></span>
-<span><span class="co">#&gt; 6 sunflower   b        _b_</span></span></code></pre></div>
+<span><span class="co">#&gt; Compact Letter Display (CLD)</span></span>
+<span><span class="co">#&gt; Signif. level (alpha):  0.01 </span></span>
+<span><span class="co">#&gt; Method:  Wilcoxon rank sum test with continuity correction </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;      group cld spaced_cld</span></span>
+<span><span class="co">#&gt;     casein  ab        ab_</span></span>
+<span><span class="co">#&gt;  horsebean   c        __c</span></span>
+<span><span class="co">#&gt;    linseed  ac        a_c</span></span>
+<span><span class="co">#&gt;   meatmeal  ab        ab_</span></span>
+<span><span class="co">#&gt;    soybean  ab        ab_</span></span>
+<span><span class="co">#&gt;  sunflower   b        _b_</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
