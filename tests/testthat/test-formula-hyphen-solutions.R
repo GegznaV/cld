@@ -3,11 +3,11 @@
 # This test file documents two new formula method approaches that solve
 # the hyphen conflict issue:
 #
-# 1. Two-variable formula: p.value ~ group1 + group2
+# 1. Two-variable formula: p_value ~ group1 + group2
 #    - Avoids parsing comparison strings entirely
 #    - Automatically handles hyphens via gr1/gr2 parameters
 #
-# 2. Custom separator: p.value ~ comparison with sep parameter
+# 2. Custom separator: p_value ~ comparison with sep parameter
 #    - Uses alternative separator (e.g., ":", ";", "|")
 #    - Avoids hyphen conflicts when group names contain hyphens
 #
@@ -22,7 +22,7 @@ create_hyphenated_pval_df <- function() {
     group2 = c("Synthetic (K-6)", "Synthetic (A-9)", "Control",
                "Synthetic (A-9)", "Control",
                "Control"),
-    p.value = c(0.001, 0.002, 0.001, 0.850, 0.001, 0.001)
+    p_value = c(0.001, 0.002, 0.001, 0.850, 0.001, 0.001)
   )
 }
 
@@ -36,7 +36,7 @@ test_that("make_cld.formula with two-variable syntax handles hyphenated groups",
   # Two-variable formula should work without any warnings or messages
   # because it uses gr1/gr2 parameters which handle hyphens automatically
   expect_silent(
-    result <- make_cld(p.value ~ group1 + group2, data = df, 
+    result <- make_cld(p_value ~ group1 + group2, data = df, 
                       quiet_hyphen_warning = TRUE)
   )
   
@@ -63,7 +63,7 @@ test_that("two-variable formula method produces message about hyphen handling", 
   
   # Should show message about automatic hyphen handling
   expect_message(
-    result <- make_cld(p.value ~ group1 + group2, data = df),
+    result <- make_cld(p_value ~ group1 + group2, data = df),
     "Group names contain hyphens"
   )
   
@@ -77,7 +77,7 @@ test_that("two-variable formula with quiet_hyphen_warning suppresses message", {
   
   # Should be completely silent
   expect_silent(
-    result <- make_cld(p.value ~ group1 + group2, data = df, 
+    result <- make_cld(p_value ~ group1 + group2, data = df, 
                       quiet_hyphen_warning = TRUE)
   )
   
@@ -88,7 +88,7 @@ test_that("two-variable formula works with threshold parameter", {
   df <- create_hyphenated_pval_df()
   
   expect_silent(
-    result <- make_cld(p.value ~ group1 + group2, data = df, 
+    result <- make_cld(p_value ~ group1 + group2, data = df, 
                       threshold = 0.01, quiet_hyphen_warning = TRUE)
   )
   
@@ -100,12 +100,12 @@ test_that("two-variable formula works with reversed parameter", {
   df <- create_hyphenated_pval_df()
   
   expect_silent(
-    result_normal <- make_cld(p.value ~ group1 + group2, data = df, 
+    result_normal <- make_cld(p_value ~ group1 + group2, data = df, 
                              reversed = FALSE, quiet_hyphen_warning = TRUE)
   )
   
   expect_silent(
-    result_reversed <- make_cld(p.value ~ group1 + group2, data = df, 
+    result_reversed <- make_cld(p_value ~ group1 + group2, data = df, 
                                reversed = TRUE, quiet_hyphen_warning = TRUE)
   )
   
@@ -139,12 +139,12 @@ test_that("sep parameter works for groups without hyphens (colon separator)", {
       "GroupA:GroupC",
       "GroupB:GroupC"
     ),
-    p.value = c(0.001, 0.05, 0.3)
+    p_value = c(0.001, 0.05, 0.3)
   )
   
   # Use colon separator
   expect_silent(
-    result <- make_cld(p.value ~ comparison, data = df, sep = ":")
+    result <- make_cld(p_value ~ comparison, data = df, sep = ":")
   )
   
   expect_s3_class(result, "cld_object")
@@ -160,11 +160,11 @@ test_that("sep parameter works for groups without hyphens (semicolon separator)"
       "Treatment1;Treatment2",
       "Treatment1;Control"
     ),
-    p.value = c(0.001, 0.001)
+    p_value = c(0.001, 0.001)
   )
   
   expect_silent(
-    result <- make_cld(p.value ~ comparison, data = df, sep = ";")
+    result <- make_cld(p_value ~ comparison, data = df, sep = ";")
   )
   
   expect_s3_class(result, "cld_object")
@@ -179,11 +179,11 @@ test_that("sep parameter works for groups without hyphens (vertical bar separato
       "A|B",
       "A|C"
     ),
-    p.value = c(0.001, 0.05)
+    p_value = c(0.001, 0.05)
   )
   
   expect_silent(
-    result <- make_cld(p.value ~ comparison, data = df, sep = "|")
+    result <- make_cld(p_value ~ comparison, data = df, sep = "|")
   )
   
   expect_s3_class(result, "cld_object")
@@ -200,7 +200,7 @@ test_that("sep parameter does NOT work for groups WITH hyphens", {
       "Plant-based:Synthetic",  # "Plant-based" contains hyphen
       "Plant-based:Control"
     ),
-    p.value = c(0.001, 0.001)
+    p_value = c(0.001, 0.001)
   )
   
   # This WILL fail because converting ":" to "-" creates multiple hyphens
@@ -208,7 +208,7 @@ test_that("sep parameter does NOT work for groups WITH hyphens", {
   # Expect both warning about multiple hyphens AND error from multcompView
   expect_warning(
     expect_error(
-      make_cld(p.value ~ comparison, data = df, sep = ":"),
+      make_cld(p_value ~ comparison, data = df, sep = ":"),
       "Names must contain exactly one"
     ),
     "multiple hyphens"
@@ -222,13 +222,13 @@ test_that("warning issued when formula method used with groups containing hyphen
       "Plant-based-Synthetic",  # Multiple hyphens
       "Plant-based-Control"
     ),
-    p.value = c(0.001, 0.001)
+    p_value = c(0.001, 0.001)
   )
   
   # Should warn about multiple hyphens AND error from multcompView
   expect_warning(
     expect_error(
-      make_cld(p.value ~ comparison, data = df),
+      make_cld(p_value ~ comparison, data = df),
       "Names must contain exactly one"
     ),
     "multiple hyphens"
@@ -244,7 +244,7 @@ test_that("two-variable formula is the solution for hyphenated group names", {
   
   # New two-variable approach works perfectly!
   expect_silent(
-    new_result <- make_cld(p.value ~ group1 + group2, data = df, 
+    new_result <- make_cld(p_value ~ group1 + group2, data = df, 
                           quiet_hyphen_warning = TRUE)
   )
   
@@ -269,13 +269,13 @@ test_that("two-variable formula avoids old formula method problems", {
       "Synthetic (K-6)-Control",
       "Synthetic (A-9)-Control"
     ),
-    p.value = c(0.001, 0.002, 0.001, 0.850, 0.001, 0.001)
+    p_value = c(0.001, 0.002, 0.001, 0.850, 0.001, 0.001)
   )
   
   # Old method: Warning about multiple hyphens AND error from multcompView
   expect_warning(
     expect_error(
-      make_cld(p.value ~ comparison, data = df_old),
+      make_cld(p_value ~ comparison, data = df_old),
       "Names must contain exactly one"
     ),
     "multiple hyphens"
@@ -283,7 +283,7 @@ test_that("two-variable formula avoids old formula method problems", {
   
   # New two-variable approach works without issues!
   expect_silent(
-    new_result <- make_cld(p.value ~ group1 + group2, data = df, 
+    new_result <- make_cld(p_value ~ group1 + group2, data = df, 
                           quiet_hyphen_warning = TRUE)
   )
   
@@ -299,11 +299,11 @@ test_that("two-variable formula handles groups with no hyphens", {
   df <- data.frame(
     group1 = c("A", "A", "B"),
     group2 = c("B", "C", "C"),
-    p.value = c(0.001, 0.05, 0.3)
+    p_value = c(0.001, 0.05, 0.3)
   )
   
   expect_silent(
-    result <- make_cld(p.value ~ group1 + group2, data = df)
+    result <- make_cld(p_value ~ group1 + group2, data = df)
   )
   
   expect_s3_class(result, "cld_object")
@@ -313,11 +313,11 @@ test_that("two-variable formula handles groups with no hyphens", {
 test_that("custom sep handles groups with no special characters", {
   df <- data.frame(
     comparison = c("A:B", "A:C", "B:C"),
-    p.value = c(0.001, 0.05, 0.3)
+    p_value = c(0.001, 0.05, 0.3)
   )
   
   expect_silent(
-    result <- make_cld(p.value ~ comparison, data = df, sep = ":")
+    result <- make_cld(p_value ~ comparison, data = df, sep = ":")
   )
   
   expect_s3_class(result, "cld_object")
@@ -329,12 +329,12 @@ test_that("two-variable formula with single hyphen in group names", {
   df <- data.frame(
     group1 = c("Plant-based", "Plant-based", "Normal"),
     group2 = c("Normal", "Control", "Control"),
-    p.value = c(0.001, 0.001, 0.05)
+    p_value = c(0.001, 0.001, 0.05)
   )
   
   # Should still show message because at least one name has hyphen
   expect_message(
-    result <- make_cld(p.value ~ group1 + group2, data = df),
+    result <- make_cld(p_value ~ group1 + group2, data = df),
     "Group names contain hyphens"
   )
   

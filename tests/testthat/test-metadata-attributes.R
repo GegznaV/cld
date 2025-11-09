@@ -90,7 +90,7 @@ test_that("metadata attributes work with data.frame input", {
 test_that("metadata attributes work with formula input", {
   my_dataframe <- data.frame(
     Comparison = c("EE - GB = 0", "EE - CY = 0", "GB - CY = 0"),
-    p.value = c(1, 0.001093, 0.005477),
+    p_value = c(1, 0.001093, 0.005477),
     p.adjust = c(1.000000, 0.003279, 0.008216)
   )
 

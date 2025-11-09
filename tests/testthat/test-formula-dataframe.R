@@ -3,7 +3,7 @@
 test_that("`make_cld.formula` works with data frame", {
   my_dataframe <- data.frame(
     Comparison = c("A-B", "A-C", "B-C"),
-    p.value = c(0.9, 0.02, 0.03),
+    p_value = c(0.9, 0.02, 0.03),
     p.adjust = c(1.0, 0.04, 0.06)
   )
 

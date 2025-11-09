@@ -92,7 +92,7 @@ test_that("make_cld.DunnTest stores 'method' attribute", {
 test_that("make_cld.formula stores 'method' attribute", {
   my_dataframe <- data.frame(
     Comparison = c("EE - GB = 0", "EE - CY = 0", "GB - CY = 0"),
-    p.value = c(1, 0.001093, 0.005477),
+    p_value = c(1, 0.001093, 0.005477),
     p.adjust = c(1.000000, 0.003279, 0.008216)
   )
 
