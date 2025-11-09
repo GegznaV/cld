@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/cld)](https://CRAN.R-project.org/package=cld)
 [![GitHub version](https://img.shields.io/badge/GitHub-`r packageVersion("cld")`-brightgreen.svg)](https://github.com/GegznaV/cld)
 [![R-CMD-check](https://github.com/GegznaV/cld/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GegznaV/cld/actions/workflows/R-CMD-check.yaml)
-[![Codecov](https://codecov.io/gh/GegznaV/cld/branch/master/graph/badge.svg)](https://codecov.io/gh/GegznaV/cld)
+[![Codecov](https://codecov.io/gh/GegznaV/cld/graph/badge.svg)](https://app.codecov.io/gh/GegznaV/cld)
 [![Updated-on](https://img.shields.io/badge/Updated%20on-`r gsub('-', '--', Sys.Date())`-yellowgreen.svg)](/commits/master)
 <!-- badges: end -->
 
