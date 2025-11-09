@@ -200,6 +200,31 @@ used in the test (alpha = 1 - conf_level), but can be overridden.</p>
 </div>
 
     </div>
+    <div id="handling-group-names-with-hyphens">
+    <h2>Handling Group Names with Hyphens</h2>
+
+
+<p>The underlying multcompView package uses hyphens (<code>-</code>) as the default separator
+between group names in comparison strings (e.g., "GroupA-GroupB"). This creates
+a conflict when group names themselves contain hyphens (e.g., "Plant-based",
+"Treatment-1").</p>
+<p><strong>Automatic Handling:</strong>
+Most methods (matrix, data.frame, pairwise.htest, pairwise_pval_df, and others)
+automatically detect and handle hyphens in group names by:</p><ol><li><p>Temporarily replacing hyphens with alternative characters (underscore, en-dash, etc.)</p></li>
+<li><p>Processing the comparisons</p></li>
+<li><p>Restoring the original hyphens in the output</p></li>
+</ol><p>An informational message is shown when this occurs. To suppress it, use
+<code>quiet_hyphen_warning = TRUE</code>.</p>
+<p><strong>Formula Method Limitation:</strong>
+The formula method (e.g., <code>make_cld(p.value ~ comparison, data = df)</code>) has
+limited support for group names with hyphens because it receives pre-formatted
+comparison strings where the separator hyphens cannot be reliably distinguished
+from hyphens within group names. For data with hyphenated group names, use one
+of these alternatives:</p><ul><li><p>Use the data.frame method with <code>gr1_col</code> and <code>gr2_col</code> parameters</p></li>
+<li><p>Convert your data to matrix format</p></li>
+<li><p>Replace hyphens in group names with underscores before creating comparisons</p></li>
+<li><p>Use a different separator in comparison strings (e.g., " vs " with <code>swap.vs = TRUE</code>)</p></li>
+</ul></div>
     <div id="references">
     <h2>References</h2>
     <p>Piepho HP (2004). An algorithm for a letter-based representation of
