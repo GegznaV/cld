@@ -1,0 +1,200 @@
+---
+title: "Supported Input Formats"
+output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{Supported Input Formats}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(cld)
+```
+
+## Overview
+
+The `make_cld()` function works seamlessly with multiple input formats, making it a versatile tool for creating compact letter displays from various statistical packages and custom data.
+
+## Supported Input Types
+
+| Input Type | Example Packages | Function Examples |
+|------------|-----------------|-------------------|
+| `pairwise.htest` | base R | `pairwise.t.test()`, `pairwise.wilcox.test()` |
+| `PMCMR` / `PMCMRplus` | PMCMR, PMCMRplus | `kwAllPairsConoverTest()`, `dunnTest()` |
+| `data.frame` (rstatix) | rstatix | `games_howell_test()`, `tukey_hsd()` |
+| `PostHocTest` | DescTools | `ConoverTest()`, `DunnettTest()` |
+| `matrix` | Custom | Symmetric p-value matrices |
+| `data.frame` | Custom | Custom comparison data frames |
+| `formula` | Custom | Formula interface for data frames |
+
+## Base R Pairwise Tests
+
+### Pairwise Wilcoxon Test
+
+```{r example-basic}
+# Pairwise Wilcoxon rank sum test
+result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
+make_cld(result)
+```
+
+### Pairwise t-test
+
+```{r example-ttest}
+# Pairwise t-test
+result2 <- pairwise.t.test(chickwts$weight, chickwts$feed)
+make_cld(result2, alpha = 0.01)  # More stringent threshold
+```
+
+## P-value Matrices
+
+You can use symmetric matrices of p-values directly:
+
+```{r example-matrix}
+# Create a symmetric matrix of p-values
+m <- matrix(c(
+  1.00, 0.22, 0.05, 0.00,
+  0.22, 1.00, 0.17, 0.01,
+  0.05, 0.17, 1.00, 0.22,
+  0.00, 0.01, 0.22, 1.00
+), nrow = 4)
+rownames(m) <- colnames(m) <- c("GroupA", "GroupB", "GroupC", "GroupD")
+
+# Generate CLD
+make_cld(m, alpha = 0.05)
+```
+
+## PMCMRplus (Non-parametric Tests)
+
+The package supports results from **PMCMRplus** for non-parametric post-hoc tests:
+
+```{r example-pmcmr, eval=FALSE}
+library(PMCMRplus)
+
+# Kruskal-Wallis post-hoc test
+kw_result <- kwAllPairsConoverTest(count ~ spray, data = InsectSprays)
+make_cld(kw_result)
+
+# Dunn test
+dunn_result <- kwAllPairsDunnTest(count ~ spray, data = InsectSprays)
+make_cld(dunn_result)
+```
+
+## rstatix (Tidyverse-friendly)
+
+The **rstatix** package provides tidyverse-compatible statistical tests. Since rstatix
+returns data frames, you need to specify the column names for groups and p-values:
+
+```{r example-rstatix, eval=FALSE}
+library(rstatix)
+
+# Games-Howell test (for unequal variances)
+gh_result <- games_howell_test(PlantGrowth, weight ~ group)
+make_cld(gh_result, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.adj")
+
+# Tukey HSD test
+tukey_result <- tukey_hsd(PlantGrowth, weight ~ group)
+make_cld(tukey_result, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.adj")
+
+# Pairwise t-test
+pwt_result <- pairwise_t_test(PlantGrowth, weight ~ group)
+make_cld(pwt_result, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.adj")
+```
+
+## DescTools
+
+The **DescTools** package offers various post-hoc tests:
+
+```{r example-desctools, eval=FALSE}
+library(DescTools)
+
+# Conover test
+conover_result <- ConoverTest(count ~ spray, data = InsectSprays)
+make_cld(conover_result)
+
+# Dunnett test (comparison to control)
+dunnett_result <- DunnettTest(weight ~ group, data = PlantGrowth)
+make_cld(dunnett_result)
+```
+
+## Data Frames (Custom Results)
+
+You can create CLDs from custom comparison results stored in data frames:
+
+```{r example-dataframe}
+# Custom comparison results
+comparisons <- data.frame(
+  group1 = c("Treatment_A", "Treatment_A", "Treatment_B"),
+  group2 = c("Treatment_B", "Treatment_C", "Treatment_C"),
+  p.adj  = c(0.9, 0.02, 0.03)
+)
+
+make_cld(comparisons, alpha = 0.05)
+```
+
+### Custom Column Names
+
+If your data frame uses different column names, specify them:
+
+```{r example-custom-cols}
+# Data frame with custom column names
+my_comparisons <- data.frame(
+  first_group = c("A", "A", "B"),
+  second_group = c("B", "C", "C"),
+  adjusted_p = c(0.9, 0.02, 0.03)
+)
+
+make_cld(my_comparisons,
+  gr1_col = "first_group",
+  gr2_col = "second_group",
+  p_val_col = "adjusted_p",
+  alpha = 0.05
+)
+```
+
+## Formula Interface
+
+The formula interface provides a convenient way to specify p-values and comparison labels.
+There are two formula formats available:
+
+### Single-variable formula (for pre-formatted comparison strings)
+
+No hyphens are allowed in group names when using this format as they are used as separators.
+
+```{r example-formula}
+# Using formula for data frames with comparison strings
+my_data <- data.frame(
+  Comparison = c("A-B", "A-C", "B-C"),
+  p_value = c(0.12, 0.001, 0.045),
+  p_adjusted = c(0.18, 0.003, 0.068)
+)
+
+# Use the adjusted p-values
+make_cld(p_adjusted ~ Comparison, data = my_data)
+
+# Or use the raw p-values
+make_cld(p_value ~ Comparison, data = my_data)
+```
+
+### Two-variable formula (recommended for group names with hyphens)
+
+When your group names contain hyphens or special characters, use the two-variable
+formula format which specifies groups separately:
+
+```{r example-formula-two-var, eval=FALSE}
+# Data with group names containing hyphens
+my_data2 <- data.frame(
+  group1 = c("Treatment-A", "Treatment-A", "Treatment-B"),
+  group2 = c("Treatment-B", "Treatment-C", "Treatment-C"),
+  p_adjusted = c(0.18, 0.003, 0.068)
+)
+
+# Two-variable formula (handles hyphens automatically)
+make_cld(p_adjusted ~ group1 + group2, data = my_data2)
+```
