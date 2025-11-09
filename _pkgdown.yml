@@ -20,9 +20,9 @@ development:
 
 template:
   bootstrap: 5
-  bootswatch: flatly
+  bootswatch: sandstone
   bslib:
-    primary: "#0054AD"
+    primary: "#3E3F3A"
     border-radius: 0.5rem
     btn-border-radius: 0.25rem
   # opengraph:
