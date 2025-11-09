@@ -4,3 +4,5 @@
 .Ruserdata
 in-progress/
 inst/doc
+/lib
+*.html
