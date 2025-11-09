@@ -40,3 +40,42 @@ test_that("alpha parameter works with valid values", {
   expect_s3_class(make_cld(obj1, alpha = 1.00), "cld_object")
   expect_s3_class(make_cld(obj1, alpha = 0.00), "cld_object")
 })
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Tests for make_cld.data.frame column validation ---------------------------
+
+test_that("make_cld.data.frame errors when gr1_col is missing", {
+  df <- data.frame(
+    group2 = c("A", "B"),
+    p.adj = c(0.01, 0.05)
+  )
+  
+  expect_error(
+    make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.adj"),
+    "Column 'group1' not found"
+  )
+})
+
+test_that("make_cld.data.frame errors when gr2_col is missing", {
+  df <- data.frame(
+    group1 = c("A", "B"),
+    p.adj = c(0.01, 0.05)
+  )
+  
+  expect_error(
+    make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.adj"),
+    "Column 'group2' not found"
+  )
+})
+
+test_that("make_cld.data.frame errors when p_val_col is missing", {
+  df <- data.frame(
+    group1 = c("A", "B"),
+    group2 = c("B", "C")
+  )
+  
+  expect_error(
+    make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.adj"),
+    "Column 'p.adj' not found"
+  )
+})
