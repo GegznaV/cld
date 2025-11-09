@@ -209,7 +209,7 @@ test_that("make_cld.formula with hyphenated names still has limitation", {
   # Recommended alternatives for hyphenated group names:
   # 1. Use data.frame method with gr1_col/gr2_col (works automatically)
   # 2. Use matrix method (works automatically)
-  # 3. Use different separator in formula (e.g., " vs " with swap.vs=TRUE)
+  # 3. Use different separator in formula (e.g., " vs " with swap_vs=TRUE)
   # 4. Replace hyphens in group names before creating comparisons
   
   skip("Formula method has limited support for hyphenated group names - see documentation")
@@ -233,7 +233,7 @@ test_that("formula method workaround 1: use alternative separator", {
   )
 
   result <- make_cld(p.adjust ~ Comparison, data = my_data,
-    swap.vs = TRUE, alpha = 0.05)
+    swap_vs = TRUE, alpha = 0.05)
 
   expect_s3_class(result, "cld_object")
   expect_equal(nrow(result), 3)
