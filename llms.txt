@@ -95,7 +95,7 @@ website](https://gegznav.github.io/cld/)):
 - [`vignette("cld-interpretation-guide")`](https://gegznav.github.io/cld/articles/cld-interpretation-guide.md) -
   How to correctly interpret CLDs
 - [`vignette("cld-advanced-features")`](https://gegznav.github.io/cld/articles/cld-advanced-features.md) -
-  Custom parameters and plotting
+  Advanced features and custom parameters
 
 ## Related Packages
 
