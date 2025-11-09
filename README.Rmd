@@ -86,7 +86,7 @@ The `make_cld()` function works seamlessly with:
 |------------|-----------------|-------------------|
 | `pairwise.htest` | base R | `pairwise.t.test()`, `pairwise.wilcox.test()` |
 | `PMCMR` / `PMCMRplus` | PMCMR, PMCMRplus | `kwAllPairsConoverTest()`, `dunnTest()` |
-| `posthoc_anova` | rstatix | `games_howell_test()`, `tukey_hsd()` |
+| `data.frame` (rstatix) | rstatix | `games_howell_test()`, `tukey_hsd()` |
 | `PostHocTest` | DescTools | `ConoverTest()`, `DunnettTest()` |
 | `matrix` | Custom | Symmetric p-value matrices |
 | `data.frame` | Custom | Custom comparison data frames |
