@@ -194,7 +194,7 @@ make_cld.pairwise.htest <- function(obj, ..., alpha = 0.05) {
     gr2          = df$gr2,
     p.value      = df$p_values,
     threshold    = alpha,
-    remove.space = TRUE,
+    remove_space = TRUE,
     ...
   )
   attr(res, "method") <- obj$method
@@ -222,7 +222,7 @@ make_cld.PostHocTest <- function(obj, ..., alpha = 0.05) {
     comparison   = names(p_values),
     p.value      = p_values,
     threshold    = alpha,
-    remove.space = TRUE,
+    remove_space = TRUE,
     ...
   )
   attr(res, "method") <- class(obj)[1]
@@ -316,7 +316,7 @@ make_cld.matrix <- function(obj, ..., alpha = 0.05) {
 make_cld.data.frame <- function(
   obj, ..., alpha = 0.05,
   gr1_col = "group1", gr2_col = "group2", p_val_col = "p.adj",
-  remove.space = FALSE
+  remove_space = FALSE
 ) {
   checkmate::assert_number(alpha, lower = 0, upper = 1)
   checkmate::assert_string(gr1_col)
@@ -351,7 +351,7 @@ make_cld.data.frame <- function(
     gr2          = obj[[gr1_col]],
     p.value      = obj[[p_val_col]],
     threshold    = alpha,
-    remove.space = remove.space,
+    remove_space = remove_space,
     ...
   )
   attr(res, "method") <- "data.frame"

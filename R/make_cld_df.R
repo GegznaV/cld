@@ -67,14 +67,15 @@ make_cld_df <- function(
   gr1          = NULL,
   gr2          = NULL,
   threshold    = 0.05,
-  print.comp   = FALSE,
-  remove.space = TRUE,
-  remove.equal = TRUE,
-  swap.colon   = TRUE,
-  swap.vs      = FALSE,
+  print_comp   = FALSE,
+  remove_space = TRUE,
+  remove_equal = TRUE,
+  swap_colon   = TRUE,
+  swap_vs      = FALSE,
   reversed     = FALSE,
   swap_compared_names = FALSE,
   quiet_hyphen_warning = FALSE,
+  sep          = "-",
   ...
 ) {
   # Extract variables from formula if provided
@@ -121,25 +122,32 @@ make_cld_df <- function(
       gr2 <- names_map[gr2]
     }
 
-    # Create comparison strings from gr1 and gr2
+    # Create comparison strings from gr1 and gr2 - ALWAYS use hyphen for multcompLetters
     comparison <- paste0(gr1, "-", gr2)
+  } else if (!is.null(comparison) && sep != "-") {
+    # If we have comparison strings with a custom separator, convert them to use hyphens
+    # Split on custom separator, reassemble with hyphens
+    comparison <- gsub(sep, "-", comparison, fixed = TRUE)
   }
 
   # Identify significant differences
   significant_difference <- p.value < threshold
 
-  # Clean up comparison strings
-  if (remove.space) {
-    comparison <- gsub(" ", "", comparison)
+  # Clean up comparison strings (only apply these if not already processed gr1/gr2)
+  if (is.null(gr1) && is.null(gr2)) {
+    if (remove_space) {
+      comparison <- gsub(" ", "", comparison)
+    }
+    if (remove_equal) {
+      comparison <- gsub("=", "", comparison)
+    }
+    if (swap_colon) {
+      comparison <- gsub(":", "-", comparison)
+    }
+    if (swap_vs) {
+      comparison <- gsub("vs", "-", comparison)
+    }
   }
-  if (remove.equal) {
-    comparison <- gsub("=", "", comparison)
-  }
-  if (swap.colon) {
-    comparison <- gsub(":", "-", comparison)
-  }
-  if (swap.vs) {
-    comparison <- gsub("vs", "-", comparison)
   }
 
   # Swap group order in comparisons if requested
@@ -153,7 +161,6 @@ make_cld_df <- function(
   names(significant_difference) <- comparison
 
   # Optionally print comparisons
-  if (print.comp) {
     Y <- data.frame(Comparisons = names(significant_difference))
     cat("\n\n")
     print(Y)
