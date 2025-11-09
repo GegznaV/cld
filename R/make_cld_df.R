@@ -34,6 +34,16 @@
 #'   from "2-1" or "second-first" to "1-2" or "first-second" in the comparison strings.
 #'   This may lead to different ordering of CLD letters and compared groups,
 #'   but doesn't affect the statistical interpretation. Default is `FALSE`.
+#' @param quiet_hyphen_warning Logical. If `TRUE`, suppresses the informational message
+#'   when hyphens in group names are automatically replaced. Default is `FALSE`.
+#'   Note: The hyphen `-` is the default separator used by multcompView to distinguish
+#'   group pairs (e.g., "GroupA-GroupB"). When group names contain hyphens (e.g.,
+#'   "Plant-based"), they are temporarily replaced with alternative characters
+#'   (underscore, en-dash, etc.) and restored after processing.
+#' @param gr1 Character vector of first group names in each comparison. Used internally
+#'   as an alternative to the `comparison` parameter for better hyphen handling.
+#' @param gr2 Character vector of second group names in each comparison. Used internally
+#'   as an alternative to the `comparison` parameter for better hyphen handling.
 #' @param ... Additional arguments (currently unused, reserved for future extensions).
 #'
 #' @return A data frame of class `c("cld_object", "data.frame")` with columns:
@@ -54,6 +64,8 @@ make_cld_df <- function(
   data         = NULL,
   comparison   = NULL,
   p.value      = NULL,
+  gr1          = NULL,
+  gr2          = NULL,
   threshold    = 0.05,
   print.comp   = FALSE,
   remove.space = TRUE,
@@ -62,12 +74,55 @@ make_cld_df <- function(
   swap.vs      = FALSE,
   reversed     = FALSE,
   swap_compared_names = FALSE,
+  quiet_hyphen_warning = FALSE,
   ...
 ) {
   # Extract variables from formula if provided
   if (!is.null(formula)) {
     p.value    <- data[[all.vars(formula[[2]])[1]]]
     comparison <- data[[all.vars(formula[[3]])[1]]]
+  }
+
+  # Handle case where gr1 and gr2 are provided instead of comparison
+  hyphen_info <- list(had_hyphens = FALSE, replacement = NULL)
+
+  if (!is.null(gr1) && !is.null(gr2)) {
+    # Check if group names contain hyphens
+    all_groups <- unique(c(gr1, gr2))
+    hyphen_info <- replace_hyphens_in_names(all_groups)
+
+    if (hyphen_info$had_hyphens) {
+      # Show informational message unless suppressed
+      if (!quiet_hyphen_warning) {
+        replacement_desc <- switch(
+          hyphen_info$replacement,
+          "_" = "underscore ('_')",
+          "\u2013" = "en-dash ('\u2013')",
+          "\u2014" = "em-dash ('\u2014')",
+          ";" = "semicolon (';')",
+          ":" = "colon (':')",
+          "|" = "vertical bar ('|')",
+          sprintf("'%s'", hyphen_info$replacement)  # fallback
+        )
+
+        message(
+          "Group names contain hyphens ('-'), which conflict with the comparison separator.\n",
+          "Hyphens have been automatically replaced with ", replacement_desc, " for processing.\n",
+          "The original hyphens will be restored in the output.\n",
+          "To suppress this message, use quiet_hyphen_warning = TRUE."
+        )
+      }
+
+      # Create mapping for replacement (always do this when hyphens are present)
+      names_map <- stats::setNames(hyphen_info$names, all_groups)
+
+      # Replace hyphens in gr1 and gr2
+      gr1 <- names_map[gr1]
+      gr2 <- names_map[gr2]
+    }
+
+    # Create comparison strings from gr1 and gr2
+    comparison <- paste0(gr1, "-", gr2)
   }
 
   # Identify significant differences
@@ -106,7 +161,6 @@ make_cld_df <- function(
   }
 
   # Generate compact letter display
-  # Generate compact letter display
   MCL <- multcompView::multcompLetters(significant_difference, reversed = reversed)
 
   regular_cld <- as.character(MCL$Letters)
@@ -124,6 +178,11 @@ make_cld_df <- function(
     spaced_cld       = gsub(" ", "_", spaced_cld),
     stringsAsFactors = FALSE
   )
+
+  # Restore original hyphens in group names
+  if (hyphen_info$had_hyphens) {
+    res$group <- restore_hyphens_in_names(res$group, hyphen_info$replacement)
+  }
 
   # Store metadata as attributes
   attr(res, "alpha") <- threshold
