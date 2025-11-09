@@ -59,3 +59,25 @@ test_that("`make_cld.data.frame` works with alternative column names", {
   expect_equal(nrow(result), 3)
   expect_true(all(c("X", "Y", "Z") %in% result$group))
 })
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+test_that("make_cld.data.frame works with fully custom column names", {
+  # Test with non-default column names
+  df <- data.frame(
+    treatment1 = c("A", "A", "B"),
+    treatment2 = c("B", "C", "C"),
+    pvalue = c(0.01, 0.05, 0.3)
+  )
+  
+  result <- make_cld(
+    df,
+    gr1_col = "treatment1",
+    gr2_col = "treatment2",
+    p_val_col = "pvalue"
+  )
+  
+  expect_s3_class(result, "cld_object")
+  expect_equal(nrow(result), 3)
+  expect_true(all(c("A", "B", "C") %in% result$group))
+})
+

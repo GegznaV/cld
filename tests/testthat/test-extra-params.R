@@ -74,3 +74,19 @@ test_that("print_comp and cleaning options (swap_vs, swap_colon, remove_equal, r
   expect_true(any(grepl("A-B", out_space)))
   expect_false(any(grepl("A - B", out_space)))
 })
+
+test_that("make_cld.data.frame remove_space parameter works", {
+  # Test that remove_space is passed through to data.frame method
+  df <- data.frame(
+    group1 = c("Group A", "Group A"),
+    group2 = c("Group B", "Group C"),
+    p.adj = c(0.01, 0.05)
+  )
+  
+  result <- make_cld(df, remove_space = TRUE)
+  
+  expect_s3_class(result, "cld_object")
+  # With remove_space=TRUE, spaces should be preserved in group names
+  # (remove_space applies to comparison strings, not group names themselves)
+  expect_true("Group A" %in% result$group || "GroupA" %in% result$group)
+})

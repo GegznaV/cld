@@ -223,3 +223,51 @@ test_that("helper functions work together in complex scenario", {
   expect_equal(restored, names)
 })
 
+# Tests for other helper functions ==========================================
+
+test_that("extract_data works when data is NULL", {
+  # Create a formula with data in the environment
+  x <- 1:10
+  y <- 11:20
+  f <- y ~ x
+  
+  # extract_data should find x and y in the formula environment
+  result <- extract_data(f, data = NULL)
+  
+  expect_s3_class(result, "data.frame")
+  expect_equal(ncol(result), 2)
+  expect_true("x" %in% names(result))
+  expect_true("y" %in% names(result))
+})
+
+test_that("is_symetric_matrix detects symmetric matrices", {
+  # Symmetric matrix
+  sym_mat <- matrix(c(
+    1, 2, 3,
+    2, 4, 5,
+    3, 5, 6
+  ), nrow = 3, byrow = TRUE)
+  
+  expect_true(is_symetric_matrix(sym_mat))
+})
+
+test_that("is_symetric_matrix detects non-symmetric matrices", {
+  # Non-symmetric matrix
+  non_sym_mat <- matrix(c(
+    1, 2, 3,
+    4, 5, 6,
+    7, 8, 9
+  ), nrow = 3, byrow = TRUE)
+  
+  expect_false(is_symetric_matrix(non_sym_mat))
+})
+
+test_that("is_symetric_matrix errors with non-square matrix", {
+  # Non-square matrix
+  non_square <- matrix(1:6, nrow = 2, ncol = 3)
+  
+  expect_error(
+    is_symetric_matrix(non_square),
+    "Matrix is not square"
+  )
+})
