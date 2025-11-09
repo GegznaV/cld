@@ -36,5 +36,19 @@ rownames(m) <- c("A", "B", "C")
 cld::pval_matrix_to_df(m)
 }
 \seealso{
-\code{\link[=make_cld]{make_cld()}} for creating compact letter displays from the resulting data frame.
+\itemize{
+\item \code{\link[=make_cld]{make_cld()}} for creating compact letter displays from the resulting data frame
+\item \code{\link[=as_cld]{as_cld()}} for converting other formats to cld_object
 }
+
+Other helper functions: 
+\code{\link{as_cld}()}
+
+Other data conversion functions: 
+\code{\link{as_cld}()}
+}
+\concept{data conversion functions}
+\concept{data_conversion}
+\concept{helper functions}
+\concept{helper_functions}
+\keyword{manip}

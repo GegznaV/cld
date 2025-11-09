@@ -244,8 +244,25 @@ all-pairwise comparisons. Journal of Computational and Graphical Statistics,
 https://www.tandfonline.com/doi/abs/10.1198/1061860043515
 }
 \seealso{
+\strong{Helper Functions:}
 \itemize{
 \item \code{\link[=pval_matrix_to_df]{pval_matrix_to_df()}} for converting p-value matrices to data frames
-\item \code{\link[multcompView:multcompLetters]{multcompView::multcompLetters()}} for the underlying letter generation algorithm
+\item \code{\link[=as_cld]{as_cld()}} for converting other formats to cld_object
+}
+
+\strong{Output Methods:}
+\itemize{
+\item \code{\link[=print.cld_object]{print.cld_object()}} for displaying CLD results
+\item \link{cld_methods} for coercion methods (as.data.frame, as.character, as_tibble)
+}
+
+\strong{Underlying Algorithm:}
+\itemize{
+\item \code{\link[multcompView:multcompLetters]{multcompView::multcompLetters()}} for the letter generation algorithm
 }
 }
+\concept{cld_creation}
+\concept{compact letter display functions}
+\concept{main functions}
+\concept{main_functions}
+\keyword{htest}

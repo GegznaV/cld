@@ -56,3 +56,21 @@ as_cld(df)
 letters_vec <- c(A = "a", B = "b", C = "b")
 as_cld(letters_vec)
 }
+\seealso{
+\itemize{
+\item \code{\link[=make_cld]{make_cld()}} for creating compact letter displays
+\item \code{\link[=pval_matrix_to_df]{pval_matrix_to_df()}} for converting p-value matrices
+\item \link{cld_methods} for other cld_object methods
+}
+
+Other helper functions: 
+\code{\link{pval_matrix_to_df}()}
+
+Other data conversion functions: 
+\code{\link{pval_matrix_to_df}()}
+}
+\concept{data conversion functions}
+\concept{data_conversion}
+\concept{helper functions}
+\concept{helper_functions}
+\keyword{manip}

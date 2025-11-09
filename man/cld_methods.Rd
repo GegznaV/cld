@@ -50,3 +50,14 @@ if (requireNamespace("tibble", quietly = TRUE)) {
   tibble::as_tibble(result)
 }
 }
+\seealso{
+\itemize{
+\item \code{\link[=make_cld]{make_cld()}} for creating compact letter displays
+\item \code{\link[=as_cld]{as_cld()}} for converting objects to cld_object
+}
+}
+\concept{cld_object methods}
+\concept{cld_object_methods}
+\concept{output methods}
+\concept{output_methods}
+\keyword{print}
