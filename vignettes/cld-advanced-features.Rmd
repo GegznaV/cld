@@ -1,0 +1,75 @@
+---
+title: "Advanced Features and Customization"
+output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{Advanced Features and Customization}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+```{r setup}
+library(cld)
+```
+
+## Custom Parameters
+
+The `make_cld()` function provides several parameters for customizing the output and behavior.
+
+### Reverse Letter Ordering
+
+By default, letters are assigned with "a" representing the group with the lowest mean/median. You can reverse this:
+
+```{r reversed}
+result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
+
+# Default ordering
+make_cld(result)
+
+# Reversed ordering
+make_cld(result, reversed = TRUE)
+```
+
+### Swap Comparison Names
+
+Sometimes the order of group names in comparisons needs to be swapped:
+
+```{r swap-names, eval=FALSE}
+# Swap the order of compared groups
+make_cld(result, swap_compared_names = TRUE)
+```
+
+### Print Comparisons
+
+For debugging or understanding the comparison process:
+
+```{r print-comp, eval=FALSE}
+# Print comparison names during processing
+make_cld(result, print_comp = TRUE)
+```
+
+### String Cleaning Options
+
+Control how comparison strings are processed:
+
+```{r string-cleaning, eval=FALSE}
+# Remove spaces from comparison strings
+make_cld(df, remove_space = TRUE)
+
+# Replace colons with hyphens
+make_cld(df, swap_colon = TRUE)
+
+# Remove equal signs
+make_cld(df, remove_equal = TRUE)
+
+# Replace "vs" with hyphens
+make_cld(df, swap_vs = TRUE)
+```
