@@ -1,14 +1,18 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>/404.html</loc></url>
-<url><loc>/LICENSE.html</loc></url>
-<url><loc>/articles/cld.html</loc></url>
-<url><loc>/articles/index.html</loc></url>
-<url><loc>/authors.html</loc></url>
-<url><loc>/index.html</loc></url>
-<url><loc>/reference/as_cld.html</loc></url>
-<url><loc>/reference/cld_methods.html</loc></url>
-<url><loc>/reference/index.html</loc></url>
-<url><loc>/reference/make_cld.html</loc></url>
-<url><loc>/reference/pval_matrix_to_df.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/404.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/LICENSE.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/articles/cld-advanced-features.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/articles/cld-input-formats.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/articles/cld-interpretation-guide.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/articles/cld.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/articles/index.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/authors.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/index.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/news/index.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/reference/as_cld.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/reference/cld_methods.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/reference/index.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/reference/make_cld.html</loc></url>
+<url><loc>https://gegznav.github.io/cld/reference/pval_matrix_to_df.html</loc></url>
 </urlset>
 
