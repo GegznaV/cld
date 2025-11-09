@@ -88,7 +88,7 @@ Only used for the data.frame method.}
 
 \item{p_val_col}{Character string. Name of the column in the data frame containing
 the p-values for each comparison. Default is \code{"p.adj"} (adjusted p-values).
-Only used for the data.frame method. Can also be \code{"p.value"} or any other
+Only used for the data.frame method. Can also be \code{"p_value"} or any other
 column name containing numeric p-values.}
 
 \item{remove_space}{Logical. If \code{TRUE}, removes spaces from comparison strings.
@@ -97,10 +97,10 @@ Set to \code{TRUE} if your group names contain spaces and you want compact compa
 
 \item{formula}{An R model \code{\link[stats:formula]{stats::formula()}} with two possible formats:
 \itemize{
-\item \strong{Two-variable formula} (recommended): \code{p.value ~ group1 + group2} where
+\item \strong{Two-variable formula} (recommended): \code{p_value ~ group1 + group2} where
 \code{group1} and \code{group2} are separate columns containing group names. This format
 automatically handles hyphens in group names.
-\item \strong{Single-variable formula}: \code{p.value ~ Comparison} where \code{Comparison} is a
+\item \strong{Single-variable formula}: \code{p_value ~ Comparison} where \code{Comparison} is a
 column with pre-formatted comparison strings (e.g., "A-B", "A-C"). This format
 has limitations with hyphenated group names.
 Usually used in combination with \code{data}.
@@ -146,7 +146,7 @@ An informational message is shown when this occurs. To suppress it, use
 \code{quiet_hyphen_warning = TRUE}.
 
 \strong{Formula Method Limitation:}
-The formula method (e.g., \code{make_cld(p.value ~ comparison, data = df)}) has
+The formula method (e.g., \code{make_cld(p_value ~ comparison, data = df)}) has
 limited support for group names with hyphens because it receives pre-formatted
 comparison strings where the separator hyphens cannot be reliably distinguished
 from hyphens within group names.
@@ -155,8 +155,8 @@ from hyphens within group names.
 Use the data.frame method with \code{gr1_col} and \code{gr2_col} parameters. This method
 handles hyphens automatically and seamlessly. For example:
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Instead of: make_cld(p.value ~ comparison, data = df)
-# Use: make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.value")
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Instead of: make_cld(p_value ~ comparison, data = df)
+# Use: make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p_value")
 }\if{html}{\out{</div>}}
 
 \strong{Alternative Workarounds for Formula Method:}
@@ -207,7 +207,7 @@ cld::make_cld(obj6)
 # Example 7: Using formula interface
 my_dataframe <- utils::read.table(
   text = c(
-    'Comparison     p.value p.adjust
+    'Comparison     p_value p.adjust
     "EE - GB = 0"        1 1.000000
     "EE - CY = 0" 0.001093 0.003279
     "GB - CY = 0" 0.005477 0.008216'
