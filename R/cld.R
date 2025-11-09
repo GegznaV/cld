@@ -204,40 +204,6 @@ make_cld.pairwise.htest <- function(obj, ..., alpha = 0.05) {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' @rdname make_cld
 #' @export
-#' @details
-#' ## Method for rstatix objects (`posthoc_anova`)
-#'
-#' The `posthoc_anova` method supports objects from the **rstatix** package,
-#' specifically results from `games_howell_test()` and `tukey_hsd()`.
-#' The significance level is automatically derived from the confidence level
-#' used in the test (alpha = 1 - conf_level), but can be overridden.
-make_cld.posthoc_anova <- function(obj, ..., alpha = 1 - obj$input$conf_level) {
-  checkmate::assert_number(alpha, lower = 0, upper = 1)
-
-  which_posthoc <-
-    switch(tolower(obj$input$method),
-      "games-howell" = "games.howell",
-      "tukey" = "tukey",
-      stop("Unsupported method: ", obj$input$method, call. = FALSE)
-    )
-
-  obj2 <- obj$output$result
-
-  res <- make_cld_df(
-    comparison          = obj2$groups,
-    p.value             = obj2$p_adjusted,
-    threshold           = alpha,
-    swap_compared_names = TRUE,
-    ...
-  )
-  attr(res, "method") <- obj$input$method
-  res
-}
-
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#' @rdname make_cld
-#' @export
 make_cld.PMCMR <- function(obj, ..., alpha = 0.05) {
   make_cld.pairwise.htest(obj, ..., alpha = alpha)
 }
