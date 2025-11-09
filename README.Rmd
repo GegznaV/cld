@@ -100,7 +100,7 @@ The `make_cld()` function works seamlessly with:
 - `vignette("cld")` - Complete introduction with examples
 - `vignette("cld-input-formats")` - Detailed examples for all input types
 - `vignette("cld-interpretation-guide")` - How to correctly interpret CLDs
-- `vignette("cld-advanced-features")` - Custom parameters and plotting
+- `vignette("cld-advanced-features")` - Advanced features and custom parameters
 
 ## Related Packages
 
