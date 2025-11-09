@@ -161,6 +161,7 @@ make_cld_df <- function(
   names(significant_difference) <- comparison
 
   # Optionally print comparisons
+  if (print_comp) {
     Y <- data.frame(Comparisons = names(significant_difference))
     cat("\n\n")
     print(Y)
