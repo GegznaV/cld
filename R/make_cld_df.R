@@ -148,6 +148,31 @@ make_cld_df <- function(
       comparison <- gsub("vs", "-", comparison)
     }
   }
+  
+  # Check for problematic separators in comparison strings (formula method case)
+  # Only relevant when we DON'T have gr1/gr2 (which handle hyphens automatically)
+  if (is.null(gr1) && is.null(gr2) && !is.null(comparison)) {
+    # After cleaning, check if any comparison has multiple hyphens
+    # This suggests hyphens within group names (after conversion to hyphen separator)
+    hyphen_counts <- vapply(gregexpr("-", comparison, fixed = TRUE), 
+                           function(x) sum(x > 0), integer(1))
+    
+    if (any(hyphen_counts > 1)) {
+      # Detected multiple hyphens - this is problematic
+      warning(
+        "Comparison strings contain multiple hyphens, which may indicate group names ",
+        "with hyphens or other special characters.\n",
+        "The formula method cannot reliably distinguish separator hyphens from hyphens ",
+        "within group names.\n",
+        "This may produce incorrect results.\n\n",
+        "Recommended solutions:\n",
+        "1. Use the data.frame method with gr1_col and gr2_col parameters\n",
+        "2. Use two-variable formula: p.value ~ group1 + group2\n",
+        "3. Try a different separator that doesn't appear in group names\n\n",
+        "See ?make_cld section 'Handling Group Names with Hyphens' for details.",
+        call. = FALSE
+      )
+    }
   }
 
   # Swap group order in comparisons if requested
