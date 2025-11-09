@@ -7,14 +7,14 @@
 #' significant differences, using the algorithm from [multcompView::multcompLetters()].
 #'
 #' @param formula An optional formula specifying the relationship between p-values
-#'   and comparisons (e.g., `p.value ~ comparison`). When provided, `data` must
+#'   and comparisons (e.g., `p_value ~ comparison`). When provided, `data` must
 #'   also be supplied.
 #' @param data A data frame containing the comparison data when using formula interface.
 #'   Required when `formula` is provided.
 #' @param comparison Character vector of comparison labels (e.g., "A-B", "A-C").
 #'   Each element should specify a pair of groups being compared, separated by
 #'   a delimiter (typically "-").
-#' @param p.value Numeric vector of p-values corresponding to each comparison.
+#' @param p_value Numeric vector of p-values corresponding to each comparison.
 #'   Must be the same length as `comparison`.
 #' @param threshold Numeric value between 0 and 1. The significance threshold
 #'   (alpha level) for determining significant differences. Comparisons with
@@ -63,7 +63,7 @@ make_cld_df <- function(
   formula      = NULL,
   data         = NULL,
   comparison   = NULL,
-  p.value      = NULL,
+  p_value      = NULL,
   gr1          = NULL,
   gr2          = NULL,
   threshold    = 0.05,
@@ -80,7 +80,7 @@ make_cld_df <- function(
 ) {
   # Extract variables from formula if provided
   if (!is.null(formula)) {
-    p.value    <- data[[all.vars(formula[[2]])[1]]]
+    p_value    <- data[[all.vars(formula[[2]])[1]]]
     comparison <- data[[all.vars(formula[[3]])[1]]]
   }
 
@@ -131,7 +131,7 @@ make_cld_df <- function(
   }
 
   # Identify significant differences
-  significant_difference <- p.value < threshold
+  significant_difference <- p_value < threshold
 
   # Clean up comparison strings (only apply these if not already processed gr1/gr2)
   if (is.null(gr1) && is.null(gr2)) {
@@ -167,7 +167,7 @@ make_cld_df <- function(
         "This may produce incorrect results.\n\n",
         "Recommended solutions:\n",
         "1. Use the data.frame method with gr1_col and gr2_col parameters\n",
-        "2. Use two-variable formula: p.value ~ group1 + group2\n",
+        "2. Use two-variable formula: p_value ~ group1 + group2\n",
         "3. Try a different separator that doesn't appear in group names\n\n",
         "See ?make_cld section 'Handling Group Names with Hyphens' for details.",
         call. = FALSE

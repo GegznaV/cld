@@ -36,10 +36,10 @@
 #'   two columns: one for p-values and one for comparison labels. See examples for details.
 #'
 #' @param formula An R model [stats::formula()] with two possible formats:
-#'   * **Two-variable formula** (recommended): `p.value ~ group1 + group2` where
+#'   * **Two-variable formula** (recommended): `p_value ~ group1 + group2` where
 #'     `group1` and `group2` are separate columns containing group names. This format
 #'     automatically handles hyphens in group names.
-#'   * **Single-variable formula**: `p.value ~ Comparison` where `Comparison` is a
+#'   * **Single-variable formula**: `p_value ~ Comparison` where `Comparison` is a
 #'     column with pre-formatted comparison strings (e.g., "A-B", "A-C"). This format
 #'     has limitations with hyphenated group names.
 #'   Usually used in combination with `data`.
@@ -57,7 +57,7 @@
 #'   Only used for the data.frame method.
 #' @param p_val_col Character string. Name of the column in the data frame containing
 #'   the p-values for each comparison. Default is `"p.adj"` (adjusted p-values).
-#'   Only used for the data.frame method. Can also be `"p.value"` or any other
+#'   Only used for the data.frame method. Can also be `"p_value"` or any other
 #'   column name containing numeric p-values.
 #' @param remove_space Logical. If `TRUE`, removes spaces from comparison strings.
 #'   Default is `FALSE` for the data.frame method to preserve original formatting.
@@ -100,7 +100,7 @@
 #' `quiet_hyphen_warning = TRUE`.
 #'
 #' **Formula Method Limitation:**
-#' The formula method (e.g., `make_cld(p.value ~ comparison, data = df)`) has
+#' The formula method (e.g., `make_cld(p_value ~ comparison, data = df)`) has
 #' limited support for group names with hyphens because it receives pre-formatted
 #' comparison strings where the separator hyphens cannot be reliably distinguished
 #' from hyphens within group names.
@@ -109,8 +109,8 @@
 #' Use the data.frame method with `gr1_col` and `gr2_col` parameters. This method
 #' handles hyphens automatically and seamlessly. For example:
 #' ```r
-#' # Instead of: make_cld(p.value ~ comparison, data = df)
-#' # Use: make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p.value")
+#' # Instead of: make_cld(p_value ~ comparison, data = df)
+#' # Use: make_cld(df, gr1_col = "group1", gr2_col = "group2", p_val_col = "p_value")
 #' ```
 #'
 #' **Alternative Workarounds for Formula Method:**
@@ -160,7 +160,7 @@
 #' # Example 7: Using formula interface
 #' my_dataframe <- utils::read.table(
 #'   text = c(
-#'     'Comparison     p.value p.adjust
+#'     'Comparison     p_value p.adjust
 #'     "EE - GB = 0"        1 1.000000
 #'     "EE - CY = 0" 0.001093 0.003279
 #'     "GB - CY = 0" 0.005477 0.008216'
@@ -208,7 +208,7 @@ make_cld.pairwise.htest <- function(obj, ..., alpha = 0.05) {
   res <- make_cld_df(
     gr1          = df$gr1,
     gr2          = df$gr2,
-    p.value      = df$p_values,
+    p_value      = df$p_values,
     threshold    = alpha,
     remove_space = TRUE,
     ...
@@ -236,7 +236,7 @@ make_cld.PostHocTest <- function(obj, ..., alpha = 0.05) {
 
   res <- make_cld_df(
     comparison   = names(p_values),
-    p.value      = p_values,
+    p_value      = p_values,
     threshold    = alpha,
     remove_space = TRUE,
     ...
@@ -261,12 +261,12 @@ make_cld.formula <- function(obj, ..., data = NULL, alpha = 0.05) {
 
   data <- extract_data(obj, data)
   
-  # Check if formula uses two group variables (p.value ~ gr1 + gr2)
-  # or comparison strings (p.value ~ comparison)
+  # Check if formula uses two group variables (p_value ~ gr1 + gr2)
+  # or comparison strings (p_value ~ comparison)
   rhs_vars <- all.vars(obj[[3]])  # Right-hand side variables
   
   if (length(rhs_vars) == 2) {
-    # Two-variable formula: p.value ~ gr1 + gr2
+    # Two-variable formula: p_value ~ gr1 + gr2
     # This approach handles hyphens automatically!
     lhs_var <- all.vars(obj[[2]])[1]  # p-value column
     
@@ -285,13 +285,13 @@ make_cld.formula <- function(obj, ..., data = NULL, alpha = 0.05) {
         list(
           gr1     = data[[rhs_vars[1]]],
           gr2     = data[[rhs_vars[2]]],
-          p.value = data[[lhs_var]]
+          p_value = data[[lhs_var]]
         ),
         dots
       )
     )
   } else {
-    # Single-variable formula: p.value ~ comparison
+    # Single-variable formula: p_value ~ comparison
     # Traditional approach with comparison strings
     res <- make_cld_df(
       obj,
@@ -365,7 +365,7 @@ make_cld.data.frame <- function(
   res <- make_cld_df(
     gr1          = obj[[gr2_col]],
     gr2          = obj[[gr1_col]],
-    p.value      = obj[[p_val_col]],
+    p_value      = obj[[p_val_col]],
     threshold    = alpha,
     remove_space = remove_space,
     ...
@@ -383,7 +383,7 @@ make_cld.pairwise_pval_df <- function(obj, ..., alpha = 0.05) {
   res <- make_cld_df(
     gr1       = obj$gr1,
     gr2       = obj$gr2,
-    p.value   = obj$p_values,
+    p_value   = obj$p_values,
     threshold = alpha,
     ...
   )
