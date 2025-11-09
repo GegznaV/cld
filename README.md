@@ -8,7 +8,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/cld)](https://CRAN.R-project.org/package=cld)
 [![GitHub
-version](https://img.shields.io/badge/GitHub-0.0.0.9000-brightgreen.svg)](https://github.com/GegznaV/cld)
+version](https://img.shields.io/badge/GitHub-0.0.1-brightgreen.svg)](https://github.com/GegznaV/cld)
 [![R-CMD-check](https://github.com/GegznaV/cld/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GegznaV/cld/actions/workflows/R-CMD-check.yaml)
 [![Codecov](https://codecov.io/gh/GegznaV/cld/graph/badge.svg)](https://app.codecov.io/gh/GegznaV/cld)
 [![Updated-on](https://img.shields.io/badge/Updated%20on-2025--11--09-yellowgreen.svg)](/commits/master)
