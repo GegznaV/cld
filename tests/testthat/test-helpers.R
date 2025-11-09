@@ -240,7 +240,7 @@ test_that("extract_data works when data is NULL", {
   expect_true("y" %in% names(result))
 })
 
-test_that("is_symetric_matrix detects symmetric matrices", {
+test_that("is_symmetric_matrix detects symmetric matrices", {
   # Symmetric matrix
   sym_mat <- matrix(c(
     1, 2, 3,
@@ -248,10 +248,10 @@ test_that("is_symetric_matrix detects symmetric matrices", {
     3, 5, 6
   ), nrow = 3, byrow = TRUE)
   
-  expect_true(is_symetric_matrix(sym_mat))
+  expect_true(cld:::is_symmetric_matrix(sym_mat))
 })
 
-test_that("is_symetric_matrix detects non-symmetric matrices", {
+test_that("is_symmetric_matrix detects non-symmetric matrices", {
   # Non-symmetric matrix
   non_sym_mat <- matrix(c(
     1, 2, 3,
@@ -259,15 +259,32 @@ test_that("is_symetric_matrix detects non-symmetric matrices", {
     7, 8, 9
   ), nrow = 3, byrow = TRUE)
   
-  expect_false(is_symetric_matrix(non_sym_mat))
+  expect_false(cld:::is_symmetric_matrix(non_sym_mat))
 })
 
-test_that("is_symetric_matrix errors with non-square matrix", {
+test_that("is_symmetric_matrix errors with non-square matrix", {
   # Non-square matrix
   non_square <- matrix(1:6, nrow = 2, ncol = 3)
   
   expect_error(
-    is_symetric_matrix(non_square),
+    cld:::is_symmetric_matrix(non_square),
     "Matrix is not square"
   )
+})
+
+test_that("is_symmetric_matrix works with identity matrix", {
+  # Identity matrix is symmetric
+  identity_mat <- diag(3)
+  expect_true(cld:::is_symmetric_matrix(identity_mat))
+})
+
+test_that("is_symmetric_matrix works with correlation matrices", {
+  # Correlation-like matrix (symmetric by definition)
+  cor_mat <- matrix(c(
+    1.0, 0.5, 0.3,
+    0.5, 1.0, 0.7,
+    0.3, 0.7, 1.0
+  ), nrow = 3, byrow = TRUE)
+  
+  expect_true(cld:::is_symmetric_matrix(cor_mat))
 })
