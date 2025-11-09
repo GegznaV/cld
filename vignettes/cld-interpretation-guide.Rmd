@@ -1,0 +1,152 @@
+---
+title: "Understanding and Interpreting Compact Letter Displays"
+output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{Understanding and Interpreting Compact Letter Displays}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(cld)
+```
+
+## What is a Compact Letter Display?
+
+A Compact Letter Display (CLD) visualizes multiple pairwise comparison results in a compact format by assigning letters to groups:
+
+- **Groups sharing at least one letter** are **NOT significantly different**
+- **Groups with no shared letters** are **significantly different**
+
+This convention is widely used in agricultural research, biology, and statistics to present post-hoc test results.
+
+## Basic Example
+
+```{r example-shared}
+# Example with shared letters
+result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
+cld_result <- make_cld(result)
+cld_result
+```
+
+**Interpretation:**
+
+- Groups with shared letters  → **not significantly different**, e.g.:
+    - `casein` (a) and `sunflower` (a) share letter "a"
+    - `linseed` (bc) and `meatmeal` (ac) share letter "c"
+    - `horsebean` (b) and `linseed` (bc) share letter "b"
+- Groups with no shared letters  → **significantly different**, e.g.:
+    - `horsebean` (b) and `soybean` (c) share no letters
+    - `horsebean` (b) and `sunflower` (a) share no letters
+    - `casein` (a) and `horsebean` (b) share no letters
+
+## Common Patterns
+
+**Pattern 1:** All different (a, b, c) → all groups significantly different
+
+```{r pattern-examples-1}
+set.seed(123)
+data1 <- data.frame(
+  value = c(rnorm(10, 10, 1), rnorm(10, 20, 1), rnorm(10, 30, 1)),
+  group = rep(c("Low", "Medium", "High"), each = 10)
+)
+make_cld(pairwise.t.test(data1$value, data1$group))
+```
+
+**Pattern 2:** One different (a, a, b) → first two groups not different from each other
+
+```{r pattern-examples-2}
+set.seed(455)
+data2 <- data.frame(
+  value = c(rnorm(10, 10, 1.5), rnorm(10, 10.1, 1.5), rnorm(10, 20, 1.5)),
+  group = rep(c("A", "B", "C"), each = 10)
+)
+make_cld(pairwise.t.test(data2$value, data2$group))
+```
+
+**Pattern 3:** Overlapping (a, ab, bc, c) → creates chain of non-significant differences
+
+```{r pattern-examples-3}
+set.seed(889)
+data3 <- data.frame(
+  value = c(rnorm(10, 10, 3), rnorm(10, 13, 3), rnorm(10, 16, 3), rnorm(10, 19, 3)),
+  group = rep(c("G1", "G2", "G3", "G4"), each = 10)
+)
+make_cld(pairwise.t.test(data3$value, data3$group))
+```
+
+## Spaced CLD Format
+
+The `spaced_cld` column aligns letters vertically using underscores (`_`) for spaces, making patterns easier to visualize in monospaced fonts.
+
+## Statistical Considerations
+
+### Significance Level (Alpha)
+
+Lower alpha values are more conservative, resulting in fewer significant differences:
+
+```{r alpha-comparison}
+result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
+```
+
+```{r alpha-comparison-1}
+make_cld(result, alpha = 0.05)   # Standard
+```
+
+```{r alpha-comparison-2}
+make_cld(result, alpha = 0.01)   # Stringent
+```
+
+```{r alpha-comparison-3}
+make_cld(result, alpha = 0.001)  # Very stringent
+```
+
+### Multiple Comparison Adjustment
+
+P-value adjustment methods (Bonferroni, Holm, FDR, etc.) control Type I error inflation and can significantly impact results. Use the `p.adjust.method` argument in your pairwise test function.
+
+## Common Misinterpretations
+
+❌ **Wrong:** "Group 'a' has higher values than group 'b'"  
+✅ **Correct:** Letters indicate grouping, not magnitude or rank. They only show which groups differ statistically.  
+
+💡 **Tip:** Sort groups by their original means/medians to understand which groups have higher or lower values.
+
+
+
+## Accessing Metadata
+
+```{r metadata}
+result <- pairwise.wilcox.test(chickwts$weight, chickwts$feed, exact = FALSE)
+cld_result <- make_cld(result)
+
+# Access stored information
+attr(cld_result, "alpha")           # Significance level
+attr(cld_result, "method")          # Statistical method
+attr(cld_result, "n_comparisons")   # Total comparisons
+attr(cld_result, "n_significant")   # Significant comparisons
+```
+
+## Quick Reference
+
+| Comparison | Shared Letters? | Interpretation |
+|------------|----------------|----------------|
+| "a" vs "a" | Yes | Not significantly different |
+| "a" vs "b" | No | Significantly different |
+| "ab" vs "bc" | Yes (letter "b") | Not significantly different |
+| "ab" vs "cd" | No | Significantly different |
+
+
+## Further Reading
+
+- `vignette("cld")` -- Basic usage guide
+- `vignette("cld-input-formats")` -- Supported input types
+- `vignette("cld-advanced-features")` -- Customization and plotting
+- `?cld::make_cld` -- Function documentation
