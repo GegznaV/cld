@@ -11,7 +11,7 @@ status](https://www.r-pkg.org/badges/version/cld)](https://CRAN.R-project.org/pa
 version](https://img.shields.io/badge/GitHub-0.0.1-brightgreen.svg)](https://github.com/GegznaV/cld)
 [![R-CMD-check](https://github.com/GegznaV/cld/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GegznaV/cld/actions/workflows/R-CMD-check.yaml)
 [![Codecov](https://codecov.io/gh/GegznaV/cld/graph/badge.svg)](https://app.codecov.io/gh/GegznaV/cld)
-[![Updated-on](https://img.shields.io/badge/Updated%20on-2025--11--09-yellowgreen.svg)](/commits/master)
+![Updated-on](https://img.shields.io/badge/Updated%20on-2025--11--10-yellowgreen.svg)
 <!-- badges: end -->
 
 > **Simplify your statistical reporting with compact letter displays**
@@ -26,15 +26,15 @@ agricultural, biological, and statistical publications.
 
 Key Features:
 
--   🔄 **Universal compatibility** - Works with base R, PMCMRplus,
-    rstatix, DescTools, and custom formats
--   🎯 **One function** - `make_cld()` handles all input types
-    automatically
--   📊 **Publication-ready** - Clean, professional statistical grouping
-    labels
--   📝 **Informative** - Stores metadata (alpha, method, comparison
-    counts)
--   🛠️ **Well-tested** - Comprehensive unit tests ensure reliability
+- 🔄 **Universal compatibility** - Works with base R, PMCMRplus,
+  rstatix, DescTools, and custom formats
+- 🎯 **One function** - `make_cld()` handles all input types
+  automatically
+- 📊 **Publication-ready** - Clean, professional statistical grouping
+  labels
+- 📝 **Informative** - Stores metadata (alpha, method, comparison
+  counts)
+- 🛠️ **Well-tested** - Comprehensive unit tests ensure reliability
 
 ## Installation
 
@@ -76,55 +76,55 @@ make_cld(test_result)
 
 **Interpretation**:
 
--   Groups sharing at least one letter are **not** significantly
-    different (e.g., casein and sunflower both have “a”);
--   Groups with no shared letters **are** significantly different (e.g.,
-    horsebean “b” and soybean “c”).
+- Groups sharing at least one letter are **not** significantly different
+  (e.g., casein and sunflower both have “a”);
+- Groups with no shared letters **are** significantly different (e.g.,
+  horsebean “b” and soybean “c”).
 
 ## Supported Input Formats
 
 The `make_cld()` function works seamlessly with:
 
-| Input Type             | Example Packages | Function Examples                             |
-|------------------------|------------------|-----------------------------------------------|
-| `pairwise.htest`       | base R           | `pairwise.t.test()`, `pairwise.wilcox.test()` |
-| `PMCMR` / `PMCMRplus`  | PMCMR, PMCMRplus | `kwAllPairsConoverTest()`, `dunnTest()`       |
-| `data.frame` (rstatix) | rstatix          | `games_howell_test()`, `tukey_hsd()`          |
-| `PostHocTest`          | DescTools        | `ConoverTest()`, `DunnettTest()`              |
-| `matrix`               | Custom           | Symmetric p-value matrices                    |
-| `data.frame`           | Custom           | Custom comparison data frames                 |
-| `formula`              | Custom           | Formula interface for data frames             |
+| Input Type | Example Packages | Function Examples |
+|----|----|----|
+| `pairwise.htest` | base R | `pairwise.t.test()`, `pairwise.wilcox.test()` |
+| `PMCMR` / `PMCMRplus` | PMCMR, PMCMRplus | `kwAllPairsConoverTest()`, `dunnTest()` |
+| `data.frame` (rstatix) | rstatix | `games_howell_test()`, `tukey_hsd()` |
+| `PostHocTest` | DescTools | `ConoverTest()`, `DunnettTest()` |
+| `matrix` | Custom | Symmetric p-value matrices |
+| `data.frame` | Custom | Custom comparison data frames |
+| `formula` | Custom | Formula interface for data frames |
 
 ## Learn More
 
 📚 **Comprehensive vignettes** (also available on [package
 website](https://gegznav.github.io/cld/)):
 
--   `vignette("cld")` - Complete introduction with examples
--   `vignette("cld-input-formats")` - Detailed examples for all input
-    types
--   `vignette("cld-interpretation-guide")` - How to correctly interpret
-    CLDs
--   `vignette("cld-advanced-features")` - Advanced features and custom
-    parameters
+- `vignette("cld")` - Complete introduction with examples
+- `vignette("cld-input-formats")` - Detailed examples for all input
+  types
+- `vignette("cld-interpretation-guide")` - How to correctly interpret
+  CLDs
+- `vignette("cld-advanced-features")` - Advanced features and custom
+  parameters
 
 ## Related Packages
 
-| Package                                                         | Purpose               | Relationship to cld            |
-|-----------------------------------------------------------------|-----------------------|--------------------------------|
-| [multcompView](https://cran.r-project.org/package=multcompView) | CLD algorithm         | Used internally by **cld**     |
-| [rcompanion](https://cran.r-project.org/package=rcompanion)     | Statistical functions | Alternative CLD implementation |
-| [PMCMRplus](https://cran.r-project.org/package=PMCMRplus)       | Post-hoc tests        | Compatible input for **cld**   |
-| [rstatix](https://cran.r-project.org/package=rstatix)           | Tidy statistics       | Compatible input for **cld**   |
-| [DescTools](https://cran.r-project.org/package=DescTools)       | Statistical tools     | Compatible input for **cld**   |
+| Package | Purpose | Relationship to cld |
+|----|----|----|
+| [multcompView](https://cran.r-project.org/package=multcompView) | CLD algorithm | Used internally by **cld** |
+| [rcompanion](https://cran.r-project.org/package=rcompanion) | Statistical functions | Alternative CLD implementation |
+| [PMCMRplus](https://cran.r-project.org/package=PMCMRplus) | Post-hoc tests | Compatible input for **cld** |
+| [rstatix](https://cran.r-project.org/package=rstatix) | Tidy statistics | Compatible input for **cld** |
+| [DescTools](https://cran.r-project.org/package=DescTools) | Statistical tools | Compatible input for **cld** |
 
 ## Getting Help
 
--   📖 Function reference: `?cld::make_cld`
--   📚 Package website: <https://gegznav.github.io/cld/>
--   🐛 Report bugs: <https://github.com/GegznaV/cld/issues>
--   💬 Ask questions: [GitHub
-    Discussions](https://github.com/GegznaV/cld/discussions)
+- 📖 Function reference: `?cld::make_cld`
+- 📚 Package website: <https://gegznav.github.io/cld/>
+- 🐛 Report bugs: <https://github.com/GegznaV/cld/issues>
+- 💬 Ask questions: [GitHub
+  Discussions](https://github.com/GegznaV/cld/discussions)
 
 ## Citation
 
