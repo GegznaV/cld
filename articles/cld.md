@@ -14,17 +14,16 @@ agricultural, biological, and statistical publications.
 
 ## Why Use cld?
 
-✅ **Universal compatibility** - Works with outputs from base R,
+🔄 **Universal compatibility** - Works with outputs from base R,
 PMCMRplus, rstatix, DescTools, and custom data frames  
-✅ **Consistent interface** - One function
-([`make_cld()`](https://gegznav.github.io/cld/reference/make_cld.md))
-handles all input types  
-✅ **Publication-ready** - Generate clean, professional statistical
+🎯 **One function** -
+[`make_cld()`](https://gegznav.github.io/cld/reference/make_cld.md)
+handles all input types automatically  
+📊 **Publication-ready** - Generate clean, professional statistical
 grouping labels  
-✅ **Well-tested** - 500+ tests ensuring reliability across all
-methods  
-✅ **Informative output** - Stores metadata (alpha, method, comparison
-counts) for transparency
+📝 **Informative** - Stores metadata (alpha, method, comparison counts)
+for transparency  
+🛠️ **Well-tested** - 500+ tests ensuring reliability across all methods
 
 ## Interpretation Rules
 
