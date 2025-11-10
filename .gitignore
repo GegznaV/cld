@@ -7,3 +7,5 @@ inst/doc
 /lib
 *.html
 /docs
+/doc/
+/Meta/
