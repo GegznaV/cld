@@ -21,7 +21,7 @@ PMCMRplus, rstatix, DescTools, and custom data frames
 handles all input types  
 ✅ **Publication-ready** - Generate clean, professional statistical
 grouping labels  
-✅ **Well-tested** - 250+ tests ensuring reliability across all
+✅ **Well-tested** - 500+ tests ensuring reliability across all
 methods  
 ✅ **Informative output** - Stores metadata (alpha, method, comparison
 counts) for transparency
