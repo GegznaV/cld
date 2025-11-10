@@ -12,12 +12,12 @@ Source:
 
 Gegzna V (2025). *cld: Create Compact Letter Display (CLD) for
 Statistical Comparisons*. R package version 0.0.1,
-<https://github.com/GegznaV/cld>.
+<https://gegznav.github.io/cld/>.
 
     @Manual{,
       title = {cld: Create Compact Letter Display (CLD) for Statistical Comparisons},
       author = {Vilmantas Gegzna},
       year = {2025},
       note = {R package version 0.0.1},
-      url = {https://github.com/GegznaV/cld},
+      url = {https://gegznav.github.io/cld/},
     }
