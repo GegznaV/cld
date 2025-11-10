@@ -3,6 +3,7 @@
 ^LICENSE\.md$
 ^data-raw$
 ^README\.Rmd$
+^README\.html$
 ^TODO\.md$
 ^VIGNETTES_SUMMARY\.md$
 ^_pkgdown\.yml$
@@ -11,5 +12,9 @@
 ^in-progress$
 ^cran-comments\.md$
 ^coverage_report\.html$
+^check_cran_release\.R$
+^quick_cran_check\.R$
 ^docs$
 ^lib$
+^doc$
+^Meta$
