@@ -100,6 +100,29 @@ all methods<br>
 comparison counts) for transparency</p>
 </div>
 <div class="section level2">
+<h2 id="interpretation-rules">Interpretation Rules<a class="anchor" aria-label="anchor" href="#interpretation-rules"></a>
+</h2>
+<p>❌ At least one <strong>shared letter</strong> → Groups are
+<strong>NOT</strong> significantly different<br>
+✅ <strong>No shared letters</strong> → Groups <strong>ARE</strong>
+significantly different</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>❌ Groups with “c” and “c” share letter “c” → difference is not
+significant</li>
+<li>❌ Groups with “a” and “ab” share letter “a” → difference is not
+significant</li>
+<li>❌ Groups “ab” and “bc” share letter “b” → difference is not
+significant</li>
+<li>❌ Groups “abc” and “bcd” share letters “b”, and “c” → difference is
+not significant</li>
+<li>✅ Groups with “a” and “c” share no letters → significant
+difference</li>
+<li>✅ Groups with “abd” and “ce” share no letters → significant
+difference</li>
+</ul>
+</div>
+<div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
 <p>The <strong>cld</strong> package works with various statistical test
@@ -287,29 +310,6 @@ found</li>
 <span><span class="co">#&gt;    soybean  ab        ab_</span></span>
 <span><span class="co">#&gt;  sunflower   b        _b_</span></span></code></pre></div>
 </div>
-</div>
-<div class="section level2">
-<h2 id="interpretation-rules">Interpretation Rules<a class="anchor" aria-label="anchor" href="#interpretation-rules"></a>
-</h2>
-<p>❌ At least one <strong>shared letter</strong> → Groups are
-<strong>NOT</strong> significantly different<br>
-✅ <strong>No shared letters</strong> → Groups <strong>ARE</strong>
-significantly different</p>
-<p><strong>Examples:</strong></p>
-<ul>
-<li>❌ Groups with “c” and “c” share letter “c” → difference is not
-significant</li>
-<li>❌ Groups with “a” and “ab” share letter “a” → difference is not
-significant</li>
-<li>❌ Groups “ab” and “bc” share letter “b” → difference is not
-significant</li>
-<li>❌ Groups “abc” and “bcd” share letters “b”, and “c” → difference is
-not significant</li>
-<li>✅ Groups with “a” and “c” share no letters → significantly
-different</li>
-<li>✅ Groups with “abd” and “ce” share no letters → significantly
-different</li>
-</ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

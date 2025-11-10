@@ -26,6 +26,26 @@ methods
 ✅ **Informative output** - Stores metadata (alpha, method, comparison
 counts) for transparency
 
+## Interpretation Rules
+
+❌ At least one **shared letter** → Groups are **NOT** significantly
+different  
+✅ **No shared letters** → Groups **ARE** significantly different
+
+**Examples:**
+
+- ❌ Groups with “c” and “c” share letter “c” → difference is not
+  significant
+- ❌ Groups with “a” and “ab” share letter “a” → difference is not
+  significant
+- ❌ Groups “ab” and “bc” share letter “b” → difference is not
+  significant
+- ❌ Groups “abc” and “bcd” share letters “b”, and “c” → difference is
+  not significant
+- ✅ Groups with “a” and “c” share no letters → significant difference
+- ✅ Groups with “abd” and “ce” share no letters → significant
+  difference
+
 ## Quick Start
 
 The **cld** package works with various statistical test outputs. Here’s
@@ -201,23 +221,3 @@ make_cld(result, alpha = 0.01)
 #>    soybean  ab        ab_
 #>  sunflower   b        _b_
 ```
-
-## Interpretation Rules
-
-❌ At least one **shared letter** → Groups are **NOT** significantly
-different  
-✅ **No shared letters** → Groups **ARE** significantly different
-
-**Examples:**
-
-- ❌ Groups with “c” and “c” share letter “c” → difference is not
-  significant
-- ❌ Groups with “a” and “ab” share letter “a” → difference is not
-  significant
-- ❌ Groups “ab” and “bc” share letter “b” → difference is not
-  significant
-- ❌ Groups “abc” and “bcd” share letters “b”, and “c” → difference is
-  not significant
-- ✅ Groups with “a” and “c” share no letters → significantly different
-- ✅ Groups with “abd” and “ce” share no letters → significantly
-  different
