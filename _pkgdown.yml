@@ -46,37 +46,21 @@ reference:
       Core functions for creating compact letter displays from statistical test results.
       These are the primary user-facing functions.
     contents:
-      - has_concept("main_functions")
-      
-  - title: "S3 Methods for make_cld"
-    desc: >
-      Methods for different input object types. These methods are automatically 
-      dispatched based on the class of the input object.
-    contents:
-      - starts_with("make_cld.")
+      - make_cld
       
   - title: "Helper & Utility Functions"
     desc: >
       Functions for data conversion, preparation, and creating CLD objects from 
       other formats.
     contents:
-      - has_concept("helper_functions")
-      - starts_with("as_cld")
-      - -as_cld.cld_object
+      - as_cld
+      - pval_matrix_to_df
       
   - title: "Output Handling & Coercion Methods"
     desc: >
       Print methods and coercion functions for converting cld_object to other formats.
     contents:
-      - has_concept("output_methods")
-      - has_concept("cld_object_methods")
-      - matches("^(print|as\\.).*cld")
-      
-  - title: "Internal Functions"
-    desc: >
-      Internal helper functions (not typically needed by end users).
-    contents:
-      - lacks_concepts(c("main_functions", "helper_functions", "output_methods", "cld_object_methods"))
+      - cld_methods
 
 navbar:
   structure:
