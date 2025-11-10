@@ -27,7 +27,7 @@ The **cld** package provides an easy and consistent way to create compact letter
 ✅ **Universal compatibility** - Works with outputs from base R, PMCMRplus, rstatix, DescTools, and custom data frames  
 ✅ **Consistent interface** - One function (`make_cld()`) handles all input types  
 ✅ **Publication-ready** - Generate clean, professional statistical grouping labels  
-✅ **Well-tested** - 250+ tests ensuring reliability across all methods   
+✅ **Well-tested** - 500+ tests ensuring reliability across all methods   
 ✅ **Informative output** - Stores metadata (alpha, method, comparison counts) for transparency
 
 ## Quick Start
