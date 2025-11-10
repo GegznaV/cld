@@ -15,7 +15,7 @@ Description: Creates compact letter displays (CLDs) for pairwise comparisons
     consistent interface for visualizing statistical groupings across different 
     testing frameworks.
 License: GPL (>= 3)
-URL: https://github.com/GegznaV/cld
+URL: https://gegznav.github.io/cld/
 BugReports: https://github.com/GegznaV/cld/issues
 Imports: 
     checkmate,
